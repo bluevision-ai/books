@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; The Supervised Recipe – Machine Learning: A Modelling Perspective</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./ch01.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-12eeb4b20e9f5a2b0bfc604bfaf942bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta name="citation_title" content="[[2]{.chapter-number}&nbsp; [The Supervised Recipe]{.chapter-title}]{#sec-ch02 .quarto-section-identifier}">
+<meta name="citation_fulltext_html_url" content="https://books.bluevision-ai.org/ml-foundations/ch02.html">
+<meta name="citation_language" content="en">
+<meta name="citation_reference" content="citation_title=Scala graduum caloris;,citation_author=Isaac Newton;,citation_publication_date=1701;,citation_cover_date=1701;,citation_year=1701;,citation_volume=22;,citation_journal_title=Philosophical Transactions of the Royal Society;">
+<meta name="citation_reference" content="citation_title=An enquiry concerning human understanding;,citation_author=David Hume;,citation_publication_date=1748;,citation_cover_date=1748;,citation_year=1748;">
+<meta name="citation_reference" content="citation_title=A new approach to linear filtering and prediction problems;,citation_author=Rudolf E. Kalman;,citation_publication_date=1960;,citation_cover_date=1960;,citation_year=1960;,citation_issue=D;,citation_volume=82;,citation_journal_title=Transactions of the ASME, Journal of Basic Engineering;">
+<meta name="citation_reference" content="citation_title=A contribution to the mathematical theory of epidemics;,citation_author=William O. Kermack;,citation_author=Anderson G. McKendrick;,citation_publication_date=1927;,citation_cover_date=1927;,citation_year=1927;,citation_issue=772;,citation_volume=115;,citation_journal_title=Proceedings of the Royal Society A;">
+<meta name="citation_reference" content="citation_title=Impact of non-pharmaceutical interventions (NPIs) to reduce COVID-19 mortality and healthcare demand;,citation_author=Neil M. Ferguson;,citation_author=others;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_technical_report_institution=Imperial College COVID-19 Response Team;,citation_technical_report_number=Report 9;">
+<meta name="citation_reference" content="citation_title=Elements of physical biology;,citation_author=Alfred J. Lotka;,citation_publication_date=1925;,citation_cover_date=1925;,citation_year=1925;">
+<meta name="citation_reference" content="citation_title=Fluctuations in the abundance of a species considered mathematically;,citation_author=Vito Volterra;,citation_publication_date=1926;,citation_cover_date=1926;,citation_year=1926;,citation_volume=118;,citation_journal_title=Nature;">
+<meta name="citation_reference" content="citation_title=On kinematic waves II: A theory of traffic flow on long crowded roads;,citation_author=Michael J. Lighthill;,citation_author=Gerald B. Whitham;,citation_publication_date=1955;,citation_cover_date=1955;,citation_year=1955;,citation_issue=1178;,citation_volume=229;,citation_journal_title=Proceedings of the Royal Society A;">
+<meta name="citation_reference" content="citation_title=Shock waves on the highway;,citation_author=Paul I. Richards;,citation_publication_date=1956;,citation_cover_date=1956;,citation_year=1956;,citation_issue=1;,citation_volume=4;,citation_journal_title=Operations Research;">
+<meta name="citation_reference" content="citation_title=The pricing of options and corporate liabilities;,citation_author=Fischer Black;,citation_author=Myron Scholes;,citation_publication_date=1973;,citation_cover_date=1973;,citation_year=1973;,citation_issue=3;,citation_volume=81;,citation_journal_title=Journal of Political Economy;">
+<meta name="citation_reference" content="citation_title=Theory of rational option pricing;,citation_author=Robert C. Merton;,citation_publication_date=1973;,citation_cover_date=1973;,citation_year=1973;,citation_issue=1;,citation_volume=4;,citation_journal_title=Bell Journal of Economics and Management Science;">
+<meta name="citation_reference" content="citation_title=Nouvelles méthodes pour la détermination des orbites des comètes;,citation_author=Adrien-Marie Legendre;,citation_publication_date=1805;,citation_cover_date=1805;,citation_year=1805;">
+<meta name="citation_reference" content="citation_title=Theoria motus corporum coelestium in sectionibus conicis solem ambientium;,citation_author=Carl Friedrich Gauss;,citation_publication_date=1809;,citation_cover_date=1809;,citation_year=1809;">
+<meta name="citation_reference" content="citation_title=Science and statistics;,citation_author=George E. P. Box;,citation_publication_date=1976;,citation_cover_date=1976;,citation_year=1976;,citation_issue=356;,citation_volume=71;,citation_journal_title=Journal of the American Statistical Association;">
+<meta name="citation_reference" content="citation_title=Empirical model-building and response surfaces;,citation_author=George E. P. Box;,citation_author=Norman R. Draper;,citation_publication_date=1987;,citation_cover_date=1987;,citation_year=1987;">
+<meta name="citation_reference" content="citation_title=Del rigor en la ciencia;,citation_author=Jorge Luis Borges;,citation_publication_date=1946;,citation_cover_date=1946;,citation_year=1946;,citation_journal_title=Los Anales de Buenos Aires;">
+<meta name="citation_reference" content="citation_title=Sylvie and bruno concluded;,citation_author=Lewis Carroll;,citation_publication_date=1893;,citation_cover_date=1893;,citation_year=1893;">
+<meta name="citation_reference" content="citation_title=Turbulent flow in pipes, with particular reference to the transition region between the smooth and rough pipe laws;,citation_author=Cyril F. Colebrook;,citation_publication_date=1939;,citation_cover_date=1939;,citation_year=1939;,citation_issue=4;,citation_volume=11;,citation_journal_title=Journal of the Institution of Civil Engineers;">
+<meta name="citation_reference" content="citation_title=Friction factors for pipe flow;,citation_author=Lewis F. Moody;,citation_publication_date=1944;,citation_cover_date=1944;,citation_year=1944;,citation_volume=66;,citation_journal_title=Transactions of the ASME;">
+<meta name="citation_reference" content="citation_title=Heat transfer in automobile radiators of the tubular type;,citation_author=Frederick W. Dittus;,citation_author=Louis M. K. Boelter;,citation_publication_date=1930;,citation_cover_date=1930;,citation_year=1930;,citation_volume=2;,citation_journal_title=University of California Publications in Engineering;">
+<meta name="citation_reference" content="citation_title=Statistical modeling: The two cultures;,citation_author=Leo Breiman;,citation_publication_date=2001;,citation_cover_date=2001;,citation_year=2001;,citation_issue=3;,citation_volume=16;,citation_journal_title=Statistical Science;">
+<meta name="citation_reference" content="citation_title=Discorsi e dimostrazioni matematiche, intorno à due nuove scienze;,citation_author=Galileo Galilei;,citation_publication_date=1638;,citation_cover_date=1638;,citation_year=1638;">
+<meta name="citation_reference" content="citation_title=Horologium oscillatorium;,citation_author=Christiaan Huygens;,citation_publication_date=1673;,citation_cover_date=1673;,citation_year=1673;">
+<meta name="citation_reference" content="citation_title=Sur la planète qui produit les anomalies observées dans le mouvement d’uranus;,citation_author=Urbain J. J. Le Verrier;,citation_publication_date=1846;,citation_cover_date=1846;,citation_year=1846;,citation_volume=23;,citation_journal_title=Comptes Rendus de l’Académie des Sciences;">
+<meta name="citation_reference" content="citation_title=Account of the discovery of le verrier’s planet neptune;,citation_author=Johann G. Galle;,citation_publication_date=1846;,citation_cover_date=1846;,citation_year=1846;,citation_volume=7;,citation_journal_title=Monthly Notices of the Royal Astronomical Society;">
+<meta name="citation_reference" content="citation_title=Théorie du mouvement de mercure;,citation_author=Urbain J. J. Le Verrier;,citation_publication_date=1859;,citation_cover_date=1859;,citation_year=1859;,citation_volume=5;,citation_journal_title=Annales de l’Observatoire de Paris;">
+<meta name="citation_reference" content="citation_title=Erklärung der perihelbewegung des merkur aus der allgemeinen relativitätstheorie;,citation_author=Albert Einstein;,citation_publication_date=1915;,citation_cover_date=1915;,citation_year=1915;,citation_journal_title=Sitzungsberichte der Königlich Preußischen Akademie der Wissenschaften (Berlin);">
+<meta name="citation_reference" content="citation_title=Computing machinery and intelligence;,citation_author=Alan M. Turing;,citation_publication_date=1950;,citation_cover_date=1950;,citation_year=1950;,citation_issue=236;,citation_volume=59;,citation_journal_title=Mind;">
+<meta name="citation_reference" content="citation_title=ELIZA: A computer program for the study of natural language communication between man and machine;,citation_author=Joseph Weizenbaum;,citation_publication_date=1966;,citation_cover_date=1966;,citation_year=1966;,citation_issue=1;,citation_volume=9;,citation_journal_title=Communications of the ACM;">
+<meta name="citation_reference" content="citation_title=Report on a general problem-solving program;,citation_author=Allen Newell;,citation_author=J. C. Shaw;,citation_author=Herbert A. Simon;,citation_publication_date=1959;,citation_cover_date=1959;,citation_year=1959;,citation_conference_title=Proceedings of the international conference on information processing (IFIP);">
+<meta name="citation_reference" content="citation_title=Human problem solving;,citation_author=Allen Newell;,citation_author=Herbert A. Simon;,citation_publication_date=1972;,citation_cover_date=1972;,citation_year=1972;">
+<meta name="citation_reference" content="citation_title=An investigation of the laws of thought;,citation_author=George Boole;,citation_publication_date=1854;,citation_cover_date=1854;,citation_year=1854;">
+<meta name="citation_reference" content="citation_title=Begriffsschrift;,citation_author=Gottlob Frege;,citation_publication_date=1879;,citation_cover_date=1879;,citation_year=1879;">
+<meta name="citation_reference" content="citation_title=Programs with common sense;,citation_author=John McCarthy;,citation_publication_date=1959;,citation_cover_date=1959;,citation_year=1959;,citation_conference_title=Proceedings of the teddington conference on the mechanization of thought processes;">
+<meta name="citation_reference" content="citation_title=A proposal for the dartmouth summer research project on artificial intelligence;,citation_author=John McCarthy;,citation_author=Marvin Minsky;,citation_author=Nathaniel Rochester;,citation_author=Claude E. Shannon;,citation_publication_date=1955;,citation_cover_date=1955;,citation_year=1955;,citation_technical_report_institution=Dartmouth College;">
+<meta name="citation_reference" content="citation_title=Artificial intelligence: A modern approach;,citation_author=Stuart Russell;,citation_author=Peter Norvig;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;">
+<meta name="citation_reference" content="citation_title=Theory of games and economic behavior;,citation_author=John Neumann;,citation_author=Oskar Morgenstern;,citation_publication_date=1944;,citation_cover_date=1944;,citation_year=1944;">
+<meta name="citation_reference" content="citation_title=The foundations of statistics;,citation_author=Leonard J. Savage;,citation_publication_date=1954;,citation_cover_date=1954;,citation_year=1954;">
+<meta name="citation_reference" content="citation_title=Models of man: Social and rational;,citation_author=Herbert A. Simon;,citation_publication_date=1957;,citation_cover_date=1957;,citation_year=1957;">
+<meta name="citation_reference" content="citation_title=Dynamic programming;,citation_author=Richard Bellman;,citation_publication_date=1957;,citation_cover_date=1957;,citation_year=1957;">
+<meta name="citation_reference" content="citation_title=Cybernetics: Or control and communication in the animal and the machine;,citation_author=Norbert Wiener;,citation_publication_date=1948;,citation_cover_date=1948;,citation_year=1948;">
+<meta name="citation_reference" content="citation_title=Maximization of a linear function of variables subject to linear inequalities;,citation_author=George B. Dantzig;,citation_editor=Tjalling C. Koopmans;,citation_publication_date=1951;,citation_cover_date=1951;,citation_year=1951;,citation_inbook_title=Activity analysis of production and allocation;,citation_series_title=Cowles commission monograph 13;">
+<meta name="citation_reference" content="citation_title=Ascribing mental qualities to machines;,citation_author=John McCarthy;,citation_editor=Martin Ringle;,citation_publication_date=1979;,citation_cover_date=1979;,citation_year=1979;,citation_inbook_title=Philosophical perspectives in artificial intelligence;">
+<meta name="citation_reference" content="citation_title=A note on two problems in connexion with graphs;,citation_author=Edsger W. Dijkstra;,citation_publication_date=1959;,citation_cover_date=1959;,citation_year=1959;,citation_volume=1;,citation_journal_title=Numerische Mathematik;">
+<meta name="citation_reference" content="citation_title=A formal basis for the heuristic determination of minimum cost paths;,citation_author=Peter E. Hart;,citation_author=Nils J. Nilsson;,citation_author=Bertram Raphael;,citation_publication_date=1968;,citation_cover_date=1968;,citation_year=1968;,citation_issue=2;,citation_volume=4;,citation_journal_title=IEEE Transactions on Systems Science and Cybernetics;">
+<meta name="citation_reference" content="citation_title=Optimization by simulated annealing;,citation_author=Scott Kirkpatrick;,citation_author=C. Daniel Gelatt;,citation_author=Mario P. Vecchi;,citation_publication_date=1983;,citation_cover_date=1983;,citation_year=1983;,citation_issue=4598;,citation_volume=220;,citation_journal_title=Science;">
+<meta name="citation_reference" content="citation_title=Adaptation in natural and artificial systems;,citation_author=John H. Holland;,citation_publication_date=1975;,citation_cover_date=1975;,citation_year=1975;">
+<meta name="citation_reference" content="citation_title=Evolutionsstrategie: Optimierung technischer systeme nach prinzipien der biologischen evolution;,citation_author=Ingo Rechenberg;,citation_publication_date=1973;,citation_cover_date=1973;,citation_year=1973;">
+<meta name="citation_reference" content="citation_title=Genetic programming: On the programming of computers by means of natural selection;,citation_author=John R. Koza;,citation_publication_date=1992;,citation_cover_date=1992;,citation_year=1992;">
+<meta name="citation_reference" content="citation_title=Particle swarm optimization;,citation_author=James Kennedy;,citation_author=Russell Eberhart;,citation_publication_date=1995;,citation_cover_date=1995;,citation_year=1995;,citation_conference_title=Proceedings of the IEEE international conference on neural networks;">
+<meta name="citation_reference" content="citation_title=Optimization, learning and natural algorithms;,citation_author=Marco Dorigo;,citation_publication_date=1992;,citation_cover_date=1992;,citation_year=1992;,citation_dissertation_institution=Politecnico di Milano;">
+<meta name="citation_reference" content="citation_title=Automated antenna design with evolutionary algorithms;,citation_author=Gregory S. Hornby;,citation_author=Al Globus;,citation_author=Derek S. Linden;,citation_author=Jason D. Lohn;,citation_publication_date=2006;,citation_cover_date=2006;,citation_year=2006;,citation_conference_title=Proceedings of AIAA space 2006;">
+<meta name="citation_reference" content="citation_title=Consistency in networks of relations;,citation_author=Alan K. Mackworth;,citation_publication_date=1977;,citation_cover_date=1977;,citation_year=1977;,citation_issue=1;,citation_volume=8;,citation_journal_title=Artificial Intelligence;">
+<meta name="citation_reference" content="citation_title=A machine-oriented logic based on the resolution principle;,citation_author=John Alan Robinson;,citation_publication_date=1965;,citation_cover_date=1965;,citation_year=1965;,citation_issue=1;,citation_volume=12;,citation_journal_title=Journal of the ACM;">
+<meta name="citation_reference" content="citation_title=A machine program for theorem-proving;,citation_author=Martin Davis;,citation_author=George Logemann;,citation_author=Donald Loveland;,citation_publication_date=1962;,citation_cover_date=1962;,citation_year=1962;,citation_issue=7;,citation_volume=5;,citation_journal_title=Communications of the ACM;">
+<meta name="citation_reference" content="citation_title=Applications of artificial intelligence for organic chemistry: The DENDRAL project;,citation_author=Robert K. Lindsay;,citation_author=Bruce G. Buchanan;,citation_author=Edward A. Feigenbaum;,citation_author=Joshua Lederberg;,citation_publication_date=1980;,citation_cover_date=1980;,citation_year=1980;">
+<meta name="citation_reference" content="citation_title=Rule-based expert systems: The MYCIN experiments of the stanford heuristic programming project;,citation_author=Bruce G. Buchanan;,citation_author=Edward H. Shortliffe;,citation_publication_date=1984;,citation_cover_date=1984;,citation_year=1984;">
+<meta name="citation_reference" content="citation_title=Inductive logic programming;,citation_author=Stephen Muggleton;,citation_publication_date=1991;,citation_cover_date=1991;,citation_year=1991;,citation_issue=4;,citation_volume=8;,citation_journal_title=New Generation Computing;">
+<meta name="citation_reference" content="citation_title=An essay towards solving a problem in the doctrine of chances;,citation_author=Thomas Bayes;,citation_publication_date=1763;,citation_cover_date=1763;,citation_year=1763;,citation_volume=53;,citation_journal_title=Philosophical Transactions of the Royal Society;">
+<meta name="citation_reference" content="citation_title=Theorie analytique des probabilites;,citation_author=Pierre-Simon Laplace;,citation_publication_date=1812;,citation_cover_date=1812;,citation_year=1812;">
+<meta name="citation_reference" content="citation_title=Probabilistic reasoning in intelligent systems: Networks of plausible inference;,citation_author=Judea Pearl;,citation_publication_date=1988;,citation_cover_date=1988;,citation_year=1988;">
+<meta name="citation_reference" content="citation_title=Probabilistic similarity networks;,citation_author=David Heckerman;,citation_publication_date=1990;,citation_cover_date=1990;,citation_year=1990;,citation_dissertation_institution=Stanford University;">
+<meta name="citation_reference" content="citation_title=Extension of the law of large numbers to dependent quantities;,citation_author=Andrei A. Markov;,citation_publication_date=1906;,citation_cover_date=1906;,citation_year=1906;,citation_volume=15;,citation_journal_title=Izvestiya Fiziko-Matematicheskogo Obshchestva pri Kazanskom Universitete;">
+<meta name="citation_reference" content="citation_title=Statistical inference for probabilistic functions of finite state markov chains;,citation_author=Leonard E. Baum;,citation_author=Ted Petrie;,citation_publication_date=1966;,citation_cover_date=1966;,citation_year=1966;,citation_issue=6;,citation_volume=37;,citation_journal_title=Annals of Mathematical Statistics;">
+<meta name="citation_reference" content="citation_title=A tutorial on hidden markov models and selected applications in speech recognition;,citation_author=Lawrence R. Rabiner;,citation_publication_date=1989;,citation_cover_date=1989;,citation_year=1989;,citation_issue=2;,citation_volume=77;,citation_journal_title=Proceedings of the IEEE;">
+<meta name="citation_reference" content="citation_title=Optimal control of markov processes with incomplete state information;,citation_author=Karl Johan Astrom;,citation_publication_date=1965;,citation_cover_date=1965;,citation_year=1965;,citation_volume=10;,citation_journal_title=Journal of Mathematical Analysis and Applications;">
+<meta name="citation_reference" content="citation_title=The monte carlo method;,citation_author=Nicholas Metropolis;,citation_author=Stanislaw Ulam;,citation_publication_date=1949;,citation_cover_date=1949;,citation_year=1949;,citation_issue=247;,citation_volume=44;,citation_journal_title=Journal of the American Statistical Association;">
+<meta name="citation_reference" content="citation_title=Equation of state calculations by fast computing machines;,citation_author=Nicholas Metropolis;,citation_author=Arianna W. Rosenbluth;,citation_author=Marshall N. Rosenbluth;,citation_author=Augusta H. Teller;,citation_author=Edward Teller;,citation_publication_date=1953;,citation_cover_date=1953;,citation_year=1953;,citation_issue=6;,citation_volume=21;,citation_journal_title=Journal of Chemical Physics;">
+<meta name="citation_reference" content="citation_title=Efficient selectivity and backup operators in monte-carlo tree search;,citation_author=Remi Coulom;,citation_publication_date=2006;,citation_cover_date=2006;,citation_year=2006;,citation_conference_title=Computers and games 2006;,citation_series_title=Lecture notes in computer science 4630;">
+<meta name="citation_reference" content="citation_title=Bandit based monte-carlo planning;,citation_author=Levente Kocsis;,citation_author=Csaba Szepesvari;,citation_publication_date=2006;,citation_cover_date=2006;,citation_year=2006;,citation_conference_title=Machine learning: ECML 2006;,citation_series_title=Lecture notes in computer science 4212;">
+<meta name="citation_reference" content="citation_title=Maximum likelihood from incomplete data via the EM algorithm;,citation_author=Arthur P. Dempster;,citation_author=Nan M. Laird;,citation_author=Donald B. Rubin;,citation_publication_date=1977;,citation_cover_date=1977;,citation_year=1977;,citation_issue=1;,citation_volume=39;,citation_journal_title=Journal of the Royal Statistical Society B;">
+<meta name="citation_reference" content="citation_title=Fuzzy sets;,citation_author=Lotfi A. Zadeh;,citation_publication_date=1965;,citation_cover_date=1965;,citation_year=1965;,citation_issue=3;,citation_volume=8;,citation_journal_title=Information and Control;">
+<meta name="citation_reference" content="citation_title=An experiment in linguistic synthesis with a fuzzy logic controller;,citation_author=Ebrahim H. Mamdani;,citation_author=Sedrak Assilian;,citation_publication_date=1975;,citation_cover_date=1975;,citation_year=1975;,citation_issue=1;,citation_volume=7;,citation_journal_title=International Journal of Man-Machine Studies;">
+<meta name="citation_reference" content="citation_title=ANFIS: Adaptive-network-based fuzzy inference system;,citation_author=Jyh-Shing Roger Jang;,citation_publication_date=1993;,citation_cover_date=1993;,citation_year=1993;,citation_issue=3;,citation_volume=23;,citation_journal_title=IEEE Transactions on Systems, Man, and Cybernetics;">
+<meta name="citation_reference" content="citation_title=Fuzzy logic, neural networks, and soft computing;,citation_author=Lotfi A. Zadeh;,citation_publication_date=1994;,citation_cover_date=1994;,citation_year=1994;,citation_issue=3;,citation_volume=37;,citation_journal_title=Communications of the ACM;">
+<meta name="citation_reference" content="citation_title=Deep blue;,citation_author=Murray Campbell;,citation_author=A. Joseph Hoane;,citation_author=Feng-hsiung Hsu;,citation_publication_date=2002;,citation_cover_date=2002;,citation_year=2002;,citation_issue=1–2;,citation_volume=134;,citation_journal_title=Artificial Intelligence;">
+<meta name="citation_reference" content="citation_title=Some studies in machine learning using the game of checkers;,citation_author=Arthur L. Samuel;,citation_publication_date=1959;,citation_cover_date=1959;,citation_year=1959;,citation_issue=3;,citation_volume=3;,citation_journal_title=IBM Journal of Research and Development;">
+<meta name="citation_reference" content="citation_title=Learning to predict by the methods of temporal differences;,citation_author=Richard S. Sutton;,citation_publication_date=1988;,citation_cover_date=1988;,citation_year=1988;,citation_issue=1;,citation_volume=3;,citation_journal_title=Machine Learning;">
+<meta name="citation_reference" content="citation_title=Q-learning;,citation_author=Christopher J. C. H. Watkins;,citation_author=Peter Dayan;,citation_publication_date=1992;,citation_cover_date=1992;,citation_year=1992;,citation_issue=3–4;,citation_volume=8;,citation_journal_title=Machine Learning;">
+<meta name="citation_reference" content="citation_title=Temporal difference learning and TD-Gammon;,citation_author=Gerald Tesauro;,citation_publication_date=1995;,citation_cover_date=1995;,citation_year=1995;,citation_issue=3;,citation_volume=38;,citation_journal_title=Communications of the ACM;">
+<meta name="citation_reference" content="citation_title=Reinforcement learning: An introduction;,citation_author=Richard S. Sutton;,citation_author=Andrew G. Barto;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;">
+<meta name="citation_reference" content="citation_title=Mastering the game of Go with deep neural networks and tree search;,citation_author=David Silver;,citation_author=Aja Huang;,citation_author=Chris J. Maddison;,citation_author=Arthur Guez;,citation_author=Laurent Sifre;,citation_author=George Driessche;,citation_author=others;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_volume=529;,citation_journal_title=Nature;">
+<meta name="citation_reference" content="citation_title=Mastering the game of Go without human knowledge;,citation_author=David Silver;,citation_author=Julian Schrittwieser;,citation_author=Karen Simonyan;,citation_author=Ioannis Antonoglou;,citation_author=Aja Huang;,citation_author=Arthur Guez;,citation_author=others;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_volume=550;,citation_journal_title=Nature;">
+<meta name="citation_reference" content="citation_title=The bitter lesson;,citation_author=Richard S. Sutton;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_publisher=Incomplete Ideas (blog essay);">
+<meta name="citation_reference" content="citation_title=Scaling laws for neural language models;,citation_author=Jared Kaplan;,citation_author=Sam McCandlish;,citation_author=Tom Henighan;,citation_author=Tom B. Brown;,citation_author=Benjamin Chess;,citation_author=Rewon Child;,citation_author=others;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_publisher=arXiv:2001.08361;">
+<meta name="citation_reference" content="citation_title=Training compute-optimal large language models;,citation_author=Jordan Hoffmann;,citation_author=Sebastian Borgeaud;,citation_author=Arthur Mensch;,citation_author=Elena Buchatskaya;,citation_author=Trevor Cai;,citation_author=Eliza Rutherford;,citation_author=others;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_publisher=arXiv:2203.15556;">
+<meta name="citation_reference" content="citation_title=System identification: A survey;,citation_author=Karl Johan Åström;,citation_author=Peter Eykhoff;,citation_publication_date=1971;,citation_cover_date=1971;,citation_year=1971;,citation_issue=2;,citation_volume=7;,citation_journal_title=Automatica;">
+<meta name="citation_reference" content="citation_title=System identification: Theory for the user;,citation_author=Lennart Ljung;,citation_publication_date=1987;,citation_cover_date=1987;,citation_year=1987;">
+<meta name="citation_reference" content="citation_title=Regression towards mediocrity in hereditary stature;,citation_author=Francis Galton;,citation_publication_date=1886;,citation_cover_date=1886;,citation_year=1886;,citation_volume=15;,citation_journal_title=Journal of the Anthropological Institute of Great Britain and Ireland;">
+<meta name="citation_reference" content="citation_title=On the uniform convergence of relative frequencies of events to their probabilities;,citation_author=Vladimir N. Vapnik;,citation_author=Alexey Ya. Chervonenkis;,citation_publication_date=1971;,citation_cover_date=1971;,citation_year=1971;,citation_issue=2;,citation_volume=16;,citation_journal_title=Theory of Probability and its Applications;">
+<meta name="citation_reference" content="citation_title=The nature of statistical learning theory;,citation_author=Vladimir N. Vapnik;,citation_publication_date=1995;,citation_cover_date=1995;,citation_year=1995;">
+<meta name="citation_reference" content="citation_title=Machine learning;,citation_author=Tom M. Mitchell;,citation_publication_date=1997;,citation_cover_date=1997;,citation_year=1997;">
+<meta name="citation_reference" content="citation_title=Méthode générale pour la résolution des systèmes d’équations simultanées;,citation_author=Augustin-Louis Cauchy;,citation_publication_date=1847;,citation_cover_date=1847;,citation_year=1847;,citation_volume=25;,citation_journal_title=Comptes Rendus de l’Académie des Sciences;">
+<meta name="citation_reference" content="citation_title=A stochastic approximation method;,citation_author=Herbert Robbins;,citation_author=Sutton Monro;,citation_publication_date=1951;,citation_cover_date=1951;,citation_year=1951;,citation_issue=3;,citation_volume=22;,citation_journal_title=Annals of Mathematical Statistics;">
+<meta name="citation_reference" content="citation_title=The lack of a priori distinctions between learning algorithms;,citation_author=David H. Wolpert;,citation_publication_date=1996;,citation_cover_date=1996;,citation_year=1996;,citation_issue=7;,citation_volume=8;,citation_journal_title=Neural Computation;">
+<meta name="citation_reference" content="citation_title=No free lunch theorems for optimization;,citation_author=David H. Wolpert;,citation_author=William G. Macready;,citation_publication_date=1997;,citation_cover_date=1997;,citation_year=1997;,citation_issue=1;,citation_volume=1;,citation_journal_title=IEEE Transactions on Evolutionary Computation;">
+<meta name="citation_reference" content="citation_title=The future of data analysis;,citation_author=John W. Tukey;,citation_publication_date=1962;,citation_cover_date=1962;,citation_year=1962;,citation_issue=1;,citation_volume=33;,citation_journal_title=Annals of Mathematical Statistics;">
+<meta name="citation_reference" content="citation_title=Exploratory data analysis;,citation_author=John W. Tukey;,citation_publication_date=1977;,citation_cover_date=1977;,citation_year=1977;">
+<meta name="citation_reference" content="citation_title=Data science: An action plan for expanding the technical areas of the field of statistics;,citation_author=William S. Cleveland;,citation_publication_date=2001;,citation_cover_date=2001;,citation_year=2001;,citation_issue=1;,citation_volume=69;,citation_journal_title=International Statistical Review;">
+<meta name="citation_reference" content="citation_title=50 years of data science;,citation_author=David Donoho;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_issue=4;,citation_volume=26;,citation_journal_title=Journal of Computational and Graphical Statistics;">
+<meta name="citation_reference" content="citation_title=Animal intelligence: Experimental studies;,citation_author=Edward L. Thorndike;,citation_publication_date=1911;,citation_cover_date=1911;,citation_year=1911;">
+<meta name="citation_reference" content="citation_title=Least squares quantization in PCM;,citation_author=Stuart P. Lloyd;,citation_publication_date=1982;,citation_cover_date=1982;,citation_year=1982;,citation_issue=2;,citation_volume=28;,citation_journal_title=IEEE Transactions on Information Theory;">
+<meta name="citation_reference" content="citation_title=Some methods for classification and analysis of multivariate observations;,citation_author=James MacQueen;,citation_publication_date=1967;,citation_cover_date=1967;,citation_year=1967;,citation_volume=1;,citation_conference_title=Proceedings of the fifth berkeley symposium on mathematical statistics and probability;">
+<meta name="citation_reference" content="citation_title=Nearest neighbor pattern classification;,citation_author=Thomas M. Cover;,citation_author=Peter E. Hart;,citation_publication_date=1967;,citation_cover_date=1967;,citation_year=1967;,citation_issue=1;,citation_volume=13;,citation_journal_title=IEEE Transactions on Information Theory;">
+<meta name="citation_reference" content="citation_title=The anatomy of a large-scale hypertextual web search engine;,citation_author=Sergey Brin;,citation_author=Lawrence Page;,citation_publication_date=1998;,citation_cover_date=1998;,citation_year=1998;,citation_issue=1–7;,citation_volume=30;,citation_journal_title=Computer Networks and ISDN Systems;">
+<meta name="citation_reference" content="citation_title=The PageRank citation ranking: Bringing order to the web;,citation_author=Lawrence Page;,citation_author=Sergey Brin;,citation_author=Rajeev Motwani;,citation_author=Terry Winograd;,citation_publication_date=1999;,citation_cover_date=1999;,citation_year=1999;,citation_technical_report_institution=Stanford InfoLab;">
+<meta name="citation_reference" content="citation_title=Bayesian calibration of computer models;,citation_author=Marc C. Kennedy;,citation_author=Anthony O’Hagan;,citation_publication_date=2001;,citation_cover_date=2001;,citation_year=2001;,citation_issue=3;,citation_volume=63;,citation_journal_title=Journal of the Royal Statistical Society B;">
+<meta name="citation_reference" content="citation_title=Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations;,citation_author=Maziar Raissi;,citation_author=Paris Perdikaris;,citation_author=George E. Karniadakis;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_volume=378;,citation_journal_title=Journal of Computational Physics;">
+<meta name="citation_reference" content="citation_title=Neural ordinary differential equations;,citation_author=Ricky T. Q. Chen;,citation_author=Yulia Rubanova;,citation_author=Jesse Bettencourt;,citation_author=David Duvenaud;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_conference_title=Advances in neural information processing systems 31 (NeurIPS);">
+<meta name="citation_reference" content="citation_title=“Why should i trust you?”: Explaining the predictions of any classifier;,citation_author=Marco Tulio Ribeiro;,citation_author=Sameer Singh;,citation_author=Carlos Guestrin;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_conference_title=Proceedings of the 22nd ACM SIGKDD international conference on knowledge discovery and data mining (KDD);">
+<meta name="citation_reference" content="citation_title=A unified approach to interpreting model predictions;,citation_author=Scott M. Lundberg;,citation_author=Su-In Lee;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_conference_title=Advances in neural information processing systems 30 (NIPS);">
+<meta name="citation_reference" content="citation_title=Counterfactual explanations without opening the black box: Automated decisions and the GDPR;,citation_author=Sandra Wachter;,citation_author=Brent Mittelstadt;,citation_author=Chris Russell;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_issue=2;,citation_volume=31;,citation_journal_title=Harvard Journal of Law and Technology;">
+<meta name="citation_reference" content="citation_title=Stop explaining black box machine learning models for high stakes decisions and use interpretable models instead;,citation_author=Cynthia Rudin;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_volume=1;,citation_journal_title=Nature Machine Intelligence;">
+<meta name="citation_reference" content="citation_title=Regulation (EU) 2016/679 (general data protection regulation), article 22 and recital 71;,citation_author=European Parliament and Council;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;">
+<meta name="citation_reference" content="citation_title=Regulation (EU) 2024/1689 (artificial intelligence act);,citation_author=European Parliament and Council;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;">
+<meta name="citation_reference" content="citation_title=Mathematical contributions to the theory of evolution. III. Regression, heredity, and panmixia;,citation_author=Karl Pearson;,citation_publication_date=1896;,citation_cover_date=1896;,citation_year=1896;,citation_doi=10.1098/rsta.1896.0007;,citation_volume=187;,citation_journal_title=Philosophical Transactions of the Royal Society of London, Series A;">
+<meta name="citation_reference" content="citation_title=Correlation and causation;,citation_author=Sewall Wright;,citation_publication_date=1921;,citation_cover_date=1921;,citation_year=1921;,citation_issue=7;,citation_volume=20;,citation_journal_title=Journal of Agricultural Research;">
+<meta name="citation_reference" content="citation_title=Graphs in statistical analysis;,citation_author=Francis J. Anscombe;,citation_publication_date=1973;,citation_cover_date=1973;,citation_year=1973;,citation_issue=1;,citation_volume=27;,citation_journal_title=The American Statistician;">
+<meta name="citation_reference" content="citation_title=Ames, iowa: Alternative to the boston housing data as an end of semester regression project;,citation_author=Dean De Cock;,citation_publication_date=2011;,citation_cover_date=2011;,citation_year=2011;,citation_issue=3;,citation_volume=19;,citation_journal_title=Journal of Statistics Education;">
+<meta name="citation_reference" content="citation_title=Form 8-k: Wind-down of zillow offers;,citation_author=Zillow Group, Inc.;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;">
+<meta name="citation_reference" content="citation_title=A memoir on the theory of matrices;,citation_author=Arthur Cayley;,citation_publication_date=1858;,citation_cover_date=1858;,citation_year=1858;,citation_volume=148;,citation_journal_title=Philosophical Transactions of the Royal Society of London;">
+<meta name="citation_reference" content="citation_title=On the reciprocal of the general algebraic matrix;,citation_author=E. H. Moore;,citation_publication_date=1920;,citation_cover_date=1920;,citation_year=1920;,citation_volume=26;,citation_journal_title=Bulletin of the American Mathematical Society;">
+<meta name="citation_reference" content="citation_title=On the stability of inverse problems;,citation_author=A. N. Tikhonov;,citation_publication_date=1943;,citation_cover_date=1943;,citation_year=1943;,citation_issue=5;,citation_volume=39;,citation_journal_title=Doklady Akademii Nauk SSSR;">
+<meta name="citation_reference" content="citation_title=A generalized inverse for matrices;,citation_author=Roger Penrose;,citation_publication_date=1955;,citation_cover_date=1955;,citation_year=1955;,citation_issue=3;,citation_doi=10.1017/S0305004100030401;,citation_volume=51;,citation_journal_title=Proceedings of the Cambridge Philosophical Society;">
+<meta name="citation_reference" content="citation_title=Use of dummy variables in regression equations;,citation_author=Daniel B. Suits;,citation_publication_date=1957;,citation_cover_date=1957;,citation_year=1957;,citation_issue=280;,citation_volume=52;,citation_journal_title=Journal of the American Statistical Association;">
+<meta name="citation_reference" content="citation_title=Hedonic prices and implicit markets: Product differentiation in pure competition;,citation_author=Sherwin Rosen;,citation_publication_date=1974;,citation_cover_date=1974;,citation_year=1974;,citation_issue=1;,citation_volume=82;,citation_journal_title=Journal of Political Economy;">
+<meta name="citation_reference" content="citation_title=Application de la méthode des moindres quarrés à l’interpolation des suites;,citation_author=Joseph Diez Gergonne;,citation_publication_date=1815;,citation_cover_date=1815;,citation_year=1815;,citation_volume=6;,citation_journal_title=Annales de Mathématiques Pures et Appliquées;">
+<meta name="citation_reference" content="citation_title=Gergonne’s 1815 paper on the design and analysis of polynomial regression experiments;,citation_author=Stephen M. Stigler;,citation_publication_date=1974;,citation_cover_date=1974;,citation_year=1974;,citation_issue=4;,citation_doi=10.1016/0315-0860(74)90033-0;,citation_volume=1;,citation_journal_title=Historia Mathematica;">
+<meta name="citation_reference" content="citation_title=Über die analytische darstellbarkeit sogenannter willkürlicher functionen einer reellen veränderlichen;,citation_author=Karl Weierstrass;,citation_publication_date=1885;,citation_cover_date=1885;,citation_year=1885;,citation_journal_title=Sitzungsberichte der Königlich Preußischen Akademie der Wissenschaften zu Berlin;">
+<meta name="citation_reference" content="citation_title=Über empirische funktionen und die interpolation zwischen äquidistanten ordinaten;,citation_author=Carl Runge;,citation_publication_date=1901;,citation_cover_date=1901;,citation_year=1901;,citation_volume=46;,citation_journal_title=Zeitschrift für Mathematik und Physik;">
+<meta name="citation_reference" content="citation_title=Contributions to the problem of approximation of equidistant data by analytic functions;,citation_author=Isaac J. Schoenberg;,citation_publication_date=1946;,citation_cover_date=1946;,citation_year=1946;,citation_volume=4;,citation_journal_title=Quarterly of Applied Mathematics;">
+<meta name="citation_reference" content="citation_title=Transportation energy data book, edition 39;,citation_author=Oak Ridge National Laboratory;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_technical_report_institution=Oak Ridge National Laboratory;">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch02.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Supervised Recipe</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Machine Learning: A Modelling Perspective</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">The Landscape</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch02.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Supervised Recipe</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul class="collapse">
+  <li><a href="#sec-s05" id="toc-sec-s05" class="nav-link active" data-scroll-target="#sec-s05"><span class="header-section-number">2.1</span> Simple Linear Regression</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-ch02" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Supervised Recipe</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="sec-s05" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="sec-s05"><span class="header-section-number">2.1</span> Simple Linear Regression</h2>
+<p>The first chapter ended with a map and no methods on it. Every node of <a href="ch01.html#fig-map" class="quarto-xref">Figure&nbsp;<span>1.49</span></a> names a family of problems, and not one line of that chapter fitted anything to data. This section takes the simplest node that is still a complete learner and builds a learner on it, in full, for the first time: two columns of numbers, no formula available, and a prediction required.</p>
+<p>The problem chosen is the most familiar one in the field. A house has not sold, and somebody needs to know what it is worth. A buyer needs the number to decide what to offer, since an offer too high loses money and an offer too low loses the house. A lender needs it because a mortgage is secured against a valuation, and a valuation set too high leaves the loan uncovered if the borrower stops paying. A tax assessor needs it because property tax is charged on an assessed value. Errors in the number are not abstract. In November 2021 Zillow Group wound down Zillow Offers, its house-buying business, after writing down $304 million on homes it had bought for more than its own estimates now said they would sell for <span class="citation" data-cites="zillow2021">(<a href="#ref-zillow2021" role="doc-biblioref">Zillow Group, Inc. 2021</a>)</span>.</p>
+<p>The problem is familiar for a reason, and it is worth seeing why it belongs to this book before anything is fitted. The question concerns a system that cannot be experimented on: nobody can sell the same house ten times to see what happens, so the answer has to come from a model in the sense of <a href="ch01.html#def-model" class="quarto-xref">Definition&nbsp;<span>1.1</span></a>. Three questions then place it on <a href="ch01.html#fig-map" class="quarto-xref">Figure&nbsp;<span>1.49</span></a>. There is no law that gives a house’s price in the way Newton’s law of cooling gives the temperature of a cup, so the form of the model must come from data. The price was recorded for houses that have already sold, so the data carries an answer column and the task is supervised in the sense of <a href="ch01.html#def-supervised" class="quarto-xref">Definition&nbsp;<span>1.19</span></a>. The answer is a number, so the task is regression by <a href="ch01.html#def-regression" class="quarto-xref">Definition&nbsp;<span>1.21</span></a>. <a href="#fig-placement" class="quarto-xref">Figure&nbsp;<span>2.1</span></a> draws the three answers and the address they build.</p>
+<div id="fig-placement" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-placement-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/house_placement/book/step3.svg" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-placement-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.1: Three questions place the house problem on the map. No law gives a price, so the form must come from data. Past sales recorded their prices, so there is an answer column. The answer is a number. The address ends on the regression leaf.
+</figcaption>
+</figure>
+</div>
+<p>The examples in this section are real sales. De Cock assembled the Ames housing data from the records of the city assessor of Ames, Iowa, and published it in the <em>Journal of Statistics Education</em> in 2011 as an alternative to the older Boston housing data for teaching regression <span class="citation" data-cites="decock2011">(<a href="#ref-decock2011" role="doc-biblioref">De Cock 2011</a>)</span>. It holds 2,930 residential sales from 2006 to 2010, each described by about eighty recorded columns. Its documentation flags five sales with more than 4,000 square feet of living space, three of them partial sales of unfinished houses and two of them very large houses, and recommends removing them. We follow that advice, and we hold one further sale back from every fit so that it can be predicted honestly later. It is a house of 134 square metres, built in 1968, that sold in 2010. That leaves 2,924 sales.</p>
+<p>Living area is converted to square metres at 0.0929 square metres to the square foot, and prices are given in thousands of dollars. Throughout the section <span class="math inline">\(x_i\)</span> is the living area of sale <span class="math inline">\(i\)</span> in square metres, <span class="math inline">\(y_i\)</span> is its price in thousands of dollars, and <span class="math inline">\(n = 2{,}924\)</span>. The averages are <span class="math inline">\(\bar{x} = 138.8\)</span> m² and <span class="math inline">\(\bar{y} = 180.4\)</span> thousand dollars.</p>
+<p>The problem can now be stated precisely. Estimate a house’s price from what is recorded about it, using houses that have sold. This section makes one simplification and keeps it to the end.</p>
+<div id="def-simple-regression" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.1 (Simple regression)</strong></span> <strong>Simple regression</strong> is regression with one input column. The word <em>simple</em> refers to the number of inputs and to nothing else.</p>
+</div>
+<p>With one input fixed, the work divides into two tasks that are different in kind. The first is to decide how the world works: what form the relationship between price and area takes. Whatever is decided there is an assumption. The data can support it or contradict it, but the data does not hand it over. The second task is to find, inside that form, the member that fits the recorded sales best, and that answer is computed. The two tasks are the three choices of <a href="ch01.html#def-three-choices" class="quarto-xref">Definition&nbsp;<span>1.16</span></a> in a different grouping. The first task is the hypothesis space. The second is the loss and the optimiser together.</p>
+<section id="task-one-how-the-world-works" class="level3">
+<h3 class="anchored" data-anchor-id="task-one-how-the-world-works">Task one: how the world works</h3>
+<p>The assessor recorded about eighty columns for every sale, and simple regression uses one of them. <a href="#fig-features" class="quarto-xref">Figure&nbsp;<span>2.2</span></a> plots price against five candidates for the same random thousand sales. Living area shows a strong rise that looks roughly straight. The quality rating rises steeply too, but it is a judgement on a scale from one to ten rather than a measurement, and its points fall in stripes. Year built rises along a curve, flat for decades and then climbing. Lot area cannot be read at all, because a handful of enormous lots stretch the axis and crush every other point into one corner. The month of sale shows no relation to price.</p>
+<div id="fig-features" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-features-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/feature_gallery/step5.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-features-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.2: Price against five of the recorded columns, for the same random 1,000 of the 2,924 sales. Living area rises strongly and nearly straight. The quality rating is a judgement, not a measurement. Year built rises along a curve. Lot area is crushed by a few very large lots. Month of sale shows no visible relation.
+</figcaption>
+</figure>
+</div>
+<p>We choose living area, because its rise is strong and looks straight. The method of choosing matters as much as the choice. We looked at the data and decided by eye, which is exploratory data analysis in the sense that Tukey gave the phrase <span class="citation" data-cites="tukey1977">(<a href="#ref-tukey1977" role="doc-biblioref">Tukey 1977</a>)</span> and that <a href="ch01.html#sec-s03" class="quarto-xref"><span>Section 1.3</span></a> placed inside statistics and data science. Choosing among many inputs by a method rather than by eye is taken up in Sections 2.2 and 2.7, and the related question of which inputs a fitted model relies on in Section 5.7.</p>
+<p>With the input chosen, the hypothesis space has to be chosen too. Four families are natural candidates, and each is a whole set of functions rather than one function:</p>
+<p><span id="eq-forms"><span class="math display">\[
+\begin{aligned}
+&amp;\text{constant:} &amp;&amp; y = b, \\
+&amp;\text{linear:} &amp;&amp; y = b + w\,x, \\
+&amp;\text{quadratic:} &amp;&amp; y = b + w_1 x + w_2 x^2, \\
+&amp;\text{higher order:} &amp;&amp; y = b + w_1 x + w_2 x^2 + \cdots + w_k x^k .
+\end{aligned}
+\tag{2.1}\]</span></span></p>
+<p>In the constant family the price does not depend on area at all. In the linear family every extra square metre adds the same amount <span class="math inline">\(w\)</span>, and changing <span class="math inline">\(b\)</span> moves the line up or down while changing <span class="math inline">\(w\)</span> tilts it. The quadratic family lets the rise itself grow or shrink with size, so its members can bend once. The higher-order family can bend as often as its order allows. The families are nested: every constant is a line with <span class="math inline">\(w = 0\)</span>, every line is a quadratic with <span class="math inline">\(w_2 = 0\)</span>, and so on upward.</p>
+<p>The linear, quadratic and cubic families are fitted in <a href="#fig-shapes" class="quarto-xref">Figure&nbsp;<span>2.3</span></a> to all 2,924 sales by least squares and overlaid. Inside the range of the data the three curves never differ by more than $13 thousand. Beyond the largest house sold they part company, and at 450 square metres the highest and the lowest of the three disagree by $69 thousand, in a region where no recorded sale can settle which is right.</p>
+<div id="fig-shapes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-shapes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/shape_questions_book/step1.svg" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shapes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.3: The straight, quadratic and cubic fits to all 2,924 sales, overlaid. The shaded band is the range of living areas in the data. Inside it the three fits differ by at most $13k. At 450 m² they disagree by $69k.
+</figcaption>
+</figure>
+</div>
+<p>We therefore assume that the world is a straight line. The word <em>assume</em> is chosen with care. Nothing in <a href="#fig-shapes" class="quarto-xref">Figure&nbsp;<span>2.3</span></a> proves the relationship linear, and a more flexible family always follows the recorded points at least as closely as the line does, because it contains the line. Following the points more closely is not a reason to choose a family. Why it is not is the subject of Sections 2.3 and 2.7.</p>
+<p>That the shape must be looked at, and cannot be computed from a summary, was put beyond argument by Anscombe in <em>Graphs in Statistical Analysis</em>, published in <em>The American Statistician</em> in 1973 <span class="citation" data-cites="anscombe1973">(<a href="#ref-anscombe1973" role="doc-biblioref">Anscombe 1973</a>)</span>. He constructed four small datasets of eleven points each. All four have a mean of <span class="math inline">\(x\)</span> equal to 9 and a mean of <span class="math inline">\(y\)</span> equal to 7.50, and they share much more besides. The least-squares line through each is <span class="math inline">\(\hat{y} = 3.00 + 0.500\,x\)</span>, and the line explains the same fraction of the variation in each. <a href="#fig-anscombe" class="quarto-xref">Figure&nbsp;<span>2.4</span></a> plots them. The first is a fair scatter about a straight rise. The second is a smooth curve, for which a straight line is the wrong form. The third lies exactly on a line except for one record. In the fourth, ten points share one value of <span class="math inline">\(x\)</span> and a single distant point creates the appearance of a trend. Four shapes that call for four different responses produce identical numbers.</p>
+<div id="fig-anscombe" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-anscombe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/anscombe_quartet/step4.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-anscombe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.4: Anscombe’s quartet. Every panel has eleven points, mean of <span class="math inline">\(x\)</span> equal to 9 and mean of <span class="math inline">\(y\)</span> equal to 7.50, and the same least-squares line, <span class="math inline">\(\hat{y} = 3.00 + 0.500\,x\)</span>, which the panels leave undrawn so that the points can be seen. Only the plots tell them apart.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="the-true-model-and-its-estimate" class="level3">
+<h3 class="anchored" data-anchor-id="the-true-model-and-its-estimate">The true model and its estimate</h3>
+<p>The assumption can now be written as an equation, and the way it is written separates what we claim about the world from what we compute.</p>
+<div id="def-true-model" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.2 (True model)</strong></span> The <strong>true model</strong> of simple linear regression asserts that <span id="eq-true-model"><span class="math display">\[ y_i \;=\; b + w\,x_i + \varepsilon_i , \qquad i = 1, \ldots, n ,  \tag{2.2}\]</span></span> where <span class="math inline">\(b\)</span> and <span class="math inline">\(w\)</span> are fixed numbers, the same for every house, and the <strong>error term</strong> <span class="math inline">\(\varepsilon_i\)</span> is everything about sale <span class="math inline">\(i\)</span> that the line leaves out.</p>
+</div>
+<p>The quantities in <a href="#eq-true-model" class="quarto-xref">Equation&nbsp;<span>2.2</span></a> are the world’s. The intercept <span class="math inline">\(b\)</span> and the slope <span class="math inline">\(w\)</span> are not known and never will be. The model supplies a structure with two slots and asserts that true values fill them. The error term holds the build quality, the neighbourhood, the condition of the roof, the day of the sale and how hard the buyer bargained, and it is unknown for every sale. Adding columns can shrink it but cannot empty it, since there is always something about a sale that the equation does not capture. That is the content of Box’s remark, discussed in <a href="ch01.html#sec-s01" class="quarto-xref"><span>Section 1.1</span></a>, that all models are wrong <span class="citation" data-cites="box1976">(<a href="#ref-box1976" role="doc-biblioref">Box 1976</a>)</span>.</p>
+<p>What we compute from the sales are estimates, and they are marked with a hat. The estimates <span class="math inline">\(\hat{b}\)</span> and <span class="math inline">\(\hat{w}\)</span> approximate <span class="math inline">\(b\)</span> and <span class="math inline">\(w\)</span>, and the price the fitted line predicts for a house of area <span class="math inline">\(x\)</span> is</p>
+<p><span id="eq-estimate"><span class="math display">\[ \hat{y} \;=\; \hat{b} + \hat{w}\,x .  \tag{2.3}\]</span></span></p>
+<p>The estimate in <a href="#eq-estimate" class="quarto-xref">Equation&nbsp;<span>2.3</span></a> carries no error term. A fitted line predicts a price, and it makes no claim to account for everything. The convention holds for the rest of this book: no hat on what the world is, and a hat on what we compute to approximate it.</p>
+<p>Every choice of the pair <span class="math inline">\((\hat{b}, \hat{w})\)</span> is one candidate line. The slope <span class="math inline">\(\hat{w}\)</span> is the rise in predicted price per extra square metre, so that moving 100 square metres to the right raises the line by <span class="math inline">\(100\,\hat{w}\)</span>. The intercept <span class="math inline">\(\hat{b}\)</span> is where the line meets zero area. No house has zero area, so <span class="math inline">\(\hat{b}\)</span> is where the line lands rather than a price anybody paid. Plotting each candidate’s two numbers as a point turns the hypothesis space into a plane, which <a href="#fig-line-space" class="quarto-xref">Figure&nbsp;<span>2.5</span></a> draws for three candidates. Somewhere on that plane is the point <span class="math inline">\((b, w)\)</span>, and we will never see exactly where.</p>
+<div id="fig-line-space" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-line-space-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/line_space/step5.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-line-space-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.5: Three candidate lines through the sales, labelled A, B and C, and the same three as points of the plane of <span class="math inline">\((\hat{b}, \hat{w})\)</span>. Every candidate line is a point, and the hypothesis space is the whole plane.
+</figcaption>
+</figure>
+</div>
+<p>An objection has to be answered before the search begins. Fitting <span class="math inline">\(b\)</span> and <span class="math inline">\(w\)</span> by least squares is the same arithmetic that <a href="ch01.html#sec-s01" class="quarto-xref"><span>Section 1.1</span></a> used to fit the cooling constant <span class="math inline">\(k\)</span>, and <a href="ch01.html#sec-s01" class="quarto-xref"><span>Section 1.1</span></a> said that fitting <span class="math inline">\(k\)</span> was numerical computation rather than machine learning. What makes the same arithmetic learning here is the origin of the form and the reach of the claim. The form of the cooling curve came from Newton’s law, and only one constant was left to fill. The straight line came from an assumption read off a plot, chosen from a space of candidates. The cooling law claims to hold beyond the log, because it is a law. The fitted line claims only to be a fair guide to houses like these, inside the range already seen, and that is still a claim about houses not yet sold. <a href="#fig-same-arithmetic" class="quarto-xref">Figure&nbsp;<span>2.6</span></a> sets the two fits side by side.</p>
+<div id="fig-same-arithmetic" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-same-arithmetic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/same_arithmetic/book/step3.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-same-arithmetic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.6: The same arithmetic with a different claim. On the left, the cooling cup of <a href="ch01.html#sec-s01" class="quarto-xref"><span>Section 1.1</span></a>, with <span class="math inline">\(T\)</span> the temperature in °C after <span class="math inline">\(t\)</span> minutes and <span class="math inline">\(k\)</span> the one constant fitted to the log: the form comes from Newton’s law of cooling, and the law claims to hold beyond the log. The two lines under each panel that give the form and the fitted numbers are printed in grey. On the right, the house prices: the form comes from an assumption read off a plot, and the claim holds only where the houses are.
+</figcaption>
+</figure>
+</div>
+<p>The modelling axis of <a href="ch01.html#fig-spectrum" class="quarto-xref">Figure&nbsp;<span>1.36</span></a> runs from a white box, where the mechanism is written down and every symbol is a claim about the world, to a black box, where no mechanism is claimed and only the mapping from input to output is fitted. The cooling law sits at the white end. The same law with <span class="math inline">\(k\)</span> fitted to the log sits just inside it, because the form is still the physics. A classifier of handwritten digits, fitted end to end, sits at the black end. The fitted line sits well into the interior. The straight-line form is ours, and the two numbers are the data’s. <a href="#fig-spectrum-line" class="quarto-xref">Figure&nbsp;<span>2.7</span></a> places it, the first method to receive a position on that axis.</p>
+<div id="fig-spectrum-line" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-spectrum-line-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/modelling_spectrum_mf05/book/step1.svg" class="img-fluid figure-img" style="width:88.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-spectrum-line-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.7: The modelling axis with a fitted straight line placed in its interior. The three anchors of <a href="ch01.html#fig-spectrum" class="quarto-xref">Figure&nbsp;<span>1.36</span></a> are recalled faintly above the axis. The form is our assumption, and the estimates <span class="math inline">\(\hat{b}\)</span> and <span class="math inline">\(\hat{w}\)</span> come from the data.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="task-two-a-score-then-a-search" class="level3">
+<h3 class="anchored" data-anchor-id="task-two-a-score-then-a-search">Task two: a score, then a search</h3>
+<p>The form is now fixed, and task two asks which of its members fits best. That question has two parts: what <em>best</em> means, which is the loss, and how the best member is found, which is the optimiser. The loss comes first, since nothing can be searched for until candidates can be compared.</p>
+<p>A line misses each recorded sale by some amount. The miss is measured vertically, as the recorded price minus the predicted price, because price is the quantity predicted and an error in area is of no interest. Squaring each miss and adding the squares gives one number for each candidate line.</p>
+<div id="def-rss" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.3 (Residual sum of squares)</strong></span> The <strong>residual sum of squares (RSS)</strong> of a candidate line is <span id="eq-rss"><span class="math display">\[ \mathrm{RSS}(\hat{b}, \hat{w}) \;=\; \sum_{i=1}^{n} \bigl( y_i - (\hat{b} + \hat{w}\,x_i) \bigr)^2 .  \tag{2.4}\]</span></span></p>
+</div>
+<p>The score in <a href="#eq-rss" class="quarto-xref">Equation&nbsp;<span>2.4</span></a> is the empirical risk of <a href="ch01.html#eq-empirical-risk" class="quarto-xref">Equation&nbsp;<span>1.19</span></a> with the squared loss of <a href="ch01.html#eq-loss-number" class="quarto-xref">Equation&nbsp;<span>1.26</span></a>, written for candidate lines and multiplied by <span class="math inline">\(n\)</span>. The factor changes the size of the score and leaves the order of the candidates unchanged, so the line that minimises one minimises the other. It is also <a href="ch01.html#eq-sse" class="quarto-xref">Equation&nbsp;<span>1.7</span></a> with two constants in place of one. The idea is least squares in the sense of <a href="ch01.html#def-least-squares" class="quarto-xref">Definition&nbsp;<span>1.4</span></a>, published by Legendre in 1805 <span class="citation" data-cites="legendre1805">(<a href="#ref-legendre1805" role="doc-biblioref">Legendre 1805</a>)</span> and by Gauss in 1809 <span class="citation" data-cites="gauss1809">(<a href="#ref-gauss1809" role="doc-biblioref">Gauss 1809</a>)</span>, as <a href="ch01.html#sec-s01" class="quarto-xref"><span>Section 1.1</span></a> told.</p>
+<p>A small worked case shows what the score is made of. Take eight sales, one from each band of forty square metres between 60 and 380 square metres, and the candidate line <span class="math inline">\(\hat{y} = 20 + 1.05\,x\)</span>, which is not the best line and was not chosen to be. Each miss is squared and drawn as a square at true scale in <a href="#fig-rss-squares" class="quarto-xref">Figure&nbsp;<span>2.8</span></a>, and the eight squares are stacked into one bar. The total is 69,188 in units of thousands of dollars squared. Nobody can picture that unit, and nothing requires it, because RSS totals are only ever compared with each other. What the bar shows clearly is the split. The sale at 325 square metres sold for $584.5 thousand, the line predicts $361.4 thousand there, and that one miss of $223 thousand is 72% of the whole score.</p>
+<div id="fig-rss-squares" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rss-squares-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/residual_squares/step5.svg" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rss-squares-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.8: One candidate line through eight sales, one from each 40 m² band. Each vertical miss is squared and drawn as a square at true scale. The eight squares stacked give RSS = 69,188 ($k)², and one house carries 72% of it.
+</figcaption>
+</figure>
+</div>
+<p>The 72% is not an accident of the example. Squaring makes the cost of a miss grow with the square of its size, so a miss ten times larger costs a hundred times more, and one large miss can outweigh many small ones. Two lines through the same four houses make the consequence concrete. Line A misses them by 40, 40, 40 and 60 thousand dollars. Line B passes exactly through three of them and misses the fourth by 100 thousand. Under squares, line A scores <span class="math inline">\(1{,}600 + 1{,}600 + 1{,}600 + 3{,}600 = 8{,}400\)</span> and line B scores <span class="math inline">\(10{,}000\)</span>, so squares prefer A. Under the sum of distances, A scores 180 and B scores 100, so distances prefer B. <a href="#fig-two-lines" class="quarto-xref">Figure&nbsp;<span>2.9</span></a> draws both. The same houses under two losses produce two different winners, and the squared loss prefers many small misses to one large one.</p>
+<div id="fig-two-lines" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-two-lines-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/residual_squares_book/step1.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-two-lines-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.9: Two lines through the same four houses. Line A misses by 40, 40, 40 and 60; line B by 0, 0, 0 and 100 (in $k). RSS picks A, at 8,400 against 10,000. The sum of distances picks B, at 100 against 180.
+</figcaption>
+</figure>
+</div>
+<p>On the Ames data the cost of this preference is visible in the five sales the documentation flags. With them restored there are 2,929 sales, and the five carry 6.8% of the whole RSS between them. They pull the fitted slope from $1,251 per square metre down to $1,202, as <a href="#fig-five-sales" class="quarto-xref">Figure&nbsp;<span>2.10</span></a> shows.</p>
+<div id="fig-five-sales" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-five-sales-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/squares_vs_absolute_book/step1.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-five-sales-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.10: Left: what one miss costs under squares and under distances, in units of $50k. A $500k miss costs as much as 100 misses of $50k under squares. Right: the fit with and without the five sales the data’s documentation flags. They carry 6.8% of the RSS of 2,929 sales and pull the slope from $1,251 to $1,202 per m².
+</figcaption>
+</figure>
+</div>
+<p>Squares are chosen nonetheless, for what they buy. The score they produce is a smooth surface over the plane of candidates with a single lowest point, which the next part of this section draws, and that makes the search tractable. What they cost returns when outliers are examined at the end of the section, and Section 2.5 gives the squared loss a justification from probability that this section does not need.</p>
+<p>With a score in hand, the search can begin. The plainest search tries a grid of candidates and keeps the best. Before running it we change the units in which area is measured, which changes how the two numbers read and changes nothing about the lines. Let</p>
+<p><span id="eq-centred"><span class="math display">\[ u_i \;=\; \frac{x_i - \bar{x}}{100} ,  \tag{2.5}\]</span></span></p>
+<p>the area of sale <span class="math inline">\(i\)</span> measured from the average house in hundreds of square metres, and write the candidate line as <span class="math inline">\(\hat{y} = \hat{b} + \hat{w}\,u\)</span>. In these units <span class="math inline">\(\hat{b}\)</span> is the predicted price of a house of average size, around $180 thousand, and <span class="math inline">\(\hat{w}\)</span> is the rise in thousands of dollars per extra hundred square metres, so a slope of $1.25 thousand per square metre reads as 125. We keep the names <span class="math inline">\(\hat{b}\)</span> and <span class="math inline">\(\hat{w}\)</span> for the pair in these units, and every figure from here to the closed form uses them; where the everyday pair is needed it carries a subscript 0. A line written in everyday units as <span class="math inline">\(\hat{b}_0 + \hat{w}_0 x\)</span> is the same line as <span class="math inline">\(\hat{b} + \hat{w}\,u\)</span> exactly when <span class="math inline">\(\hat{w} = 100\,\hat{w}_0\)</span> and <span class="math inline">\(\hat{b} = \hat{b}_0 + \hat{w}_0\,\bar{x}\)</span>. The reason for the change is practical. In raw units the two parameters live on scales so different that the score’s curvature, the rate at which its slope changes, is about 222,000 times greater along the steepest direction of the plane than along the direction at right angles to it. The bowl is a long thin trough, that is a difficulty for Section 2.4 rather than for this one. One property of the new units is used repeatedly below: because each <span class="math inline">\(u_i\)</span> is a distance from the average,</p>
+<p><span id="eq-sum-u"><span class="math display">\[ \sum_{i=1}^{n} u_i \;=\; 0 .  \tag{2.6}\]</span></span></p>
+<p>Two loops then perform the search. The intercept runs from 100 to 260 in steps of 10, giving 17 values, and the slope from 0 to 250 in steps of 10, giving 26 values. Every one of the <span class="math inline">\(17 \times 26 = 442\)</span> pairs is scored by <a href="#eq-rss" class="quarto-xref">Equation&nbsp;<span>2.4</span></a> and the best is kept. It is <span class="math inline">\((\hat{b}, \hat{w}) = (180, 130)\)</span>, a line that runs through the middle of the cloud of sales, and its RSS is 0.17% above the lowest possible. Two loops work.</p>
+<p>Their costs are three, and <a href="#fig-grid-cost" class="quarto-xref">Figure&nbsp;<span>2.11</span></a> draws them side by side. The first is resolution. The true bottom lies between grid points, so the best grid point misses it, and moving closer requires a finer grid and more lines to score. The second is range. The loops search only where they are told to, and a grid placed wrongly returns a best point on its own edge, here 18% above the bottom, with no sign that anything is amiss. The third is the count. With 100 values for each of <span class="math inline">\(p\)</span> parameters the grid holds</p>
+<p><span id="eq-grid-count"><span class="math display">\[ N(p) \;=\; 100^{\,p}  \tag{2.7}\]</span></span></p>
+<p>lines. Two parameters give <span class="math inline">\(10^4\)</span> lines and ten give <span class="math inline">\(10^{20}\)</span>, which at a billion lines a second takes about 3,200 years. Every line a billion-a-second machine could have scored since the Big Bang, roughly <span class="math inline">\(4 \times 10^{26}\)</span> of them, is exceeded at fourteen parameters. This is the candidate count of <a href="ch01.html#sec-s03" class="quarto-xref"><span>Section 1.3</span></a> met again, now in a problem with only two parameters where it can still be paid.</p>
+<div id="fig-grid-cost" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-grid-cost-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/grid_cost_book/step1.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-grid-cost-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.11: The three costs of a grid search. Resolution: the best grid point misses the bottom. Range: a grid placed wrongly finds its best on its own edge, 18% above the bottom. Count: at 100 values per parameter, ten parameters need <span class="math inline">\(10^{20}\)</span> lines, and the line for everything a billion lines a second could have scored since the Big Bang is crossed at fourteen.
+</figcaption>
+</figure>
+</div>
+<p>Every point of the plane is a line and every line has a score, so the score is a surface over the plane. <a href="#fig-rss-bowl" class="quarto-xref">Figure&nbsp;<span>2.12</span></a> draws it from above as contours, like a map of a valley. The contours are closed rings around one lowest point, at <span class="math inline">\(\hat{b} = 180.4\)</span> and <span class="math inline">\(\hat{w} = 125.1\)</span>. A straight cut through that point with <span class="math inline">\(\hat{b}\)</span> held fixed gives a curve with one bottom, which is the one-parameter bowl of <a href="ch01.html#fig-bowl" class="quarto-xref">Figure&nbsp;<span>1.33</span></a>. The two-parameter score is the same object in two directions. Seen in three dimensions it is a bowl, and the contour map is that bowl seen from directly above.</p>
+<div id="fig-rss-bowl" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rss-bowl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/rss_bowl/book/step4.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rss-bowl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.12: The RSS of every candidate line, drawn as contours over the plane of <span class="math inline">\((\hat{b}, \hat{w})\)</span> in millions of ($k)², with the 442 grid points. The lowest point is at <span class="math inline">\(\hat{b} = 180.4\)</span>, <span class="math inline">\(\hat{w} = 125.1\)</span>. Right: the cut through the bottom with <span class="math inline">\(\hat{b}\)</span> held fixed, a one-parameter bowl.
+</figcaption>
+</figure>
+</div>
+<p>That the surface is a bowl with exactly one bottom is not a feature of these data, and a few lines of algebra show why. Write <span class="math inline">\(S_{uu} = \sum u_i^2\)</span>, <span class="math inline">\(S_{uy} = \sum u_i y_i\)</span> and <span class="math inline">\(S_{yy} = \sum (y_i - \bar{y})^2\)</span>. In <a href="#eq-rss" class="quarto-xref">Equation&nbsp;<span>2.4</span></a> with centred area, split each <span class="math inline">\(y_i - \hat{b}\)</span> as <span class="math inline">\((y_i - \bar{y}) + (\bar{y} - \hat{b})\)</span> and expand the square. Three cross terms appear. One carries <span class="math inline">\(\sum (y_i - \bar{y})\)</span>, which is zero because deviations from a mean add to zero. One carries <span class="math inline">\(\sum u_i\)</span>, which is zero by <a href="#eq-sum-u" class="quarto-xref">Equation&nbsp;<span>2.6</span></a>. The third carries <span class="math inline">\(\sum u_i (y_i - \bar{y})\)</span>, which by <a href="#eq-sum-u" class="quarto-xref">Equation&nbsp;<span>2.6</span></a> is <span class="math inline">\(S_{uy}\)</span>. Completing the square in <span class="math inline">\(\hat{w}\)</span> then gives</p>
+<p><span id="eq-rss-bowl"><span class="math display">\[ \mathrm{RSS}(\hat{b}, \hat{w}) \;=\; n\,(\hat{b} - \bar{y})^2 \;+\; S_{uu}\Bigl(\hat{w} - \frac{S_{uy}}{S_{uu}}\Bigr)^2 \;+\; \Bigl(S_{yy} - \frac{S_{uy}^2}{S_{uu}}\Bigr) .  \tag{2.8}\]</span></span></p>
+<p>The last bracket does not depend on the candidate. The first two terms are squares with positive coefficients (<span class="math inline">\(S_{uu}\)</span> is positive unless every house has the same area), so they are never negative and are both zero at exactly one point. The score is therefore a sum of two upward parabolas, one in each direction, and it has one bottom and nowhere else flat. On the Ames data <span class="math inline">\(n = 2{,}924\)</span> and <span class="math inline">\(S_{uu} = 596.76\)</span>, so the bowl curves about five times more steeply along <span class="math inline">\(\hat{b}\)</span> than along <span class="math inline">\(\hat{w}\)</span>, which is why the contours of <a href="#fig-rss-bowl" class="quarto-xref">Figure&nbsp;<span>2.12</span></a> are ellipses stretched along the <span class="math inline">\(\hat{w}\)</span> axis. The same algebra applies to any subset of the sales, with area measured from that subset’s own average, and that settles a question about the amount of data.</p>
+<p>The bowl was built from all 2,924 sales. Built from a random 10% of them, 292 houses, it is still a smooth bowl with one bottom, and <a href="#eq-rss-bowl" class="quarto-xref">Equation&nbsp;<span>2.8</span></a> applied to those 292 houses says it must be. Drawn in the coordinates of the full data the bowl is tilted, since the subset’s average area is not exactly 138.8, but tilting does not add a second bottom. What changes is where the bottom lies. On one nested sequence of samples, 10%, 30%, 70% and all of the sales put the bottom’s <span class="math inline">\(\hat{w}\)</span> at 114.0, 122.5, 124.7 and 125.1. Repeating the 10% draw two hundred times scatters the bottoms widely. Measured by the standard deviation across the two hundred draws, <span class="math inline">\(\hat{w}\)</span> varies by about 9.6 and <span class="math inline">\(\hat{b}\)</span> by about 3.0. At 30% the standard deviation of <span class="math inline">\(\hat{w}\)</span> is about 4.6, and at 70% about 2.2. With every sale, every draw is the same set of houses, so there is one answer. <a href="#fig-data-bottoms" class="quarto-xref">Figure&nbsp;<span>2.13</span></a> shows the four clouds. More data does not smooth this bowl, since the bowl is smooth at any size. It fixes where the bottom is. Even with all 2,924 sales the bottom gives estimates of <span class="math inline">\(b\)</span> and <span class="math inline">\(w\)</span> and not the values themselves, and Section 2.6 gives the spread across samples its name and its law.</p>
+<div id="fig-data-bottoms" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-data-bottoms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/data_bottoms/step4.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-data-bottoms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.13: Where the bottom lies, for 200 random samples at each size. Each ± is a standard deviation across the 200 draws. With 10% of the sales <span class="math inline">\(\hat{w}\)</span> varies by about ±9.6 and <span class="math inline">\(\hat{b}\)</span> by ±3.0. The spread of <span class="math inline">\(\hat{w}\)</span> shrinks to ±4.6 at 30% and ±2.2 at 70%. With every sale, every draw is the same set of houses, and there is a single answer.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="finding-the-bottom" class="level3">
+<h3 class="anchored" data-anchor-id="finding-the-bottom">Finding the bottom</h3>
+<p>There is more than one way down a bowl, and racing four of them on this one shows what each costs. <a href="#fig-race" class="quarto-xref">Figure&nbsp;<span>2.14</span></a> reports for each search how much work it did and how close it ended. Grid search scores 442 lines and ends 0.17% above the bottom. Random search, with the same budget of 442 lines placed at random, ends 0.69% above, which is worse for the same work. Hill climbing, met in <a href="ch01.html#sec-s02" class="quarto-xref"><span>Section 1.2</span></a>, stands at a point, scores its four neighbours one grid step away, moves to the best and repeats. It scores 73 lines and stops on the same grid point as the grid, because its steps are the grid’s size. Gradient descent scores no neighbours at all. It reads the slope where it stands and steps downhill, and after reading the slope 60 times it ends at the bottom to within 0.01%. Evolutionary search, also met in <a href="ch01.html#sec-s02" class="quarto-xref"><span>Section 1.2</span></a>, is left out of the race. So is the exact answer, which this section reaches after gradient descent.</p>
+<div id="fig-race" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-race-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/optimiser_race/book/step5.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-race-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.14: Four searches on the same bowl. Grid search: 442 lines scored, 0.17% above the bottom. Random search: 442 lines, 0.69% above. Hill climbing: 73 lines, 0.17% above. Gradient descent: 60 slopes read, at the bottom to 0.01%.
+</figcaption>
+</figure>
+</div>
+<p>Gradient descent was introduced in <a href="ch01.html#sec-s03" class="quarto-xref"><span>Section 1.3</span></a> on a bowl of one parameter, with the slope taken as given. Taking it apart in two parameters needs the slope itself made precise, and the clearest place to do that is a curve of one parameter that has both a top and a bottom.</p>
+<p>Standing at one point of a curve <span class="math inline">\(f(\theta)\)</span>, there are only two moves: make <span class="math inline">\(\theta\)</span> larger, or make it smaller. The slope decides which of the two goes down. It is a signed number. Its sign is a direction and its size is a steepness. A positive slope means that <span class="math inline">\(f\)</span> increases as <span class="math inline">\(\theta\)</span> increases, so uphill is to the right and downhill to the left. A negative slope means the reverse. At a top or a bottom the slope is zero and points nowhere, which is how a top or a bottom is recognised. Following the slope climbs, and going against it descends, so the two rules differ only in a sign:</p>
+<p><span id="eq-climb-descend"><span class="math display">\[ \text{climb: } \theta \leftarrow \theta + \eta \cdot \text{slope}, \qquad \text{descend: } \theta \leftarrow \theta - \eta \cdot \text{slope} ,  \tag{2.9}\]</span></span></p>
+<p>where the step size <span class="math inline">\(\eta\)</span> is chosen in advance. Because a step proportional to the slope is long where the ground falls fast and short where it flattens, the descent slows as it approaches a bottom of its own accord.</p>
+<p>What remains is how the slope at a point is computed. One point has neither a rise nor a run, so a second point is taken a distance <span class="math inline">\(h\)</span> away and the rise is divided by the run. That ratio is the slope of the secant, the straight line through both points, and it is the average slope between them. Shrinking <span class="math inline">\(h\)</span> moves the second point towards the first, and the ratio settles on a single value.</p>
+<div id="def-derivative" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.4 (Derivative)</strong></span> The <strong>derivative</strong> of <span class="math inline">\(f\)</span> at <span class="math inline">\(\theta\)</span> is <span id="eq-derivative"><span class="math display">\[ f'(\theta) \;=\; \lim_{h \to 0} \frac{f(\theta + h) - f(\theta)}{h} ,  \tag{2.10}\]</span></span> the slope of the curve at the point <span class="math inline">\(\theta\)</span> itself. The secant through <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\theta + h\)</span> becomes, in the limit, the <strong>tangent</strong> at <span class="math inline">\(\theta\)</span>.</p>
+</div>
+<p>The curve of <a href="#fig-derivative" class="quarto-xref">Figure&nbsp;<span>2.15</span></a> is <span class="math inline">\(f(\theta) = \theta^3 - 3\theta\)</span>, and the point is <span class="math inline">\(\theta = 1.5\)</span>. The rise over a run of <span class="math inline">\(h\)</span> is</p>
+<p><span id="eq-secant"><span class="math display">\[ \frac{f(1.5 + h) - f(1.5)}{h} \;=\; \frac{(1.5 + h)^3 - 3(1.5 + h) - (1.5^3 - 4.5)}{h} \;=\; 3.75 + 4.5\,h + h^2 ,  \tag{2.11}\]</span></span></p>
+<p>after expanding the cube and dividing by <span class="math inline">\(h\)</span>. At <span class="math inline">\(h = 0.6\)</span> the ratio is 6.81, at <span class="math inline">\(h = 0.3\)</span> it is 5.19, and at <span class="math inline">\(h = 0.05\)</span> it is 3.98. As <span class="math inline">\(h\)</span> goes to zero the two terms that carry <span class="math inline">\(h\)</span> vanish, and the derivative is <span class="math inline">\(f'(1.5) = 3.75\)</span>. The same expansion at a general <span class="math inline">\(\theta\)</span> gives <span class="math inline">\(f'(\theta) = 3\theta^2 - 3\)</span>, which is zero at <span class="math inline">\(\theta = -1\)</span> and <span class="math inline">\(\theta = 1\)</span>, the top and the bottom of the curve. The idea goes back to Newton and Leibniz in the late seventeenth century, and the limit in <a href="#eq-derivative" class="quarto-xref">Equation&nbsp;<span>2.10</span></a> was made precise in the nineteenth. From here on, the slope at a point means the derivative there.</p>
+<div id="fig-derivative" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-derivative-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/derivative_def/book/step5.svg" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-derivative-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.15: The slope at one point as a limit, on the part of <span class="math inline">\(f(\theta) = \theta^3 - 3\theta\)</span> around <span class="math inline">\(\theta = 1.5\)</span>; the bottom at <span class="math inline">\(\theta = 1\)</span> is drawn, and the top at <span class="math inline">\(\theta = -1\)</span> lies beyond the left edge. The red secants through <span class="math inline">\(\theta = 1.5\)</span> and a second point at <span class="math inline">\(h = 0.6\)</span>, <span class="math inline">\(0.3\)</span> and <span class="math inline">\(0.05\)</span> have slopes 6.81, 5.19 and 3.98. As <span class="math inline">\(h \to 0\)</span> the ratio settles on 3.75, the slope of the black tangent, which is the derivative <span class="math inline">\(f'(\theta)\)</span>.
+</figcaption>
+</figure>
+</div>
+<p>The RSS has two parameters, so a single slope does not describe it. Holding one parameter still and letting the other move cuts the bowl along one direction and returns the problem to one dimension.</p>
+<div id="def-partial" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.5 (Partial derivative and gradient)</strong></span> A <strong>partial derivative</strong> is the derivative along one parameter while every other parameter is held still. For the score of <a href="#eq-rss" class="quarto-xref">Equation&nbsp;<span>2.4</span></a> they are written <span class="math inline">\(\partial\,\mathrm{RSS}/\partial \hat{b}\)</span> and <span class="math inline">\(\partial\,\mathrm{RSS}/\partial \hat{w}\)</span>. The <strong>gradient</strong> is the vector of all the partial derivatives, <span id="eq-gradient"><span class="math display">\[ \nabla \mathrm{RSS} \;=\; \Bigl( \frac{\partial\,\mathrm{RSS}}{\partial \hat{b}},\; \frac{\partial\,\mathrm{RSS}}{\partial \hat{w}} \Bigr) .  \tag{2.12}\]</span></span></p>
+</div>
+<p>Each entry of <a href="#eq-gradient" class="quarto-xref">Equation&nbsp;<span>2.12</span></a> is the slope in its own direction, and together they point uphill. The symbol <span class="math inline">\(\nabla\)</span> was used in <a href="ch01.html#eq-gd" class="quarto-xref">Equation&nbsp;<span>1.21</span></a> as a name for the slope, and <a href="#def-partial" class="quarto-xref">Definition&nbsp;<span>2.5</span></a> is what the name means.</p>
+<p>Both partial derivatives of the RSS follow from <a href="#eq-derivative" class="quarto-xref">Equation&nbsp;<span>2.10</span></a> alone. Write the miss of sale <span class="math inline">\(i\)</span> as <span class="math inline">\(r_i = y_i - \hat{b} - \hat{w}\,u_i\)</span>. Moving <span class="math inline">\(\hat{b}\)</span> by <span class="math inline">\(h\)</span> changes the miss to <span class="math inline">\(r_i - h\)</span>, and its square changes by <span class="math inline">\((r_i - h)^2 - r_i^2 = -2h\,r_i + h^2\)</span>. Dividing by <span class="math inline">\(h\)</span> and letting <span class="math inline">\(h\)</span> go to zero leaves <span class="math inline">\(-2r_i\)</span>. Moving <span class="math inline">\(\hat{w}\)</span> by <span class="math inline">\(h\)</span> changes the miss to <span class="math inline">\(r_i - h\,u_i\)</span>, and the same steps leave <span class="math inline">\(-2u_i r_i\)</span>. Adding over the sales gives</p>
+<p><span id="eq-partials"><span class="math display">\[ \frac{\partial\,\mathrm{RSS}}{\partial \hat{b}} \;=\; -2 \sum_{i=1}^{n} \bigl( y_i - \hat{b} - \hat{w}\,u_i \bigr), \qquad \frac{\partial\,\mathrm{RSS}}{\partial \hat{w}} \;=\; -2 \sum_{i=1}^{n} u_i \bigl( y_i - \hat{b} - \hat{w}\,u_i \bigr) .  \tag{2.13}\]</span></span></p>
+<p>Section 2.2 derives the same result for any number of inputs. Descent goes against the gradient, and the whole method fits on one line.</p>
+<div id="def-gd-loop" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.6 (Gradient descent on the RSS)</strong></span> Start at any candidate <span class="math inline">\((\hat{b}, \hat{w})\)</span>. Compute the gradient there by <a href="#eq-partials" class="quarto-xref">Equation&nbsp;<span>2.13</span></a>, and step against it: <span id="eq-gd-two"><span class="math display">\[ (\hat{b}, \hat{w}) \;\leftarrow\; (\hat{b}, \hat{w}) \;-\; \eta\, \nabla \mathrm{RSS}(\hat{b}, \hat{w}) .  \tag{2.14}\]</span></span> Stop when both partial derivatives are near zero; otherwise compute the gradient again.</p>
+</div>
+<p>The update in <a href="#eq-gd-two" class="quarto-xref">Equation&nbsp;<span>2.14</span></a> is <a href="ch01.html#eq-gd" class="quarto-xref">Equation&nbsp;<span>1.21</span></a> with <span class="math inline">\(\theta\)</span> standing for two numbers at once. Cauchy published the method in the <em>Comptes Rendus</em> in 1847 <span class="citation" data-cites="cauchy1847">(<a href="#ref-cauchy1847" role="doc-biblioref">Cauchy 1847</a>)</span>, as <a href="ch01.html#sec-s03" class="quarto-xref"><span>Section 1.3</span></a> recorded. On the Ames bowl, with <span class="math inline">\(\eta = 0.0001\)</span> and a start at <span class="math inline">\((110, 30)\)</span>, sixty passes of the loop reach <span class="math inline">\((180.4, 125.1)\)</span>. <a href="#fig-walk" class="quarto-xref">Figure&nbsp;<span>2.16</span></a> draws the path together with the two cuts whose slopes give the first step.</p>
+<div id="fig-walk" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-walk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/descent_walk/book/step5.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-walk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.16: Gradient descent on the RSS bowl from the start at <span class="math inline">\((110, 30)\)</span>. Right: the two cuts through the start, one along <span class="math inline">\(\hat{b}\)</span> with <span class="math inline">\(\hat{w}\)</span> held still and one along <span class="math inline">\(\hat{w}\)</span> with <span class="math inline">\(\hat{b}\)</span> held still. Their slopes are the two partial derivatives. The two blue arrows at the start are the first step split into its two parts, one along each axis, and the longer is along <span class="math inline">\(\hat{b}\)</span>. Sixty steps reach the bottom.
+</figcaption>
+</figure>
+</div>
+<p>One step can be worked by hand, from a candidate at the upper right of the plane, <span class="math inline">\(\hat{b} = 240\)</span> and <span class="math inline">\(\hat{w} = 200\)</span>. By <a href="#eq-partials" class="quarto-xref">Equation&nbsp;<span>2.13</span></a> and <a href="#eq-sum-u" class="quarto-xref">Equation&nbsp;<span>2.6</span></a> the first partial derivative is <span class="math inline">\(-2(n\bar{y} - n\hat{b})\)</span>, which is <span class="math inline">\(-2 \times 2{,}924 \times (180.42 - 240) = +348{,}438\)</span>. The second is <span class="math inline">\(-2(S_{uy} - \hat{w}\,S_{uu})\)</span>, with <span class="math inline">\(S_{uy} = 74{,}655.9\)</span> and <span class="math inline">\(S_{uu} = 596.76\)</span>, which is <span class="math inline">\(+89{,}391\)</span>. Multiplying each by <span class="math inline">\(\eta = 0.0001\)</span> gives steps of 34.84 and 8.94, and subtracting them gives</p>
+<p><span id="eq-one-step"><span class="math display">\[ \hat{b} \;=\; 240 - 34.84 \;=\; 205.2, \qquad \hat{w} \;=\; 200 - 8.94 \;=\; 191.1 .  \tag{2.15}\]</span></span></p>
+<p>Both partial derivatives were positive, so both numbers fell, and the RSS dropped from 22.4 million to 13.1 million. Moving against the gradient is all that gradient descent ever does.</p>
+<p>The path in <a href="#fig-walk" class="quarto-xref">Figure&nbsp;<span>2.16</span></a> bends rather than heading straight for the bottom, and <a href="#eq-rss-bowl" class="quarto-xref">Equation&nbsp;<span>2.8</span></a> explains why. Because <span class="math inline">\(\sum u_i = 0\)</span>, the update of <span class="math inline">\(\hat{b}\)</span> involves only <span class="math inline">\(\hat{b}\)</span> and the update of <span class="math inline">\(\hat{w}\)</span> involves only <span class="math inline">\(\hat{w}\)</span>. Each step multiplies the distance of <span class="math inline">\(\hat{b}\)</span> from its best value by <span class="math inline">\(1 - 2n\eta = 0.42\)</span>, and the distance of <span class="math inline">\(\hat{w}\)</span> from its best value by <span class="math inline">\(1 - 2S_{uu}\eta = 0.88\)</span>. The intercept settles within a few steps, and the slope takes the rest of the sixty. The same factors show that the step size cannot be chosen freely: a factor larger than one in size makes each step overshoot further than the last. How to choose <span class="math inline">\(\eta\)</span> well is the subject of Section 2.4.</p>
+<p>Gradient descent earns its place by four properties, and the comparison with the grid makes them plain. It scores nothing but the point where it stands: the grid scored 442 lines, and descent reads two slopes and moves. Its cost does not grow with a grid, since there is no resolution to pick and no range to guess, although a step size and a starting point remain to be chosen. It scales: one slope per parameter means two here and millions in a neural network, against the <span class="math inline">\(10^{20}\)</span> lines a grid would need for ten parameters. On this bowl it cannot be misled, because <a href="#eq-rss-bowl" class="quarto-xref">Equation&nbsp;<span>2.8</span></a> has one bottom and nowhere else is flat, so downhill leads to the same place from any start. Surfaces with more than one valley exist, and they are taken up in Section 2.4.</p>
+</section>
+<section id="solving-instead-of-walking" class="level3">
+<h3 class="anchored" data-anchor-id="solving-instead-of-walking">Solving instead of walking</h3>
+<p>The bottom of the bowl is the one point where both partial derivatives are zero, and for this model the partial derivatives are formulas. Rather than walking to the place where the slopes vanish, we can ask directly where that is. Setting both expressions of <a href="#eq-partials" class="quarto-xref">Equation&nbsp;<span>2.13</span></a> to zero gives two equations in two unknowns:</p>
+<p><span id="eq-normal"><span class="math display">\[ \sum_{i=1}^{n} \bigl( y_i - \hat{b} - \hat{w}\,u_i \bigr) \;=\; 0, \qquad \sum_{i=1}^{n} u_i \bigl( y_i - \hat{b} - \hat{w}\,u_i \bigr) \;=\; 0 .  \tag{2.16}\]</span></span></p>
+<p>Measuring area from the average house makes the equations come apart. By <a href="#eq-sum-u" class="quarto-xref">Equation&nbsp;<span>2.6</span></a> the first reduces to <span class="math inline">\(n\bar{y} - n\hat{b} = 0\)</span>, and the second to <span class="math inline">\(S_{uy} - \hat{w}\,S_{uu} = 0\)</span>. So</p>
+<p><span id="eq-closed-centred"><span class="math display">\[ \hat{b} \;=\; \bar{y} \;=\; 180.4, \qquad \hat{w} \;=\; \frac{\sum_i u_i\, y_i}{\sum_i u_i^2} \;=\; 125.1 ,  \tag{2.17}\]</span></span></p>
+<p>the same point that sixty steps of descent approached, reached with no steps at all. <a href="#eq-rss-bowl" class="quarto-xref">Equation&nbsp;<span>2.8</span></a> confirms from the other side that this point is the minimum and not merely a flat place, since both squared terms vanish there and nowhere else.</p>
+<p>Converting back to everyday units with <span class="math inline">\(\hat{w}_0 = \hat{w}/100\)</span> and <span class="math inline">\(\hat{b}_0 = \hat{b} - \hat{w}_0\,\bar{x}\)</span>, and dropping the subscripts, gives the formulas in the form they are usually printed.</p>
+<div id="def-ls-line" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.7 (Least-squares line)</strong></span> The <strong>least-squares line</strong> through the points <span class="math inline">\((x_i, y_i)\)</span> has slope and intercept <span id="eq-closed-form"><span class="math display">\[ \hat{w} \;=\; \frac{\sum_i (x_i - \bar{x})(y_i - \bar{y})}{\sum_i (x_i - \bar{x})^2}, \qquad \hat{b} \;=\; \bar{y} - \hat{w}\,\bar{x} .  \tag{2.18}\]</span></span></p>
+</div>
+<p>The second formula says that the least-squares line passes through the point of averages <span class="math inline">\((\bar{x}, \bar{y})\)</span>, the average house. On the Ames data that point is 138.8 square metres at $180.4 thousand, the slope is <span class="math inline">\(\hat{w} = 1.251\)</span> thousand dollars per square metre, and the intercept is <span class="math inline">\(\hat{b} = 6.78\)</span>. Descent after sixty steps and the formulas give the same line, as <a href="#fig-two-routes" class="quarto-xref">Figure&nbsp;<span>2.17</span></a> shows. Writing the slope as a ratio of two sums in this way is due to Pearson, in the third of his <em>Mathematical Contributions to the Theory of Evolution</em>, published in the <em>Philosophical Transactions of the Royal Society</em> in 1896 <span class="citation" data-cites="pearson1896">(<a href="#ref-pearson1896" role="doc-biblioref">Pearson 1896</a>)</span>. The word regression is older. Galton used it in 1886 for the tendency of children’s heights to fall back towards the average <span class="citation" data-cites="galton1886">(<a href="#ref-galton1886" role="doc-biblioref">Galton 1886</a>)</span>, as <a href="ch01.html#sec-s04" class="quarto-xref"><span>Section 1.4</span></a> described.</p>
+<div id="fig-two-routes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-two-routes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/closed_form_avg/step2.svg" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-two-routes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.17: In everyday units the least-squares line passes through the average house, 139 m² at $180k. Descent after 60 steps and the formulas give the same line, <span class="math inline">\(\hat{b} = 6.8\)</span> and <span class="math inline">\(\hat{w} = 1.251\)</span>.
+</figcaption>
+</figure>
+</div>
+<p>An answer that can be written down and computed in one pass is called a <strong>closed form</strong>. It exists for this model and for very few others in this book, and the comparison with stepping explains why the book mostly steps. <a href="#fig-cf-vs-gd" class="quarto-xref">Figure&nbsp;<span>2.18</span></a> sets out the trade. Stepping only approaches the answer, and how well depends on the step size. On the cut along <span class="math inline">\(\hat{w}\)</span>, a step size about right reaches the bottom in a few steps. One too small has barely moved after ten, and one too large overshoots further at every step and climbs out of the bowl. The formula is exact, but with <span class="math inline">\(p\)</span> inputs it means solving <span class="math inline">\(p\)</span> equations at once. The standard route goes through a table of <span class="math inline">\(p \times p\)</span> numbers, a matrix, that must be inverted, and the work grows like <span class="math inline">\(p^3\)</span>, so ten times the inputs costs a thousand times the work and ten thousand inputs cost about <span class="math inline">\(10^{12}\)</span> operations for one fit. And sometimes there is no single answer to compute. Suppose living area is entered twice, once in square metres and once in square feet. The two inputs carry the same information, so the score depends only on a combination of their two weights, and every point along a line of candidates is a bottom. The generalised inverse that Penrose defined in 1955 <span class="citation" data-cites="penrose1955">(<a href="#ref-penrose1955" role="doc-biblioref">Penrose 1955</a>)</span> picks one of those answers, but when two inputs are nearly rather than exactly equal it magnifies rounding error and the weights it returns can be badly wrong. Section 2.2 makes the matrix, the inverse and the failure precise. Stepping is cheap per step, works for any loss that has a slope, and scales to millions of parameters, and its price is that it only approaches the bottom.</p>
+<div id="fig-cf-vs-gd" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cf-vs-gd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/cf_vs_gd/step3.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cf-vs-gd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.18: Step by step, or the formula. Left: three step sizes on one cut of the bowl; too small stops short, too large overshoots and climbs. Middle: with <span class="math inline">\(p\)</span> inputs the formula’s work grows like <span class="math inline">\(p^3\)</span>. Right: with area entered in m² and again in ft², the bottoms form a line and there is no unique answer.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="reading-the-fitted-line" class="level3">
+<h3 class="anchored" data-anchor-id="reading-the-fitted-line">Reading the fitted line</h3>
+<p>The fitted line is</p>
+<p><span id="eq-ames-fit"><span class="math display">\[ \hat{y} \;=\; 6.78 + 1.251\,x ,  \tag{2.19}\]</span></span></p>
+<p>with <span class="math inline">\(\hat{y}\)</span> in thousands of dollars and <span class="math inline">\(x\)</span> in square metres. The house held back at the start has 134 square metres of living space, and <a href="#eq-ames-fit" class="quarto-xref">Equation&nbsp;<span>2.19</span></a> predicts $174 thousand for it. It sold for $163 thousand. Because the sale was excluded from the fit, that is a genuine prediction, and it is $11 thousand too high.</p>
+<div id="fig-fitted-house" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fitted-house-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/fitted_house/step3.svg" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fitted-house-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.19: The fitted line on all the sales. The house held back from the fit, at 134 m², is predicted at $174k and sold for $163k.
+</figcaption>
+</figure>
+</div>
+<p>All three choices of <a href="ch01.html#def-three-choices" class="quarto-xref">Definition&nbsp;<span>1.16</span></a> have now been made on a real problem. The hypothesis space is every straight line in area. The loss is the residual sum of squares. The optimiser is gradient descent or the closed form. <a href="#fig-recipe" class="quarto-xref">Figure&nbsp;<span>2.20</span></a> shows the filled card. This is the smallest complete learner, and every later method in this book can be read as a substitution into one or more of its slots. The question printed beneath the card is still open: whether the line that wins on the recorded sales will do well on sales it has never seen. Section 2.8 answers it.</p>
+<div id="fig-recipe" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-recipe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/three_choices_mf05/step3.svg" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-recipe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.20: The supervised learner filled for the first time. Hypothesis space: every straight line through the houses. Loss: the residual sum of squares. Optimiser: gradient descent, or the closed form. The question beneath remains open.
+</figcaption>
+</figure>
+</div>
+<p>Each of the two numbers has a reading, and each reading has a limit. The slope says that, among these houses, each extra square metre goes with $1,251 more in price. The phrase <em>among these houses</em> matters, because the slope describes how price and area vary together in Ames between 2006 and 2010, and it says nothing about what adding a room to a particular house would do. The intercept, $6.78 thousand, is not the price of a house with no floor, and no such house was ever sold. It is where the line meets zero area. The recorded areas run from 31 to 355 square metres. A prediction at 200 square metres, $257 thousand, lies inside that range. A prediction at 450 square metres, $570 thousand, lies outside it and is a guess, which is the point <a href="ch01.html#sec-s01" class="quarto-xref"><span>Section 1.1</span></a> made about a fitted model that interpolates. <a href="#fig-fit-reading" class="quarto-xref">Figure&nbsp;<span>2.21</span></a> marks both.</p>
+<div id="fig-fit-reading" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fit-reading-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/fit_reading/step4.svg" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fit-reading-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.21: What the two numbers say. <span class="math inline">\(\hat{w}\)</span>: $1,251 more per extra m², among these houses. <span class="math inline">\(\hat{b} = 6.8\)</span>: where the line meets zero area, not a price. The data covers 31 to 355 m², so a prediction at 200 m² is inside the data and one at 450 m² is a guess.
+</figcaption>
+</figure>
+</div>
+<p>How good the line is depends on what it is compared with, and the natural baseline is the simplest predictor available: the average price for every house, whatever its area. That predictor is the constant family of <a href="#eq-forms" class="quarto-xref">Equation&nbsp;<span>2.1</span></a> at its best, and its score is <span class="math inline">\(S_{yy} = \sum (y_i - \bar{y})^2 = 18.0\)</span> million. The fitted line scores 8.7 million, so it leaves 0.48 of the baseline’s squared misses.</p>
+<div id="def-r-squared" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.8 (Coefficient of determination)</strong></span> The <strong>coefficient of determination</strong> of a fitted line is <span id="eq-r-squared"><span class="math display">\[ R^2 \;=\; 1 - \frac{\mathrm{RSS}(\hat{b}, \hat{w})}{\sum_i (y_i - \bar{y})^2} ,  \tag{2.20}\]</span></span> the fraction of the squared variation about the mean that the line accounts for.</p>
+</div>
+<p>For the Ames line <span class="math inline">\(R^2 = 1 - 0.48 = 0.52\)</span>. Living area explains about half the variation in price, and half is left. Wright introduced the name in <em>Correlation and Causation</em>, published in the <em>Journal of Agricultural Research</em> in 1921 <span class="citation" data-cites="wright1921">(<a href="#ref-wright1921" role="doc-biblioref">Wright 1921</a>)</span>. The number is printed by every regression report, and it is often read as more than it is. Each of Anscombe’s four datasets has <span class="math inline">\(R^2 = 0.67\)</span> under its fitted line, including the curve and the dataset whose trend is made by a single point. The number cannot tell them apart, and the plots of <a href="#fig-anscombe" class="quarto-xref">Figure&nbsp;<span>2.4</span></a> can.</p>
+<div id="fig-r-squared" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-r-squared-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/r_squared/step4.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-r-squared-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.22: Left: the mean as the prediction, with its squares on eight sales; its RSS over all sales is 18.0 million. Right: the fitted line, RSS 8.7 million. The line leaves 0.48 of the mean’s misses, so <span class="math inline">\(R^2 = 0.52\)</span>.
+</figcaption>
+</figure>
+</div>
+<p>What the line leaves behind is its residuals, <span class="math inline">\(r_i = y_i - \hat{y}_i\)</span> in the sense of <a href="ch01.html#def-residual" class="quarto-xref">Definition&nbsp;<span>1.3</span></a>. A residual is not the error term <span class="math inline">\(\varepsilon_i\)</span> of <a href="#eq-true-model" class="quarto-xref">Equation&nbsp;<span>2.2</span></a>. The error term is the miss of the true line, which is never seen, and the residual is the miss of the fitted line, which is computed. <a href="#fig-residual-plot" class="quarto-xref">Figure&nbsp;<span>2.23</span></a> plots the residuals against living area. No straight-line trend remains, and least squares guarantees that much and no more: the two equations of <a href="#eq-normal" class="quarto-xref">Equation&nbsp;<span>2.16</span></a> say precisely that the residuals add to zero and that they do not tilt against area. A curved trend could survive them, as Anscombe’s second dataset would show, and none is visible here. What does remain is a change of spread. Measured by the standard deviation of the residuals within a band of sizes, the typical residual is about $23 thousand for houses between 40 and 100 square metres and about $106 thousand for those between 240 and 360. A single figure for the typical miss of the line would flatter it for small houses and mislead for large ones.</p>
+<div id="fig-residual-plot" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-residual-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/residual_plot/step3.svg" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-residual-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.23: The residuals, price minus the line, against living area. No straight-line trend remains, which is all the normal equations guarantee; the note printed beside the plot says “no trend”, and should be read as no straight-line trend. The red bars mark one standard deviation above and below zero within each band of sizes, growing from about $23k for the smallest houses to $106k for the largest.
+</figcaption>
+</figure>
+</div>
+<p>The cost of squaring, set aside earlier, can now be measured on a single record. Take thirty typical sales, one from the middle of each size band, and fit a line to them. Its slope is $1,088 per square metre. Add one more sale: 524 square metres, sold for $160 thousand, one of the five sales the documentation flags, a partial sale of a very large unfinished house. Refitted with it, the slope falls to $284 per square metre. One record in thirty-one has cut the slope to about a quarter, and after pulling the line towards itself that record still carries 24% of the RSS. One large miss counts for more than many small ones, so the line bends to shrink it. <a href="#fig-outlier-pull" class="quarto-xref">Figure&nbsp;<span>2.24</span></a> draws the two lines.</p>
+<div id="def-outlier" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.9 (Outlier)</strong></span> An <strong>outlier</strong> is a record that lies far from the pattern of the rest of the data. Under the squared loss it has more influence on the fit than any other record.</p>
+</div>
+<div id="fig-outlier-pull" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-outlier-pull-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/outlier_pull/step4.svg" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-outlier-pull-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.24: Thirty typical sales give a slope of $1,088 per m². One more sale, 524 m² sold for $160k, a partial sale the documentation flags, cuts the slope to $284 per m², and still carries 24% of the RSS.
+</figcaption>
+</figure>
+</div>
+<p>Two common rules find candidates, and <a href="#fig-outlier-find" class="quarto-xref">Figure&nbsp;<span>2.25</span></a> applies both to all the sales with the five flagged ones restored. The first is distance from the line. Fit the line, take each residual, and flag any that exceeds three times the standard deviation of the residuals, here 3 × $56.5 thousand. Forty-six sales are flagged, and all five documented sales are among them. The second needs no line at all and asks how far a house is from the other houses. Tukey’s box plot, from <em>Exploratory Data Analysis</em> of 1977 <span class="citation" data-cites="tukey1977">(<a href="#ref-tukey1977" role="doc-biblioref">Tukey 1977</a>)</span>, draws a box from the lower quartile <span class="math inline">\(Q_1\)</span> to the upper quartile <span class="math inline">\(Q_3\)</span> of living area, so that the box holds the middle half of the houses, and sets fences at</p>
+<p><span id="eq-tukey"><span class="math display">\[ Q_1 - 1.5\,(Q_3 - Q_1) \quad\text{and}\quad Q_3 + 1.5\,(Q_3 - Q_1) .  \tag{2.21}\]</span></span></p>
+<p>Here <span class="math inline">\(Q_1 = 104.6\)</span> and <span class="math inline">\(Q_3 = 161.9\)</span> square metres, so the upper fence is at 247.9 square metres. Seventy-four houses lie past it, and the five flagged sales lie far past it.</p>
+<div id="fig-outlier-find" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-outlier-find-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/outlier_find/step3.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-outlier-find-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.25: Two ways to flag outliers. Left: far from the line, beyond three standard deviations of the residuals; 46 sales, all five documented ones among them. Right: far from the other houses, past Tukey’s fence at 1.5 box-widths; 74 houses, with the five far past.
+</figcaption>
+</figure>
+</div>
+<p>A flag is a question, not a verdict. Most of the seventy-four houses past the fence are there only because they are large, and there is nothing wrong with them. The flagged records are examined one at a time, a decision is made, and the reason is written down. A recording error is corrected or removed. A record of a different kind of transaction is removed and the removal reported, which is what the documentation does for the five partial and unusual sales. A record that is real but rare is kept, and the response is a loss that squares the misses less, which Section 2.5 introduces. This work belongs to the preparation of data, inside statistics and data science, and in practice a large share of any project is spent on it before anything is fitted.</p>
+</section>
+<section id="what-the-line-assumes-and-where-it-fails" class="level3">
+<h3 class="anchored" data-anchor-id="what-the-line-assumes-and-where-it-fails">What the line assumes, and where it fails</h3>
+<p>Every result in this section rests on assumptions, and each one is a place where the method can fail.</p>
+<ul>
+<li>The relationship is a straight line. This was chosen by looking, and <a href="#fig-shapes" class="quarto-xref">Figure&nbsp;<span>2.3</span></a> shows only that the line is not contradicted inside the data. Outside the recorded range the straight, quadratic and cubic fits disagree by $69 thousand at 450 square metres, and nothing in the data decides between them.</li>
+<li>Only the price is in error. The misses are vertical, so the recorded area is treated as exact. An area recorded wrongly is not measured as a miss at all.</li>
+<li>Misses are judged by their squares. One record of a different kind cut the slope to a quarter. The loss that made the bowl smooth is the loss that lets one record dominate.</li>
+<li>The sales stand for the houses to be priced. The slope describes Ames between 2006 and 2010. Another city, another decade or a house of 450 square metres is a claim the data does not support, and nothing in this section tests the line on houses it has not seen.</li>
+</ul>
+<p>The deepest failure is visible in the residuals themselves. <a href="#fig-residual-quality" class="quarto-xref">Figure&nbsp;<span>2.26</span></a> plots the residuals of <a href="#eq-ames-fit" class="quarto-xref">Equation&nbsp;<span>2.19</span></a> against the quality rating, one of the columns set aside when living area was chosen. Averaged at each level of quality, the residuals rise with the rating. The line underprices the 26 best-built houses by $166 thousand on average and overprices the four houses rated lowest by $62 thousand, although four houses is a thin basis for the second figure. Structure in the residual means something is missing from the model, which is the lesson of Neptune in <a href="ch01.html#sec-s01" class="quarto-xref"><span>Section 1.1</span></a>. What the line left behind is not noise. It is another column.</p>
+<div id="fig-residual-quality" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-residual-quality-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/residual_structure/book/step2.svg" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-residual-quality-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.26: The residuals of the fitted line against overall quality, a column set aside earlier. Averaged at each level they rise with the rating: the line underprices the best-built houses by $166k and overprices the worst by $62k.
+</figcaption>
+</figure>
+</div>
+<p>So one input is not enough, and the next section gives the line a second input and a third. Every computation of this section then has to be done again with many weights at once, and doing it shows that least squares is a projection.</p>
+</section>
+<section id="exercises" class="level3">
+<h3 class="anchored" data-anchor-id="exercises">Exercises</h3>
+<ol type="1">
+<li><p>For each of the four families in <a href="#eq-forms" class="quarto-xref">Equation&nbsp;<span>2.1</span></a>, count the parameters and state which of the other families it contains. Use the nesting to explain why the cubic fit in <a href="#fig-shapes" class="quarto-xref">Figure&nbsp;<span>2.3</span></a> can never have a larger RSS on the same sales than the straight-line fit, and why that fact alone is no reason to prefer the cubic.</p></li>
+<li><p>Classify each of the following as part of the true model or as something computed from the data, and give its meaning in words for the Ames problem: <span class="math inline">\(b\)</span>, <span class="math inline">\(\hat{w}\)</span>, <span class="math inline">\(\varepsilon_i\)</span>, <span class="math inline">\(\hat{y}_i\)</span>, <span class="math inline">\(r_i\)</span>, <span class="math inline">\(\bar{y}\)</span>, <span class="math inline">\(\mathrm{RSS}(\hat{b}, \hat{w})\)</span>. Then explain why <span class="math inline">\(r_i\)</span> and <span class="math inline">\(\varepsilon_i\)</span> are different quantities even for the sale on which both are defined, and say which of the two can be plotted.</p></li>
+<li><p>Three sales have areas 100, 140 and 180 square metres and prices 150, 190 and 200 thousand dollars. Use <a href="#eq-closed-form" class="quarto-xref">Equation&nbsp;<span>2.18</span></a> to find <span class="math inline">\(\hat{w}\)</span> and <span class="math inline">\(\hat{b}\)</span>. Compute the three residuals and check that they satisfy both equations of <a href="#eq-normal" class="quarto-xref">Equation&nbsp;<span>2.16</span></a>. Then compute the RSS of the line, the RSS of the mean as a predictor, and <span class="math inline">\(R^2\)</span> by <a href="#eq-r-squared" class="quarto-xref">Equation&nbsp;<span>2.20</span></a>.</p></li>
+<li><p>Gradient descent on the Ames bowl starts at <span class="math inline">\((\hat{b}, \hat{w}) = (110, 30)\)</span> in the centred units of <a href="#eq-centred" class="quarto-xref">Equation&nbsp;<span>2.5</span></a>, with <span class="math inline">\(\eta = 0.0001\)</span>. Using <a href="#eq-partials" class="quarto-xref">Equation&nbsp;<span>2.13</span></a> and <a href="#eq-sum-u" class="quarto-xref">Equation&nbsp;<span>2.6</span></a>, together with <span class="math inline">\(n = 2{,}924\)</span>, <span class="math inline">\(\bar{y} = 180.42\)</span>, <span class="math inline">\(S_{uu} = 596.76\)</span> and the bottom <span class="math inline">\(\hat{w} = 125.10\)</span>, compute the gradient at the start and the candidate after one step. Explain the signs of both partial derivatives by locating the start on <a href="#fig-rss-bowl" class="quarto-xref">Figure&nbsp;<span>2.12</span></a>.</p></li>
+<li><p>The centred bottom is <span class="math inline">\((\hat{b}, \hat{w}) = (180.4, 125.1)\)</span> with <span class="math inline">\(\bar{x} = 138.8\)</span> square metres. Convert it to everyday units and check the result against <a href="#eq-ames-fit" class="quarto-xref">Equation&nbsp;<span>2.19</span></a>. Then find the slope of the least-squares line if area were recorded in square feet instead of square metres, given that one square metre is 10.764 square feet, and state what happens to <span class="math inline">\(\hat{b}\)</span>, to the RSS and to <span class="math inline">\(R^2\)</span>.</p></li>
+<li><p>Derive <a href="#eq-rss-bowl" class="quarto-xref">Equation&nbsp;<span>2.8</span></a> from <a href="#eq-rss" class="quarto-xref">Equation&nbsp;<span>2.4</span></a> written in centred units. Expand the square, use <a href="#eq-sum-u" class="quarto-xref">Equation&nbsp;<span>2.6</span></a> to remove the cross terms, and complete the square in each parameter. Deduce that the RSS has exactly one minimum, that the minimum value is <span class="math inline">\(S_{yy} - S_{uy}^2/S_{uu}\)</span>, and that <span class="math inline">\(R^2 = S_{uy}^2/(S_{uu}\,S_{yy})\)</span> for the least-squares line.</p></li>
+<li><p>Using <a href="#eq-gd-two" class="quarto-xref">Equation&nbsp;<span>2.14</span></a>, <a href="#eq-partials" class="quarto-xref">Equation&nbsp;<span>2.13</span></a> and <a href="#eq-sum-u" class="quarto-xref">Equation&nbsp;<span>2.6</span></a>, show that each step of gradient descent multiplies <span class="math inline">\(\hat{b} - \bar{y}\)</span> by <span class="math inline">\(1 - 2n\eta\)</span> and multiplies the distance of <span class="math inline">\(\hat{w}\)</span> from its best value by <span class="math inline">\(1 - 2S_{uu}\eta\)</span>. With the Ames values of exercise 4, find how many steps are needed from <span class="math inline">\(\hat{w} = 30\)</span> before <span class="math inline">\(\hat{w}\)</span> is within 0.05 of 125.10, and compare the answer with the sixty steps of <a href="#fig-walk" class="quarto-xref">Figure&nbsp;<span>2.16</span></a>. Then find the largest step size for which the walk does not move away from the bottom in either direction, and explain why it is smaller than the largest step size the cut along <span class="math inline">\(\hat{w}\)</span> alone would tolerate.</p></li>
+<li><p>Suppose living area is entered twice, as <span class="math inline">\(x\)</span> in square metres and as <span class="math inline">\(10.764\,x\)</span> in square feet, so that the hypothesis space is <span class="math inline">\(\hat{y} = \hat{b} + \hat{w}_1 x + \hat{w}_2 (10.764\,x)\)</span>. Show that every pair <span class="math inline">\((\hat{w}_1, \hat{w}_2)\)</span> with <span class="math inline">\(\hat{w}_1 + 10.764\,\hat{w}_2 = 1.251\)</span>, together with <span class="math inline">\(\hat{b} = 6.78\)</span>, gives the same RSS as <a href="#eq-ames-fit" class="quarto-xref">Equation&nbsp;<span>2.19</span></a>. Explain what this means for the equations obtained by setting all three partial derivatives to zero, and connect the answer to the right-hand panel of <a href="#fig-cf-vs-gd" class="quarto-xref">Figure&nbsp;<span>2.18</span></a>.</p></li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-anscombe1973" class="csl-entry" role="listitem">
+Anscombe, Francis J. 1973. <span>“Graphs in Statistical Analysis.”</span> <em>The American Statistician</em> 27 (1): 17–21.
+</div>
+<div id="ref-box1976" class="csl-entry" role="listitem">
+Box, George E. P. 1976. <span>“Science and Statistics.”</span> <em>Journal of the American Statistical Association</em> 71 (356): 791–99.
+</div>
+<div id="ref-cauchy1847" class="csl-entry" role="listitem">
+Cauchy, Augustin-Louis. 1847. <span>“M<span>é</span>thode g<span>é</span>n<span>é</span>rale Pour La r<span>é</span>solution Des Syst<span>è</span>mes d’<span>é</span>quations Simultan<span>é</span>es.”</span> <em>Comptes Rendus de l’Acad<span>é</span>mie Des Sciences</em> 25: 536–38.
+</div>
+<div id="ref-decock2011" class="csl-entry" role="listitem">
+De Cock, Dean. 2011. <span>“Ames, Iowa: Alternative to the Boston Housing Data as an End of Semester Regression Project.”</span> <em>Journal of Statistics Education</em> 19 (3).
+</div>
+<div id="ref-galton1886" class="csl-entry" role="listitem">
+Galton, Francis. 1886. <span>“Regression Towards Mediocrity in Hereditary Stature.”</span> <em>Journal of the Anthropological Institute of Great Britain and Ireland</em> 15: 246–63.
+</div>
+<div id="ref-gauss1809" class="csl-entry" role="listitem">
+Gauss, Carl Friedrich. 1809. <em>Theoria Motus Corporum Coelestium in Sectionibus Conicis Solem Ambientium</em>. Perthes; Besser.
+</div>
+<div id="ref-legendre1805" class="csl-entry" role="listitem">
+Legendre, Adrien-Marie. 1805. <em>Nouvelles Méthodes Pour La Détermination Des Orbites Des Comètes</em>. Firmin Didot.
+</div>
+<div id="ref-pearson1896" class="csl-entry" role="listitem">
+Pearson, Karl. 1896. <span>“Mathematical Contributions to the Theory of Evolution. <span>III</span>. Regression, Heredity, and Panmixia.”</span> <em>Philosophical Transactions of the Royal Society of London, Series A</em> 187: 253–318. <a href="https://doi.org/10.1098/rsta.1896.0007">https://doi.org/10.1098/rsta.1896.0007</a>.
+</div>
+<div id="ref-penrose1955" class="csl-entry" role="listitem">
+Penrose, Roger. 1955. <span>“A Generalized Inverse for Matrices.”</span> <em>Proceedings of the Cambridge Philosophical Society</em> 51 (3): 406–13. <a href="https://doi.org/10.1017/S0305004100030401">https://doi.org/10.1017/S0305004100030401</a>.
+</div>
+<div id="ref-tukey1977" class="csl-entry" role="listitem">
+Tukey, John W. 1977. <em>Exploratory Data Analysis</em>. Addison-Wesley.
+</div>
+<div id="ref-wright1921" class="csl-entry" role="listitem">
+Wright, Sewall. 1921. <span>“Correlation and Causation.”</span> <em>Journal of Agricultural Research</em> 20 (7): 557–85.
+</div>
+<div id="ref-zillow2021" class="csl-entry" role="listitem">
+Zillow Group, Inc. 2021. <em>Form 8-k: Wind-down of Zillow Offers</em>.
+</div>
+</div>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/books\.bluevision-ai\.org\/ml-foundations\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./ch01.html" class="pagination-link" aria-label="The Landscape">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">The Landscape</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
