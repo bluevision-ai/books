@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Vahid Seydi">
+
+<title>Large Language Models: How They Grew, One Problem at a Time</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./ch01.html" rel="next">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-12eeb4b20e9f5a2b0bfc604bfaf942bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<meta name="citation_title" content="Large Language Models: How They Grew, One Problem at a Time">
+<meta name="citation_author" content="Vahid Seydi">
+<meta name="citation_fulltext_html_url" content="https://books.bluevision-ai.org/LLM/">
+<meta name="citation_language" content="en">
+<meta name="citation_reference" content="citation_title=Computing machinery and intelligence;,citation_author=Alan M. Turing;,citation_publication_date=1950;,citation_cover_date=1950;,citation_year=1950;,citation_issue=236;,citation_volume=59;,citation_journal_title=Mind;">
+<meta name="citation_reference" content="citation_title=A mathematical theory of communication;,citation_author=Claude E. Shannon;,citation_publication_date=1948;,citation_cover_date=1948;,citation_year=1948;,citation_issue=3;,citation_volume=27;,citation_journal_title=Bell System Technical Journal;">
+<meta name="citation_reference" content="citation_title=The psycho-biology of language: An introduction to dynamic philology;,citation_author=George Kingsley Zipf;,citation_publication_date=1935;,citation_cover_date=1935;,citation_year=1935;">
+<meta name="citation_reference" content="citation_title=Syntactic structures;,citation_author=Noam Chomsky;,citation_publication_date=1957;,citation_cover_date=1957;,citation_year=1957;">
+<meta name="citation_reference" content="citation_title=A synopsis of linguistic theory, 1930–1955;,citation_author=John Rupert Firth;,citation_publication_date=1957;,citation_cover_date=1957;,citation_year=1957;,citation_inbook_title=Studies in linguistic analysis;">
+<meta name="citation_reference" content="citation_title=ELIZA: A computer program for the study of natural language communication between man and machine;,citation_author=Joseph Weizenbaum;,citation_publication_date=1966;,citation_cover_date=1966;,citation_year=1966;,citation_issue=1;,citation_volume=9;,citation_journal_title=Communications of the ACM;">
+<meta name="citation_reference" content="citation_title=Understanding natural language;,citation_author=Terry Winograd;,citation_publication_date=1972;,citation_cover_date=1972;,citation_year=1972;">
+<meta name="citation_reference" content="citation_title=A tutorial on hidden markov models and selected applications in speech recognition;,citation_author=Lawrence R. Rabiner;,citation_publication_date=1989;,citation_cover_date=1989;,citation_year=1989;,citation_issue=2;,citation_volume=77;,citation_journal_title=Proceedings of the IEEE;">
+<meta name="citation_reference" content="citation_title=Long short-term memory;,citation_author=Sepp Hochreiter;,citation_author=Jürgen Schmidhuber;,citation_publication_date=1997;,citation_cover_date=1997;,citation_year=1997;,citation_issue=8;,citation_volume=9;,citation_journal_title=Neural Computation;">
+<meta name="citation_reference" content="citation_title=A verb for our frantic times;,citation_author=Simon Winchester;,citation_publication_date=2011;,citation_cover_date=2011;,citation_year=2011;,citation_publisher=The New York Times;">
+<meta name="citation_reference" content="citation_title=English word with the most meanings;,citation_author=Guinness World Records;,citation_publisher=Guinness World Records;">
+<meta name="citation_reference" content="citation_title=Computer power and human reason: From judgment to calculation;,citation_author=Joseph Weizenbaum;,citation_publication_date=1976;,citation_cover_date=1976;,citation_year=1976;">
+<meta name="citation_reference" content="citation_title=The Winograd schema challenge;,citation_author=Hector J. Levesque;,citation_author=Ernest Davis;,citation_author=Leora Morgenstern;,citation_publication_date=2012;,citation_cover_date=2012;,citation_year=2012;,citation_conference_title=Proceedings of the thirteenth international conference on principles of knowledge representation and reasoning (KR 2012);">
+<meta name="citation_reference" content="citation_title=Efficient estimation of word representations in vector space;,citation_author=Tomas Mikolov;,citation_author=Kai Chen;,citation_author=Greg Corrado;,citation_author=Jeffrey Dean;,citation_publication_date=2013;,citation_cover_date=2013;,citation_year=2013;,citation_publisher=arXiv:1301.3781;">
+<meta name="citation_reference" content="citation_title=Linguistic regularities in continuous space word representations;,citation_author=Tomas Mikolov;,citation_author=Wen-tau Yih;,citation_author=Geoffrey Zweig;,citation_publication_date=2013;,citation_cover_date=2013;,citation_year=2013;,citation_conference_title=Proceedings of the 2013 conference of the north american chapter of the association for computational linguistics: Human language technologies;">
+<meta name="citation_reference" content="citation_title=Neural machine translation by jointly learning to align and translate;,citation_author=Dzmitry Bahdanau;,citation_author=Kyunghyun Cho;,citation_author=Yoshua Bengio;,citation_publication_date=2015;,citation_cover_date=2015;,citation_year=2015;,citation_conference_title=International conference on learning representations (ICLR);">
+<meta name="citation_reference" content="citation_title=Attention is all you need;,citation_author=Ashish Vaswani;,citation_author=Noam Shazeer;,citation_author=Niki Parmar;,citation_author=Jakob Uszkoreit;,citation_author=Llion Jones;,citation_author=Aidan N. Gomez;,citation_author=Łukasz Kaiser;,citation_author=Illia Polosukhin;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_conference_title=Advances in neural information processing systems 30 (NeurIPS 2017);">
+<meta name="citation_reference" content="citation_title=BERT: Pre-training of deep bidirectional transformers for language understanding;,citation_author=Jacob Devlin;,citation_author=Ming-Wei Chang;,citation_author=Kenton Lee;,citation_author=Kristina Toutanova;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_conference_title=Proceedings of the 2019 conference of the north american chapter of the association for computational linguistics (NAACL-HLT);">
+<meta name="citation_reference" content="citation_title=Language models are few-shot learners;,citation_author=Tom B. Brown;,citation_author=others;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_conference_title=Advances in neural information processing systems 33 (NeurIPS 2020);">
+<meta name="citation_reference" content="citation_title=Indexing by latent semantic analysis;,citation_author=Scott Deerwester;,citation_author=Susan T. Dumais;,citation_author=George W. Furnas;,citation_author=Thomas K. Landauer;,citation_author=Richard Harshman;,citation_publication_date=1990;,citation_cover_date=1990;,citation_year=1990;,citation_issue=6;,citation_volume=41;,citation_journal_title=Journal of the American Society for Information Science;">
+<meta name="citation_reference" content="citation_title=A neural probabilistic language model;,citation_author=Yoshua Bengio;,citation_author=Réjean Ducharme;,citation_author=Pascal Vincent;,citation_author=Christian Jauvin;,citation_publication_date=2003;,citation_cover_date=2003;,citation_year=2003;,citation_volume=3;,citation_journal_title=Journal of Machine Learning Research;">
+<meta name="citation_reference" content="citation_title=Distributed representations of words and phrases and their compositionality;,citation_author=Tomas Mikolov;,citation_author=Ilya Sutskever;,citation_author=Kai Chen;,citation_author=Greg S. Corrado;,citation_author=Jeffrey Dean;,citation_publication_date=2013;,citation_cover_date=2013;,citation_year=2013;,citation_conference_title=Advances in neural information processing systems 26 (NIPS 2013);">
+<meta name="citation_reference" content="citation_title=Noise-contrastive estimation of unnormalized statistical models, with applications to natural image statistics;,citation_author=Michael U. Gutmann;,citation_author=Aapo Hyvärinen;,citation_publication_date=2012;,citation_cover_date=2012;,citation_year=2012;,citation_volume=13;,citation_journal_title=Journal of Machine Learning Research;">
+<meta name="citation_reference" content="citation_title=Neural word embedding as implicit matrix factorization;,citation_author=Omer Levy;,citation_author=Yoav Goldberg;,citation_publication_date=2014;,citation_cover_date=2014;,citation_year=2014;,citation_conference_title=Advances in neural information processing systems 27 (NIPS 2014);">
+<meta name="citation_reference" content="citation_title=GloVe: Global vectors for word representation;,citation_author=Jeffrey Pennington;,citation_author=Richard Socher;,citation_author=Christopher D. Manning;,citation_publication_date=2014;,citation_cover_date=2014;,citation_year=2014;,citation_conference_title=Proceedings of the 2014 conference on empirical methods in natural language processing (EMNLP);,citation_conference=Association for Computational Linguistics;">
+<meta name="citation_reference" content="citation_title=Man is to computer programmer as woman is to homemaker? Debiasing word embeddings;,citation_author=Tolga Bolukbasi;,citation_author=Kai-Wei Chang;,citation_author=James Y. Zou;,citation_author=Venkatesh Saligrama;,citation_author=Adam T. Kalai;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_conference_title=Advances in neural information processing systems 29 (NIPS 2016);">
+<meta name="citation_reference" content="citation_title=Visualizing data using t-SNE;,citation_author=Laurens Maaten;,citation_author=Geoffrey Hinton;,citation_publication_date=2008;,citation_cover_date=2008;,citation_year=2008;,citation_volume=9;,citation_journal_title=Journal of Machine Learning Research;">
+<meta name="citation_reference" content="citation_title=Learning representations by back-propagating errors;,citation_author=David E. Rumelhart;,citation_author=Geoffrey E. Hinton;,citation_author=Ronald J. Williams;,citation_publication_date=1986;,citation_cover_date=1986;,citation_year=1986;,citation_volume=323;,citation_journal_title=Nature;">
+<meta name="citation_reference" content="citation_title=Finding structure in time;,citation_author=Jeffrey L. Elman;,citation_publication_date=1990;,citation_cover_date=1990;,citation_year=1990;,citation_issue=2;,citation_volume=14;,citation_journal_title=Cognitive Science;">
+<meta name="citation_reference" content="citation_title=Backpropagation through time: What it does and how to do it;,citation_author=Paul J. Werbos;,citation_publication_date=1990;,citation_cover_date=1990;,citation_year=1990;,citation_issue=10;,citation_volume=78;,citation_journal_title=Proceedings of the IEEE;">
+<meta name="citation_reference" content="citation_title=Learning long-term dependencies with gradient descent is difficult;,citation_author=Yoshua Bengio;,citation_author=Patrice Simard;,citation_author=Paolo Frasconi;,citation_publication_date=1994;,citation_cover_date=1994;,citation_year=1994;,citation_issue=2;,citation_volume=5;,citation_journal_title=IEEE Transactions on Neural Networks;">
+<meta name="citation_reference" content="citation_title=Bidirectional recurrent neural networks;,citation_author=Mike Schuster;,citation_author=Kuldip K. Paliwal;,citation_publication_date=1997;,citation_cover_date=1997;,citation_year=1997;,citation_issue=11;,citation_volume=45;,citation_journal_title=IEEE Transactions on Signal Processing;">
+<meta name="citation_reference" content="citation_title=Learning to forget: Continual prediction with LSTM;,citation_author=Felix A. Gers;,citation_author=Jürgen Schmidhuber;,citation_author=Fred Cummins;,citation_publication_date=2000;,citation_cover_date=2000;,citation_year=2000;,citation_issue=10;,citation_volume=12;,citation_journal_title=Neural Computation;">
+<meta name="citation_reference" content="citation_title=Recurrent neural network based language model;,citation_author=Tomas Mikolov;,citation_author=Martin Karafiát;,citation_author=Lukáš Burget;,citation_author=Jan Černocký;,citation_author=Sanjeev Khudanpur;,citation_publication_date=2010;,citation_cover_date=2010;,citation_year=2010;,citation_conference_title=Proceedings of interspeech 2010;">
+<meta name="citation_reference" content="citation_title=On the difficulty of training recurrent neural networks;,citation_author=Razvan Pascanu;,citation_author=Tomas Mikolov;,citation_author=Yoshua Bengio;,citation_publication_date=2013;,citation_cover_date=2013;,citation_year=2013;,citation_volume=28;,citation_conference_title=Proceedings of the 30th international conference on machine learning (ICML);,citation_series_title=Proceedings of machine learning research;">
+<meta name="citation_reference" content="citation_title=Learning phrase representations using RNN encoder–decoder for statistical machine translation;,citation_author=Kyunghyun Cho;,citation_author=Bart Merriënboer;,citation_author=Caglar Gulcehre;,citation_author=Dzmitry Bahdanau;,citation_author=Fethi Bougares;,citation_author=Holger Schwenk;,citation_author=Yoshua Bengio;,citation_publication_date=2014;,citation_cover_date=2014;,citation_year=2014;,citation_conference_title=Proceedings of the 2014 conference on empirical methods in natural language processing (EMNLP);,citation_conference=Association for Computational Linguistics;">
+<meta name="citation_reference" content="citation_title=Empirical evaluation of gated recurrent neural networks on sequence modeling;,citation_author=Junyoung Chung;,citation_author=Caglar Gulcehre;,citation_author=Kyunghyun Cho;,citation_author=Yoshua Bengio;,citation_publication_date=2014;,citation_cover_date=2014;,citation_year=2014;,citation_publisher=NIPS 2014 Workshop on Deep Learning, arXiv:1412.3555;">
+<meta name="citation_reference" content="citation_title=Sequence to sequence learning with neural networks;,citation_author=Ilya Sutskever;,citation_author=Oriol Vinyals;,citation_author=Quoc V. Le;,citation_publication_date=2014;,citation_cover_date=2014;,citation_year=2014;,citation_conference_title=Advances in neural information processing systems 27 (NIPS 2014);">
+<meta name="citation_reference" content="citation_title=Effective approaches to attention-based neural machine translation;,citation_author=Thang Luong;,citation_author=Hieu Pham;,citation_author=Christopher D. Manning;,citation_publication_date=2015;,citation_cover_date=2015;,citation_year=2015;,citation_conference_title=Proceedings of the 2015 conference on empirical methods in natural language processing (EMNLP);,citation_conference=Association for Computational Linguistics;">
+<meta name="citation_reference" content="citation_title=Long short-term memory-networks for machine reading;,citation_author=Jianpeng Cheng;,citation_author=Li Dong;,citation_author=Mirella Lapata;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_conference_title=Proceedings of the 2016 conference on empirical methods in natural language processing (EMNLP);,citation_conference=Association for Computational Linguistics;">
+<meta name="citation_reference" content="citation_title=Deep residual learning for image recognition;,citation_author=Kaiming He;,citation_author=Xiangyu Zhang;,citation_author=Shaoqing Ren;,citation_author=Jian Sun;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_doi=10.1109/CVPR.2016.90;,citation_conference_title=Proceedings of the IEEE conference on computer vision and pattern recognition (CVPR);">
+<meta name="citation_reference" content="citation_title=Layer normalization;,citation_author=Jimmy Lei Ba;,citation_author=Jamie Ryan Kiros;,citation_author=Geoffrey E. Hinton;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_publisher=arXiv:1607.06450;">
+<meta name="citation_reference" content="citation_title=Transformer feed-forward layers are key-value memories;,citation_author=Mor Geva;,citation_author=Roei Schuster;,citation_author=Jonathan Berant;,citation_author=Omer Levy;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_conference_title=Proceedings of the 2021 conference on empirical methods in natural language processing (EMNLP);,citation_conference=Association for Computational Linguistics;">
+<meta name="citation_reference" content="citation_title=A learning algorithm for continually running fully recurrent neural networks;,citation_author=Ronald J. Williams;,citation_author=David Zipser;,citation_publication_date=1989;,citation_cover_date=1989;,citation_year=1989;,citation_issue=2;,citation_volume=1;,citation_journal_title=Neural Computation;">
+<meta name="citation_reference" content="citation_title=“Cloze procedure”: A new tool for measuring readability;,citation_author=Wilson L. Taylor;,citation_publication_date=1953;,citation_cover_date=1953;,citation_year=1953;,citation_issue=4;,citation_volume=30;,citation_journal_title=Journalism Quarterly;">
+<meta name="citation_reference" content="citation_title=Deep contextualized word representations;,citation_author=Matthew E. Peters;,citation_author=Mark Neumann;,citation_author=Mohit Iyyer;,citation_author=Matt Gardner;,citation_author=Christopher Clark;,citation_author=Kenton Lee;,citation_author=Luke Zettlemoyer;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_conference_title=Proceedings of the 2018 conference of the north american chapter of the association for computational linguistics (NAACL-HLT);">
+<meta name="citation_reference" content="citation_title=Universal language model fine-tuning for text classification;,citation_author=Jeremy Howard;,citation_author=Sebastian Ruder;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_conference_title=Proceedings of the 56th annual meeting of the association for computational linguistics (ACL);">
+<meta name="citation_reference" content="citation_title=Improving language understanding by generative pre-training;,citation_author=Alec Radford;,citation_author=Karthik Narasimhan;,citation_author=Tim Salimans;,citation_author=Ilya Sutskever;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_technical_report_institution=OpenAI;">
+<meta name="citation_reference" content="citation_title=Aligning books and movies: Towards story-like visual explanations by watching movies and reading books;,citation_author=Yukun Zhu;,citation_author=Ryan Kiros;,citation_author=Richard Zemel;,citation_author=Ruslan Salakhutdinov;,citation_author=Raquel Urtasun;,citation_author=Antonio Torralba;,citation_author=Sanja Fidler;,citation_publication_date=2015;,citation_cover_date=2015;,citation_year=2015;,citation_conference_title=Proceedings of the IEEE international conference on computer vision (ICCV);">
+<meta name="citation_reference" content="citation_title=Google’s neural machine translation system: Bridging the gap between human and machine translation;,citation_author=Yonghui Wu;,citation_author=Mike Schuster;,citation_author=Zhifeng Chen;,citation_author=Quoc V. Le;,citation_author=Mohammad Norouzi;,citation_author=others;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_publisher=arXiv:1609.08144;">
+<meta name="citation_reference" content="citation_title=GLUE: A multi-task benchmark and analysis platform for natural language understanding;,citation_author=Alex Wang;,citation_author=Amanpreet Singh;,citation_author=Julian Michael;,citation_author=Felix Hill;,citation_author=Omer Levy;,citation_author=Samuel R. Bowman;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_conference_title=International conference on learning representations (ICLR);">
+<meta name="citation_reference" content="citation_title=SQuAD: 100,000+ questions for machine comprehension of text;,citation_author=Pranav Rajpurkar;,citation_author=Jian Zhang;,citation_author=Konstantin Lopyrev;,citation_author=Percy Liang;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_conference_title=Proceedings of the 2016 conference on empirical methods in natural language processing (EMNLP);">
+<meta name="citation_reference" content="citation_title=Know what you don’t know: Unanswerable questions for SQuAD;,citation_author=Pranav Rajpurkar;,citation_author=Robin Jia;,citation_author=Percy Liang;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_conference_title=Proceedings of the 56th annual meeting of the association for computational linguistics (ACL);">
+<meta name="citation_reference" content="citation_title=SWAG: A large-scale adversarial dataset for grounded commonsense inference;,citation_author=Rowan Zellers;,citation_author=Yonatan Bisk;,citation_author=Roy Schwartz;,citation_author=Yejin Choi;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_conference_title=Proceedings of the 2018 conference on empirical methods in natural language processing (EMNLP);">
+<meta name="citation_reference" content="citation_title=Introduction to the CoNLL-2003 shared task: Language-independent named entity recognition;,citation_author=Erik F. Tjong Kim Sang;,citation_author=Fien De Meulder;,citation_publication_date=2003;,citation_cover_date=2003;,citation_year=2003;,citation_conference_title=Proceedings of the seventh conference on natural language learning (CoNLL);">
+<meta name="citation_reference" content="citation_title=Contextual string embeddings for sequence labeling;,citation_author=Alan Akbik;,citation_author=Duncan Blythe;,citation_author=Roland Vollgraf;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_conference_title=Proceedings of the 27th international conference on computational linguistics (COLING);">
+<meta name="citation_reference" content="citation_title=RoBERTa: A robustly optimized BERT pretraining approach;,citation_author=Yinhan Liu;,citation_author=Myle Ott;,citation_author=Naman Goyal;,citation_author=Jingfei Du;,citation_author=Mandar Joshi;,citation_author=Danqi Chen;,citation_author=Omer Levy;,citation_author=Mike Lewis;,citation_author=Luke Zettlemoyer;,citation_author=Veselin Stoyanov;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_publisher=arXiv:1907.11692;">
+<meta name="citation_reference" content="citation_title=Distilling the knowledge in a neural network;,citation_author=Geoffrey Hinton;,citation_author=Oriol Vinyals;,citation_author=Jeff Dean;,citation_publication_date=2015;,citation_cover_date=2015;,citation_year=2015;,citation_publisher=arXiv:1503.02531;">
+<meta name="citation_reference" content="citation_title=DistilBERT, a distilled version of BERT: Smaller, faster, cheaper and lighter;,citation_author=Victor Sanh;,citation_author=Lysandre Debut;,citation_author=Julien Chaumond;,citation_author=Thomas Wolf;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_conference_title=5th workshop on energy efficient machine learning and cognitive computing, NeurIPS 2019;">
+<meta name="citation_reference" content="citation_title=ALBERT: A lite BERT for self-supervised learning of language representations;,citation_author=Zhenzhong Lan;,citation_author=Mingda Chen;,citation_author=Sebastian Goodman;,citation_author=Kevin Gimpel;,citation_author=Piyush Sharma;,citation_author=Radu Soricut;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_conference_title=International conference on learning representations (ICLR);">
+<meta name="citation_reference" content="citation_title=Language models are unsupervised multitask learners;,citation_author=Alec Radford;,citation_author=Jeffrey Wu;,citation_author=Rewon Child;,citation_author=David Luan;,citation_author=Dario Amodei;,citation_author=Ilya Sutskever;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_technical_report_institution=OpenAI;">
+<meta name="citation_reference" content="citation_title=The curious case of neural text degeneration;,citation_author=Ari Holtzman;,citation_author=Jan Buys;,citation_author=Li Du;,citation_author=Maxwell Forbes;,citation_author=Yejin Choi;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_conference_title=International conference on learning representations (ICLR);">
+<meta name="citation_reference" content="citation_title=Hierarchical neural story generation;,citation_author=Angela Fan;,citation_author=Mike Lewis;,citation_author=Yann Dauphin;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_conference_title=Proceedings of the 56th annual meeting of the association for computational linguistics (ACL);">
+<meta name="citation_reference" content="citation_title=On layer normalization in the transformer architecture;,citation_author=Ruibin Xiong;,citation_author=Yunchang Yang;,citation_author=Di He;,citation_author=Kai Zheng;,citation_author=Shuxin Zheng;,citation_author=Chen Xing;,citation_author=Huishuai Zhang;,citation_author=Yanyan Lan;,citation_author=Liwei Wang;,citation_author=Tie-Yan Liu;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_conference_title=Proceedings of the 37th international conference on machine learning (ICML);">
+<meta name="citation_reference" content="citation_title=TruthfulQA: Measuring how models mimic human falsehoods;,citation_author=Stephanie Lin;,citation_author=Jacob Hilton;,citation_author=Owain Evans;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_conference_title=Proceedings of the 60th annual meeting of the association for computational linguistics (ACL);">
+<meta name="citation_reference" content="citation_title=A learning algorithm for Boltzmann machines;,citation_author=David H. Ackley;,citation_author=Geoffrey E. Hinton;,citation_author=Terrence J. Sejnowski;,citation_publication_date=1985;,citation_cover_date=1985;,citation_year=1985;,citation_issue=1;,citation_volume=9;,citation_journal_title=Cognitive Science;">
+<meta name="citation_reference" content="citation_title=Deep learning scaling is predictable, empirically;,citation_author=Joel Hestness;,citation_author=Sharan Narang;,citation_author=Newsha Ardalani;,citation_author=Gregory Diamos;,citation_author=Heewoo Jun;,citation_author=Hassan Kianinejad;,citation_author=Md. Mostofa Ali Patwary;,citation_author=Yang Yang;,citation_author=Yanqi Zhou;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_fulltext_html_url=https://arxiv.org/abs/1712.00409;">
+<meta name="citation_reference" content="citation_title=Scaling laws for neural language models;,citation_author=Jared Kaplan;,citation_author=Sam McCandlish;,citation_author=Tom Henighan;,citation_author=Tom B. Brown;,citation_author=Benjamin Chess;,citation_author=Rewon Child;,citation_author=Scott Gray;,citation_author=Alec Radford;,citation_author=Jeffrey Wu;,citation_author=Dario Amodei;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_fulltext_html_url=https://arxiv.org/abs/2001.08361;">
+<meta name="citation_reference" content="citation_title=Training compute-optimal large language models;,citation_author=Jordan Hoffmann;,citation_author=Sebastian Borgeaud;,citation_author=Arthur Mensch;,citation_author=Elena Buchatskaya;,citation_author=Trevor Cai;,citation_author=Eliza Rutherford;,citation_author=Diego Las Casas;,citation_author=Lisa Anne Hendricks;,citation_author=Johannes Welbl;,citation_author=Aidan Clark;,citation_author=Tom Hennigan;,citation_author=Eric Noland;,citation_author=Katie Millican;,citation_author=George Driessche;,citation_author=Bogdan Damoc;,citation_author=Aurelia Guy;,citation_author=Simon Osindero;,citation_author=Karen Simonyan;,citation_author=Erich Elsen;,citation_author=Jack W. Rae;,citation_author=Oriol Vinyals;,citation_author=Laurent Sifre;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_conference_title=Advances in neural information processing systems 35 (NeurIPS);">
+<meta name="citation_reference" content="citation_title=GPT-4 technical report;,citation_author=OpenAI;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_fulltext_html_url=https://arxiv.org/abs/2303.08774;">
+<meta name="citation_reference" content="citation_title=Scaling language models: Methods, analysis &amp;amp;amp; insights from training Gopher;,citation_author=Jack W. Rae;,citation_author=Sebastian Borgeaud;,citation_author=Trevor Cai;,citation_author=Katie Millican;,citation_author=Jordan Hoffmann;,citation_author=others;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_fulltext_html_url=https://arxiv.org/abs/2112.11446;">
+<meta name="citation_reference" content="citation_title=Measuring massive multitask language understanding;,citation_author=Dan Hendrycks;,citation_author=Collin Burns;,citation_author=Steven Basart;,citation_author=Andy Zou;,citation_author=Mantas Mazeika;,citation_author=Dawn Song;,citation_author=Jacob Steinhardt;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_conference_title=International conference on learning representations (ICLR);">
+<meta name="citation_reference" content="citation_title=LLaMA: Open and efficient foundation language models;,citation_author=Hugo Touvron;,citation_author=Thibaut Lavril;,citation_author=Gautier Izacard;,citation_author=Xavier Martinet;,citation_author=Marie-Anne Lachaux;,citation_author=Timothée Lacroix;,citation_author=Baptiste Rozière;,citation_author=Naman Goyal;,citation_author=Eric Hambro;,citation_author=Faisal Azhar;,citation_author=Aurelien Rodriguez;,citation_author=Armand Joulin;,citation_author=Edouard Grave;,citation_author=Guillaume Lample;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_fulltext_html_url=https://arxiv.org/abs/2302.13971;">
+<meta name="citation_reference" content="citation_title=The Llama 3 herd of models;,citation_author=Aaron Grattafiori;,citation_author=Abhimanyu Dubey;,citation_author=Abhinav Jauhri;,citation_author=others;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_fulltext_html_url=https://arxiv.org/abs/2407.21783;">
+<meta name="citation_reference" content="citation_title=Emergent abilities of large language models;,citation_author=Jason Wei;,citation_author=Yi Tay;,citation_author=Rishi Bommasani;,citation_author=Colin Raffel;,citation_author=Barret Zoph;,citation_author=Sebastian Borgeaud;,citation_author=Dani Yogatama;,citation_author=Maarten Bosma;,citation_author=Denny Zhou;,citation_author=Donald Metzler;,citation_author=Ed H. Chi;,citation_author=Tatsunori Hashimoto;,citation_author=Oriol Vinyals;,citation_author=Percy Liang;,citation_author=Jeff Dean;,citation_author=William Fedus;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_journal_title=Transactions on Machine Learning Research (TMLR);">
+<meta name="citation_reference" content="citation_title=Are emergent abilities of large language models a mirage?;,citation_author=Rylan Schaeffer;,citation_author=Brando Miranda;,citation_author=Sanmi Koyejo;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_conference_title=Advances in neural information processing systems 36 (NeurIPS);">
+<meta name="citation_reference" content="citation_title=Chinchilla scaling: A replication attempt;,citation_author=Tamay Besiroglu;,citation_author=Ege Erdil;,citation_author=Matthew Barnett;,citation_author=Josh You;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_fulltext_html_url=https://arxiv.org/abs/2404.10102;">
+<meta name="citation_reference" content="citation_title=Llama 2: Open foundation and fine-tuned chat models;,citation_author=Hugo Touvron;,citation_author=Louis Martin;,citation_author=Kevin Stone;,citation_author=others;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_fulltext_html_url=https://arxiv.org/abs/2307.09288;">
+<meta name="citation_reference" content="citation_title=DeepSeek-V2: A strong, economical, and efficient mixture-of-experts language model;,citation_author=DeepSeek-AI;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_fulltext_html_url=https://arxiv.org/abs/2405.04434;">
+<meta name="citation_reference" content="citation_title=DeepSeek-V3 technical report;,citation_author=DeepSeek-AI;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_fulltext_html_url=https://arxiv.org/abs/2412.19437;">
+<meta name="citation_reference" content="citation_title=DeepSeek-R1: Incentivizing reasoning capability in LLMs via reinforcement learning;,citation_author=DeepSeek-AI;,citation_publication_date=2025;,citation_cover_date=2025;,citation_year=2025;,citation_fulltext_html_url=https://arxiv.org/abs/2501.12948;">
+<meta name="citation_reference" content="citation_title=Model cards for model reporting;,citation_author=Margaret Mitchell;,citation_author=Simone Wu;,citation_author=Andrew Zaldivar;,citation_author=Parker Barnes;,citation_author=Lucy Vasserman;,citation_author=Ben Hutchinson;,citation_author=Elena Spitzer;,citation_author=Inioluwa Deborah Raji;,citation_author=Timnit Gebru;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_conference_title=Proceedings of the conference on fairness, accountability, and transparency (FAT*);,citation_conference=ACM;">
+<meta name="citation_reference" content="citation_title=Chain-of-thought prompting elicits reasoning in large language models;,citation_author=Jason Wei;,citation_author=Xuezhi Wang;,citation_author=Dale Schuurmans;,citation_author=Maarten Bosma;,citation_author=Brian Ichter;,citation_author=Fei Xia;,citation_author=Ed H. Chi;,citation_author=Quoc V. Le;,citation_author=Denny Zhou;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_conference_title=Advances in neural information processing systems 35 (NeurIPS);">
+<meta name="citation_reference" content="citation_title=Learning to reason with LLMs;,citation_author=OpenAI;,citation_publication_date=2024-09;,citation_cover_date=2024-09;,citation_year=2024;,citation_fulltext_html_url=https://openai.com/index/learning-to-reason-with-llms/;,citation_publisher=OpenAI research report, 12 September 2024;">
+<meta name="citation_reference" content="citation_title=Deep reinforcement learning from human preferences;,citation_author=Paul F. Christiano;,citation_author=Jan Leike;,citation_author=Tom Brown;,citation_author=Miljan Martic;,citation_author=Shane Legg;,citation_author=Dario Amodei;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_conference_title=Advances in neural information processing systems 30 (NeurIPS);">
+<meta name="citation_reference" content="citation_title=Training language models to follow instructions with human feedback;,citation_author=Long Ouyang;,citation_author=Jeff Wu;,citation_author=Xu Jiang;,citation_author=Diogo Almeida;,citation_author=Carroll L. Wainwright;,citation_author=Pamela Mishkin;,citation_author=Chong Zhang;,citation_author=Sandhini Agarwal;,citation_author=Katarina Slama;,citation_author=Alex Ray;,citation_author=others;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_conference_title=Advances in neural information processing systems 35 (NeurIPS);">
+<meta name="citation_reference" content="citation_title=Constitutional AI: Harmlessness from AI feedback;,citation_author=Yuntao Bai;,citation_author=Saurav Kadavath;,citation_author=Sandipan Kundu;,citation_author=Amanda Askell;,citation_author=Jackson Kernion;,citation_author=Andy Jones;,citation_author=Anna Chen;,citation_author=Anna Goldie;,citation_author=Azalia Mirhoseini;,citation_author=Cameron McKinnon;,citation_author=others;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_fulltext_html_url=https://arxiv.org/abs/2212.08073;">
+<meta name="citation_reference" content="citation_title=DeepSeekMath: Pushing the limits of mathematical reasoning in open language models;,citation_author=Zhihong Shao;,citation_author=Peiyi Wang;,citation_author=Qihao Zhu;,citation_author=Runxin Xu;,citation_author=Junxiao Song;,citation_author=Xiao Bi;,citation_author=Haowei Zhang;,citation_author=Mingchuan Zhang;,citation_author=Y. K. Li;,citation_author=Y. Wu;,citation_author=Daya Guo;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_fulltext_html_url=https://arxiv.org/abs/2402.03300;">
+<meta name="citation_reference" content="citation_title=Proximal policy optimization algorithms;,citation_author=John Schulman;,citation_author=Filip Wolski;,citation_author=Prafulla Dhariwal;,citation_author=Alec Radford;,citation_author=Oleg Klimov;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_fulltext_html_url=https://arxiv.org/abs/1707.06347;">
+<meta name="citation_reference" content="citation_title=Gemini: A family of highly capable multimodal models;,citation_author=Gemini Team, Google;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_fulltext_html_url=https://arxiv.org/abs/2312.11805;">
+<meta name="citation_reference" content="citation_title=Gemini 1.5: Unlocking multimodal understanding across millions of tokens of context;,citation_author=Gemini Team, Google;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_fulltext_html_url=https://arxiv.org/abs/2403.05530;">
+<meta name="citation_reference" content="citation_title=Fast transformer decoding: One write-head is all you need;,citation_author=Noam Shazeer;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_fulltext_html_url=https://arxiv.org/abs/1911.02150;">
+<meta name="citation_reference" content="citation_title=GQA: Training generalized multi-query transformer models from multi-head checkpoints;,citation_author=Joshua Ainslie;,citation_author=James Lee-Thorp;,citation_author=Michiel Jong;,citation_author=Yury Zemlyanskiy;,citation_author=Federico Lebrón;,citation_author=Sumit Sanghai;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_conference_title=Proceedings of the 2023 conference on empirical methods in natural language processing (EMNLP);">
+<meta name="citation_reference" content="citation_title=RoFormer: Enhanced transformer with rotary position embedding;,citation_author=Jianlin Su;,citation_author=Murtadha Ahmed;,citation_author=Yu Lu;,citation_author=Shengfeng Pan;,citation_author=Wen Bo;,citation_author=Yunfeng Liu;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_volume=568;,citation_journal_title=Neurocomputing;">
+<meta name="citation_reference" content="citation_title=Train short, test long: Attention with linear biases enables input length extrapolation;,citation_author=Ofir Press;,citation_author=Noah A. Smith;,citation_author=Mike Lewis;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_conference_title=International conference on learning representations (ICLR);">
+<meta name="citation_reference" content="citation_title=Extending context window of large language models via positional interpolation;,citation_author=Shouyuan Chen;,citation_author=Sherman Wong;,citation_author=Liangjian Chen;,citation_author=Yuandong Tian;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_fulltext_html_url=https://arxiv.org/abs/2306.15595;">
+<meta name="citation_reference" content="citation_title=Adaptive mixtures of local experts;,citation_author=Robert A. Jacobs;,citation_author=Michael I. Jordan;,citation_author=Steven J. Nowlan;,citation_author=Geoffrey E. Hinton;,citation_publication_date=1991;,citation_cover_date=1991;,citation_year=1991;,citation_issue=1;,citation_volume=3;,citation_journal_title=Neural Computation;">
+<meta name="citation_reference" content="citation_title=Outrageously large neural networks: The sparsely-gated mixture-of-experts layer;,citation_author=Noam Shazeer;,citation_author=Azalia Mirhoseini;,citation_author=Krzysztof Maziarz;,citation_author=Andy Davis;,citation_author=Quoc Le;,citation_author=Geoffrey Hinton;,citation_author=Jeff Dean;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_conference_title=International conference on learning representations (ICLR);">
+<meta name="citation_reference" content="citation_title=Mixtral of experts;,citation_author=Albert Q. Jiang;,citation_author=Alexandre Sablayrolles;,citation_author=Antoine Roux;,citation_author=Arthur Mensch;,citation_author=others;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_fulltext_html_url=https://arxiv.org/abs/2401.04088;">
+<meta name="citation_reference" content="citation_title=DeepSeekMoE: Towards ultimate expert specialization in mixture-of-experts language models;,citation_author=Damai Dai;,citation_author=Chengqi Deng;,citation_author=Chenggang Zhao;,citation_author=R. X. Xu;,citation_author=Huazuo Gao;,citation_author=others;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_conference_title=Proceedings of the 62nd annual meeting of the association for computational linguistics (ACL);">
+<meta name="citation_reference" content="citation_title=Are we done with MMLU?;,citation_author=Aryo Pradipta Gema;,citation_author=Joshua Ong Jun Leang;,citation_author=Giwon Hong;,citation_author=Alessio Devoto;,citation_author=others;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_fulltext_html_url=https://arxiv.org/abs/2406.04127;">
+<meta name="citation_reference" content="citation_title=GPQA: A graduate-level google-proof Q&amp;amp;amp;A benchmark;,citation_author=David Rein;,citation_author=Betty Li Hou;,citation_author=Asa Cooper Stickland;,citation_author=Jackson Petty;,citation_author=Richard Yuanzhe Pang;,citation_author=Julien Dirani;,citation_author=Julian Michael;,citation_author=Samuel R. Bowman;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_fulltext_html_url=https://arxiv.org/abs/2311.12022;">
+<meta name="citation_reference" content="citation_title=SWE-bench: Can language models resolve real-world GitHub issues?;,citation_author=Carlos E. Jimenez;,citation_author=John Yang;,citation_author=Alexander Wettig;,citation_author=Shunyu Yao;,citation_author=Kexin Pei;,citation_author=Ofir Press;,citation_author=Karthik Narasimhan;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_conference_title=International conference on learning representations (ICLR);">
+<meta name="citation_reference" content="citation_title=Finetuned language models are zero-shot learners;,citation_author=Jason Wei;,citation_author=Maarten Bosma;,citation_author=Vincent Y. Zhao;,citation_author=Kelvin Guu;,citation_author=Adams Wei Yu;,citation_author=Brian Lester;,citation_author=Nan Du;,citation_author=Andrew M. Dai;,citation_author=Quoc V. Le;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_conference_title=International conference on learning representations (ICLR);">
+<meta name="citation_reference" content="citation_title=Rank analysis of incomplete block designs: I. The method of paired comparisons;,citation_author=Ralph Allan Bradley;,citation_author=Milton E. Terry;,citation_publication_date=1952;,citation_cover_date=1952;,citation_year=1952;,citation_issue=3/4;,citation_volume=39;,citation_journal_title=Biometrika;">
+<meta name="citation_reference" content="citation_title=Learning to summarize from human feedback;,citation_author=Nisan Stiennon;,citation_author=Long Ouyang;,citation_author=Jeff Wu;,citation_author=Daniel M. Ziegler;,citation_author=Ryan Lowe;,citation_author=Chelsea Voss;,citation_author=Alec Radford;,citation_author=Dario Amodei;,citation_author=Paul Christiano;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_conference_title=Advances in neural information processing systems 33 (NeurIPS);">
+<meta name="citation_reference" content="citation_title=Simple statistical gradient-following algorithms for connectionist reinforcement learning;,citation_author=Ronald J. Williams;,citation_publication_date=1992;,citation_cover_date=1992;,citation_year=1992;,citation_issue=3–4;,citation_volume=8;,citation_journal_title=Machine Learning;">
+<meta name="citation_reference" content="citation_title=Introducing ChatGPT;,citation_author=OpenAI;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_publisher=https://openai.com/index/chatgpt/;">
+<meta name="citation_reference" content="citation_title=Fine-tuning language models from human preferences;,citation_author=Daniel M. Ziegler;,citation_author=Nisan Stiennon;,citation_author=Jeffrey Wu;,citation_author=Tom B. Brown;,citation_author=Alec Radford;,citation_author=Dario Amodei;,citation_author=Paul Christiano;,citation_author=Geoffrey Irving;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_fulltext_html_url=https://arxiv.org/abs/1909.08593;">
+<meta name="citation_reference" content="citation_title=Problems of monetary management: The U.K. experience;,citation_author=Charles A. E. Goodhart;,citation_publication_date=1975;,citation_cover_date=1975;,citation_year=1975;,citation_volume=I;,citation_inbook_title=Papers in monetary economics;">
+<meta name="citation_reference" content="citation_title=“Improving ratings”: Audit in the British university system;,citation_author=Marilyn Strathern;,citation_publication_date=1997;,citation_cover_date=1997;,citation_year=1997;,citation_issue=3;,citation_volume=5;,citation_journal_title=European Review;">
+<meta name="citation_reference" content="citation_title=Scaling laws for reward model overoptimization;,citation_author=Leo Gao;,citation_author=John Schulman;,citation_author=Jacob Hilton;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_volume=202;,citation_conference_title=Proceedings of the 40th international conference on machine learning (ICML);,citation_series_title=Proceedings of machine learning research;">
+<meta name="citation_reference" content="citation_title=Direct preference optimization: Your language model is secretly a reward model;,citation_author=Rafael Rafailov;,citation_author=Archit Sharma;,citation_author=Eric Mitchell;,citation_author=Stefano Ermon;,citation_author=Christopher D. Manning;,citation_author=Chelsea Finn;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_conference_title=Advances in neural information processing systems 36 (NeurIPS);">
+<meta name="citation_reference" content="citation_title=A general language assistant as a laboratory for alignment;,citation_author=Amanda Askell;,citation_author=Yuntao Bai;,citation_author=Anna Chen;,citation_author=Dawn Drain;,citation_author=Deep Ganguli;,citation_author=Tom Henighan;,citation_author=Andy Jones;,citation_author=Nicholas Joseph;,citation_author=Ben Mann;,citation_author=Nova DasSarma;,citation_author=others;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_fulltext_html_url=https://arxiv.org/abs/2112.00861;">
+<meta name="citation_reference" content="citation_title=Adam: A method for stochastic optimization;,citation_author=Diederik P. Kingma;,citation_author=Jimmy Ba;,citation_publication_date=2015;,citation_cover_date=2015;,citation_year=2015;,citation_conference_title=International conference on learning representations (ICLR);">
+<meta name="citation_reference" content="citation_title=ZeRO: Memory optimizations toward training trillion parameter models;,citation_author=Samyam Rajbhandari;,citation_author=Jeff Rasley;,citation_author=Olatunji Ruwase;,citation_author=Yuxiong He;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_conference_title=Proceedings of the international conference for high performance computing, networking, storage and analysis (SC20);">
+<meta name="citation_reference" content="citation_title=LoRA: Low-rank adaptation of large language models;,citation_author=Edward J. Hu;,citation_author=Yelong Shen;,citation_author=Phillip Wallis;,citation_author=Zeyuan Allen-Zhu;,citation_author=Yuanzhi Li;,citation_author=Shean Wang;,citation_author=Lu Wang;,citation_author=Weizhu Chen;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_conference_title=International conference on learning representations (ICLR);">
+<meta name="citation_reference" content="citation_title=Intrinsic dimensionality explains the effectiveness of language model fine-tuning;,citation_author=Armen Aghajanyan;,citation_author=Sonal Gupta;,citation_author=Luke Zettlemoyer;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_conference_title=Proceedings of the 59th annual meeting of the association for computational linguistics and the 11th international joint conference on natural language processing (ACL-IJCNLP);">
+<meta name="citation_reference" content="citation_title=Parameter-efficient transfer learning for NLP;,citation_author=Neil Houlsby;,citation_author=Andrei Giurgiu;,citation_author=Stanislaw Jastrzebski;,citation_author=Bruna Morrone;,citation_author=Quentin Laroussilhe;,citation_author=Andrea Gesmundo;,citation_author=Mona Attariyan;,citation_author=Sylvain Gelly;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_conference_title=Proceedings of the 36th international conference on machine learning (ICML);">
+<meta name="citation_reference" content="citation_title=Prefix-tuning: Optimizing continuous prompts for generation;,citation_author=Xiang Lisa Li;,citation_author=Percy Liang;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_conference_title=Proceedings of the 59th annual meeting of the association for computational linguistics and the 11th international joint conference on natural language processing (ACL-IJCNLP);">
+<meta name="citation_reference" content="citation_title=LLM.int8(): 8-bit matrix multiplication for transformers at scale;,citation_author=Tim Dettmers;,citation_author=Mike Lewis;,citation_author=Younes Belkada;,citation_author=Luke Zettlemoyer;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_volume=35;,citation_conference_title=Advances in neural information processing systems (NeurIPS);">
+<meta name="citation_reference" content="citation_title=GPTQ: Accurate post-training quantization for generative pre-trained transformers;,citation_author=Elias Frantar;,citation_author=Saleh Ashkboos;,citation_author=Torsten Hoefler;,citation_author=Dan Alistarh;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_conference_title=International conference on learning representations (ICLR);">
+<meta name="citation_reference" content="citation_title=OmniQuant: Omnidirectionally calibrated quantization for large language models;,citation_author=Wenqi Shao;,citation_author=Mengzhao Chen;,citation_author=Zhaoyang Zhang;,citation_author=Peng Xu;,citation_author=Lirui Zhao;,citation_author=Zhiqian Li;,citation_author=Kaipeng Zhang;,citation_author=Peng Gao;,citation_author=Yu Qiao;,citation_author=Ping Luo;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_conference_title=International conference on learning representations (ICLR);">
+<meta name="citation_reference" content="citation_title=Extreme compression of large language models via additive quantization;,citation_author=Vage Egiazarian;,citation_author=Andrei Panferov;,citation_author=Denis Kuznedelev;,citation_author=Elias Frantar;,citation_author=Artem Babenko;,citation_author=Dan Alistarh;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_conference_title=Proceedings of the 41st international conference on machine learning (ICML);">
+<meta name="citation_reference" content="citation_title=QLoRA: Efficient finetuning of quantized LLMs;,citation_author=Tim Dettmers;,citation_author=Artidoro Pagnoni;,citation_author=Ari Holtzman;,citation_author=Luke Zettlemoyer;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_volume=36;,citation_conference_title=Advances in neural information processing systems (NeurIPS);">
+<meta name="citation_reference" content="citation_title=Gpt-oss-120b &amp;amp;amp; gpt-oss-20b model card;,citation_author=OpenAI;,citation_publication_date=2025;,citation_cover_date=2025;,citation_year=2025;,citation_fulltext_html_url=https://arxiv.org/abs/2508.10925;">
+<meta name="citation_reference" content="citation_title=Large language models are zero-shot reasoners;,citation_author=Takeshi Kojima;,citation_author=Shixiang Shane Gu;,citation_author=Machel Reid;,citation_author=Yutaka Matsuo;,citation_author=Yusuke Iwasawa;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_conference_title=Advances in neural information processing systems 35 (NeurIPS);">
+<meta name="citation_reference" content="citation_title=Retrieval-augmented generation for knowledge-intensive NLP tasks;,citation_author=Patrick Lewis;,citation_author=Ethan Perez;,citation_author=Aleksandra Piktus;,citation_author=Fabio Petroni;,citation_author=Vladimir Karpukhin;,citation_author=Naman Goyal;,citation_author=Heinrich Küttler;,citation_author=Mike Lewis;,citation_author=Wen-tau Yih;,citation_author=Tim Rocktäschel;,citation_author=Sebastian Riedel;,citation_author=Douwe Kiela;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_conference_title=Advances in neural information processing systems 33 (NeurIPS);">
+<meta name="citation_reference" content="citation_title=Dense passage retrieval for open-domain question answering;,citation_author=Vladimir Karpukhin;,citation_author=Barlas Oğuz;,citation_author=Sewon Min;,citation_author=Patrick Lewis;,citation_author=Ledell Wu;,citation_author=Sergey Edunov;,citation_author=Danqi Chen;,citation_author=Wen-tau Yih;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_conference_title=Proceedings of the 2020 conference on empirical methods in natural language processing (EMNLP);">
+<meta name="citation_reference" content="citation_title=Lost in the middle: How language models use long contexts;,citation_author=Nelson F. Liu;,citation_author=Kevin Lin;,citation_author=John Hewitt;,citation_author=Ashwin Paranjape;,citation_author=Michele Bevilacqua;,citation_author=Fabio Petroni;,citation_author=Percy Liang;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_volume=12;,citation_journal_title=Transactions of the Association for Computational Linguistics;">
+<meta name="citation_reference" content="citation_title=ReAct: Synergizing reasoning and acting in language models;,citation_author=Shunyu Yao;,citation_author=Jeffrey Zhao;,citation_author=Dian Yu;,citation_author=Nan Du;,citation_author=Izhak Shafran;,citation_author=Karthik Narasimhan;,citation_author=Yuan Cao;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_conference_title=International conference on learning representations (ICLR);">
+<meta name="citation_reference" content="citation_title=Introducing the model context protocol;,citation_author=Anthropic;,citation_publication_date=2024-11;,citation_cover_date=2024-11;,citation_year=2024;,citation_publisher=https://www.anthropic.com/news/model-context-protocol;">
+<meta name="citation_reference" content="citation_title=Donating the Model Context Protocol and establishing the Agentic AI Foundation;,citation_author=Anthropic;,citation_publication_date=2025-12;,citation_cover_date=2025-12;,citation_year=2025;,citation_publisher=https://www.anthropic.com/news/donating-the-model-context-protocol-and-establishing-of-the-agentic-ai-foundation;">
+<meta name="citation_reference" content="citation_title=Fine-tuning or retrieval? Comparing knowledge injection in LLMs;,citation_author=Oded Ovadia;,citation_author=Menachem Brief;,citation_author=Moshik Mishaeli;,citation_author=Oren Elisha;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_conference_title=Proceedings of the 2024 conference on empirical methods in natural language processing (EMNLP);">
+<meta name="citation_reference" content="citation_title=Does fine-tuning LLMs on new knowledge encourage hallucinations?;,citation_author=Zorik Gekhman;,citation_author=Gal Yona;,citation_author=Roee Aharoni;,citation_author=Matan Eyal;,citation_author=Amir Feder;,citation_author=Roi Reichart;,citation_author=Jonathan Herzig;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_conference_title=Proceedings of the 2024 conference on empirical methods in natural language processing (EMNLP);">
+<meta name="citation_reference" content="citation_title=Mata v. Avianca, Inc., No. 1:22-cv-01461 (P. K. Castel, J.), Opinion and order on sanctions, 22 june 2023;,citation_author=United States District Court for the Southern District of New York;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_publisher=678 F. Supp. 3d 443 (S.D.N.Y. 2023);">
+<meta name="citation_reference" content="citation_title=Large language models struggle to learn long-tail knowledge;,citation_author=Nikhil Kandpal;,citation_author=Haikang Deng;,citation_author=Adam Roberts;,citation_author=Eric Wallace;,citation_author=Colin Raffel;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_volume=202;,citation_conference_title=Proceedings of the 40th international conference on machine learning (ICML);,citation_series_title=Proceedings of machine learning research;">
+<meta name="citation_reference" content="citation_title=Evaluating large language models for accuracy incentivizes hallucinations;,citation_author=Adam Tauman Kalai;,citation_author=Ofir Nachum;,citation_author=Santosh S. Vempala;,citation_author=Edwin Zhang;,citation_publication_date=2026;,citation_cover_date=2026;,citation_year=2026;,citation_doi=10.1038/s41586-026-10549-w;,citation_volume=653;,citation_journal_title=Nature;">
+<meta name="citation_reference" content="citation_title=The population frequencies of species and the estimation of population parameters;,citation_author=I. J. Good;,citation_publication_date=1953;,citation_cover_date=1953;,citation_year=1953;,citation_issue=3/4;,citation_volume=40;,citation_journal_title=Biometrika;">
+<meta name="citation_reference" content="citation_title=Obtaining well calibrated probabilities using Bayesian binning;,citation_author=Mahdi Pakdaman Naeini;,citation_author=Gregory F. Cooper;,citation_author=Milos Hauskrecht;,citation_publication_date=2015;,citation_cover_date=2015;,citation_year=2015;,citation_conference_title=Proceedings of the twenty-ninth AAAI conference on artificial intelligence;">
+<meta name="citation_reference" content="citation_title=On calibration of modern neural networks;,citation_author=Chuan Guo;,citation_author=Geoff Pleiss;,citation_author=Yu Sun;,citation_author=Kilian Q. Weinberger;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_volume=70;,citation_conference_title=Proceedings of the 34th international conference on machine learning (ICML);,citation_series_title=Proceedings of machine learning research;">
+<meta name="citation_reference" content="citation_title=Language models (mostly) know what they know;,citation_author=Saurav Kadavath;,citation_author=Tom Conerly;,citation_author=Amanda Askell;,citation_author=Tom Henighan;,citation_author=Dawn Drain;,citation_author=Ethan Perez;,citation_author=others;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_fulltext_html_url=https://arxiv.org/abs/2207.05221;">
+<meta name="citation_reference" content="citation_title=SelfCheckGPT: Zero-resource black-box hallucination detection for generative large language models;,citation_author=Potsawee Manakul;,citation_author=Adian Liusie;,citation_author=Mark J. F. Gales;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_conference_title=Proceedings of the 2023 conference on empirical methods in natural language processing (EMNLP);">
+<meta name="citation_reference" content="citation_title=Semantic uncertainty: Linguistic invariances for uncertainty estimation in natural language generation;,citation_author=Lorenz Kuhn;,citation_author=Yarin Gal;,citation_author=Sebastian Farquhar;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_conference_title=International conference on learning representations (ICLR);">
+<meta name="citation_reference" content="citation_title=Detecting hallucinations in large language models using semantic entropy;,citation_author=Sebastian Farquhar;,citation_author=Jannik Kossen;,citation_author=Lorenz Kuhn;,citation_author=Yarin Gal;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_doi=10.1038/s41586-024-07421-0;,citation_volume=630;,citation_journal_title=Nature;">
+<meta name="citation_reference" content="citation_title=On faithfulness and factuality in abstractive summarization;,citation_author=Joshua Maynez;,citation_author=Shashi Narayan;,citation_author=Bernd Bohnet;,citation_author=Ryan McDonald;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_conference_title=Proceedings of the 58th annual meeting of the association for computational linguistics (ACL);">
+<meta name="citation_reference" content="citation_title=Amazon scraps secret AI recruiting tool that showed bias against women;,citation_author=Jeffrey Dastin;,citation_publication_date=2018-10;,citation_cover_date=2018-10;,citation_year=2018;,citation_publisher=Reuters;">
+<meta name="citation_reference" content="citation_title=An eating disorders chatbot offered dieting advice, raising fears about AI in health;,citation_author=Kate Wells;,citation_publication_date=2023-06;,citation_cover_date=2023-06;,citation_year=2023;,citation_publisher=NPR;">
+<meta name="citation_reference" content="citation_title=GPT detectors are biased against non-native English writers;,citation_author=Weixin Liang;,citation_author=Mert Yuksekgonul;,citation_author=Yining Mao;,citation_author=Eric Wu;,citation_author=James Zou;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_issue=7;,citation_volume=4;,citation_journal_title=Patterns;">
+<meta name="citation_reference" content="citation_title=Statistics of Common Crawl monthly archives: Distribution of languages, crawl CC-MAIN-2026-34;,citation_author=Common Crawl;,citation_publication_date=2026;,citation_cover_date=2026;,citation_year=2026;,citation_publisher=https://commoncrawl.github.io/cc-crawl-statistics/;">
+<meta name="citation_reference" content="citation_title=Ethnologue: Languages of the world;,citation_author=David M. Eberhard;,citation_author=Gary F. Simons;,citation_author=Charles D. Fennig;,citation_publication_date=2025;,citation_cover_date=2025;,citation_year=2025;,citation_publisher=SIL International, https://www.ethnologue.com;">
+<meta name="citation_reference" content="citation_title=Fair is better than sensational: Man is to doctor as woman is to doctor;,citation_author=Malvina Nissim;,citation_author=Rik Noord;,citation_author=Rob Goot;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_issue=2;,citation_volume=46;,citation_journal_title=Computational Linguistics;">
+<meta name="citation_reference" content="citation_title=Semantics derived automatically from language corpora contain human-like biases;,citation_author=Aylin Caliskan;,citation_author=Joanna J. Bryson;,citation_author=Arvind Narayanan;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_issue=6334;,citation_doi=10.1126/science.aal4230;,citation_volume=356;,citation_journal_title=Science;">
+<meta name="citation_reference" content="citation_title=Documenting large webtext corpora: A case study on the Colossal Clean Crawled Corpus;,citation_author=Jesse Dodge;,citation_author=Maarten Sap;,citation_author=Ana Marasović;,citation_author=William Agnew;,citation_author=Gabriel Ilharco;,citation_author=Dirk Groeneveld;,citation_author=Margaret Mitchell;,citation_author=Matt Gardner;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_conference_title=Proceedings of the 2021 conference on empirical methods in natural language processing (EMNLP);">
+<meta name="citation_reference" content="citation_title=Lipstick on a pig: Debiasing methods cover up systematic gender biases in word embeddings but do not remove them;,citation_author=Hila Gonen;,citation_author=Yoav Goldberg;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_conference_title=Proceedings of the 2019 conference of the north american chapter of the association for computational linguistics (NAACL);">
+<meta name="citation_reference" content="citation_title=Gemini image generation got it wrong. We’ll do better.;,citation_author=Prabhakar Raghavan;,citation_publication_date=2024-02;,citation_cover_date=2024-02;,citation_year=2024;,citation_publisher=Google blog, https://blog.google/products/gemini/gemini-image-generation-issue/;">
+<meta name="citation_reference" content="citation_title=Exclusive: OpenAI used Kenyan workers on less than $2 per hour to make ChatGPT less toxic;,citation_author=Billy Perrigo;,citation_publication_date=2023-01;,citation_cover_date=2023-01;,citation_year=2023;,citation_publisher=Time;">
+<meta name="citation_reference" content="citation_title=Claude’s constitution;,citation_author=Anthropic;,citation_publication_date=2023-05;,citation_cover_date=2023-05;,citation_year=2023;,citation_publisher=https://www.anthropic.com/news/claudes-constitution;">
+<meta name="citation_reference" content="citation_title=How we analyzed the COMPAS recidivism algorithm;,citation_author=Jeff Larson;,citation_author=Surya Mattu;,citation_author=Lauren Kirchner;,citation_author=Julia Angwin;,citation_publication_date=2016-05;,citation_cover_date=2016-05;,citation_year=2016;,citation_publisher=ProPublica, https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm;">
+<meta name="citation_reference" content="citation_title=COMPAS risk scales: Demonstrating accuracy equity and predictive parity;,citation_author=William Dieterich;,citation_author=Christina Mendoza;,citation_author=Tim Brennan;,citation_publication_date=2016-07;,citation_cover_date=2016-07;,citation_year=2016;,citation_technical_report_institution=Northpointe Inc., Research Department;">
+<meta name="citation_reference" content="citation_title=Fair prediction with disparate impact: A study of bias in recidivism prediction instruments;,citation_author=Alexandra Chouldechova;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_issue=2;,citation_doi=10.1089/big.2016.0047;,citation_volume=5;,citation_journal_title=Big Data;">
+<meta name="citation_reference" content="citation_title=Inherent trade-offs in the fair determination of risk scores;,citation_author=Jon Kleinberg;,citation_author=Sendhil Mullainathan;,citation_author=Manish Raghavan;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_volume=67;,citation_conference_title=8th innovations in theoretical computer science conference (ITCS 2017);,citation_series_title=Leibniz international proceedings in informatics (LIPIcs);">
+<meta name="citation_reference" content="citation_title=Scaling monosemanticity: Extracting interpretable features from Claude 3 Sonnet;,citation_author=Adly Templeton;,citation_author=Tom Conerly;,citation_author=Jonathan Marcus;,citation_author=Jack Lindsey;,citation_author=Trenton Bricken;,citation_author=Brian Chen;,citation_author=others;,citation_publication_date=2024-05;,citation_cover_date=2024-05;,citation_year=2024;,citation_publisher=Transformer Circuits Thread, https://transformer-circuits.pub/2024/scaling-monosemanticity/;">
+<meta name="citation_reference" content="citation_title=Circuit tracing: Revealing computational graphs in language models;,citation_author=Emmanuel Ameisen;,citation_author=Jack Lindsey;,citation_author=Adam Pearce;,citation_author=Wes Gurnee;,citation_author=Nicholas L. Turner;,citation_author=Brian Chen;,citation_author=others;,citation_publication_date=2025-03;,citation_cover_date=2025-03;,citation_year=2025;,citation_publisher=Transformer Circuits Thread, https://transformer-circuits.pub/2025/attribution-graphs/methods.html;">
+<meta name="citation_reference" content="citation_title=On the biology of a large language model;,citation_author=Jack Lindsey;,citation_author=Wes Gurnee;,citation_author=Emmanuel Ameisen;,citation_author=Brian Chen;,citation_author=Adam Pearce;,citation_author=Nicholas L. Turner;,citation_author=others;,citation_publication_date=2025-03;,citation_cover_date=2025-03;,citation_year=2025;,citation_publisher=Transformer Circuits Thread, https://transformer-circuits.pub/2025/attribution-graphs/biology.html;">
+<meta name="citation_reference" content="citation_title=Open-sourcing circuit tracing tools;,citation_author=Anthropic;,citation_publication_date=2025-05;,citation_cover_date=2025-05;,citation_year=2025;,citation_publisher=https://www.anthropic.com/research/open-source-circuit-tracing;">
+<meta name="citation_reference" content="citation_title=ARC-AGI-2: A new challenge for frontier AI reasoning systems;,citation_author=Francois Chollet;,citation_author=Mike Knoop;,citation_author=Gregory Kamradt;,citation_author=Bryan Landers;,citation_author=Henry Pinkard;,citation_publication_date=2025;,citation_cover_date=2025;,citation_year=2025;,citation_fulltext_html_url=https://arxiv.org/abs/2505.11831;">
+<meta name="citation_reference" content="citation_title=Humanity’s last exam;,citation_author=Long Phan;,citation_author=Alice Gatti;,citation_author=Ziwen Han;,citation_author=Nathaniel Li;,citation_author=others;,citation_publication_date=2025;,citation_cover_date=2025;,citation_year=2025;,citation_fulltext_html_url=https://arxiv.org/abs/2501.14249;">
+<meta name="citation_reference" content="citation_title=AI models collapse when trained on recursively generated data;,citation_author=Ilia Shumailov;,citation_author=Zakhar Shumaylov;,citation_author=Yiren Zhao;,citation_author=Nicolas Papernot;,citation_author=Ross Anderson;,citation_author=Yarin Gal;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_doi=10.1038/s41586-024-07566-y;,citation_volume=631;,citation_journal_title=Nature;">
+<meta name="citation_reference" content="citation_title=Datasheets for datasets;,citation_author=Timnit Gebru;,citation_author=Jamie Morgenstern;,citation_author=Briana Vecchione;,citation_author=Jennifer Wortman Vaughan;,citation_author=Hanna Wallach;,citation_author=Hal Daumé III;,citation_author=Kate Crawford;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_issue=12;,citation_volume=64;,citation_journal_title=Communications of the ACM;">
+<meta name="citation_reference" content="citation_title=On the dangers of stochastic parrots: Can language models be too big?;,citation_author=Emily M. Bender;,citation_author=Timnit Gebru;,citation_author=Angelina McMillan-Major;,citation_author=Shmargaret Shmitchell;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_conference_title=Proceedings of the 2021 ACM conference on fairness, accountability, and transparency (FAccT);">
+<meta name="citation_reference" content="citation_title=Exploring the limits of transfer learning with a unified text-to-text transformer;,citation_author=Colin Raffel;,citation_author=Noam Shazeer;,citation_author=Adam Roberts;,citation_author=Katherine Lee;,citation_author=Sharan Narang;,citation_author=Michael Matena;,citation_author=Yanqi Zhou;,citation_author=Wei Li;,citation_author=Peter J. Liu;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_issue=140;,citation_volume=21;,citation_journal_title=Journal of Machine Learning Research;">
+<meta name="citation_reference" content="citation_title=Introducing Meta Llama 3: The most capable openly available LLM to date;,citation_author=Meta AI;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_publisher=https://ai.meta.com/blog/meta-llama-3/;">
+<meta name="citation_reference" content="citation_title=Meta-llama-3-8B and meta-llama-3-70B: Released model weights;,citation_author=Meta;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_publisher=https://huggingface.co/meta-llama/Meta-Llama-3-70B;">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Preface</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Large Language Models: How They Grew, One Problem at a Time</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/bluevision-ai/books" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Representing Language</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Sequences and Attention</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">The Transformer and Its Descendants</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Scale</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Training, Alignment and Efficiency</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Using a Frozen Model</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Trust and Its Limits</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./errata.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Errata for the lecture videos</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul class="collapse">
+  <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface">Preface</a>
+  <ul class="collapse">
+  <li><a href="#about-this-draft" id="toc-about-this-draft" class="nav-link" data-scroll-target="#about-this-draft">About this draft</a></li>
+  <li><a href="#authorship-and-the-use-of-ai" id="toc-authorship-and-the-use-of-ai" class="nav-link" data-scroll-target="#authorship-and-the-use-of-ai">Authorship and the use of AI</a></li>
+  <li><a href="#how-to-cite-this-book" id="toc-how-to-cite-this-book" class="nav-link" data-scroll-target="#how-to-cite-this-book">How to cite this book</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/bluevision-ai/books/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Large Language Models: How They Grew, One Problem at a Time</h1>
+<p class="subtitle lead">Draft</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Vahid Seydi </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="preface" class="level1 unnumbered">
+<h1 class="unnumbered">Preface</h1>
+<p>This is the draft of <em>Large Language Models: How They Grew, One Problem at a Time</em>, the companion book to <em>Large Language Models</em>, a free lecture course from Bluevision AI. Each chapter covers a run of consecutive lectures, and each section covers one lecture: section 1.1 is Session 01, and so on. The lectures give each idea as a picture and in speech; this book gives the full argument, the references and the exercises.</p>
+<p>The title names the method of the book, which we call the problem chain. Each section starts from a problem that the previous section left open, solves it, and ends on the new problem that the solution creates. Language is hard for a machine to represent, so we turn words into vectors. Vectors ignore word order, so we read text as a sequence. Recurrent networks forget the start of a long sequence, so we add attention. Attention on its own becomes the Transformer, and the chain continues through scale, alignment, efficiency and the limits of what these models can be trusted to do. The chain follows, roughly, the order in which the field itself grew, so it is also a short history of how large language models came to be.</p>
+<section id="about-this-draft" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="about-this-draft">About this draft</h2>
+<p>This is a review draft. Every section has been checked for facts, mathematics and references, and tested on readers new to the subject, but it has not yet been through outside review. If you find an error, or a passage that does not make sense, please use the <em>Report an issue</em> link on the page; a free GitHub account is enough. Corrections are fixed in the online edition. Errors in the published lecture videos are listed on the <a href="./errata.html">Errata</a> page.</p>
+</section>
+<section id="authorship-and-the-use-of-ai" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="authorship-and-the-use-of-ai">Authorship and the use of AI</h2>
+<p>This book and the lecture course behind it come from more than thirty years of study and work. I began studying mathematics in 1995, moved into software engineering in 2001 and into artificial intelligence in 2005, and have worked in the field since. Over the same years, to become a better university teacher, I have followed courses from universities around the world and compared how each one presents and explains the same ideas. The plan of the book comes from that experience: which topics it covers, the order in which they come, and how each section builds its explanation, from the problem that calls for an idea to the argument that settles it.</p>
+<p>The production is done differently, and I state it plainly. The lectures and this book are produced by a pipeline of AI agents that I designed and programmed. Over months of production I refined them through my own feedback, which I wrote into their instructions, their design rules and the automated checks they must pass. The agents run on commercial large language models (Claude, from Anthropic). From my plan and my material they draft the slides, the figures, the narration and the first version of each book section, and they run the checks I wrote for them. The narration of the lectures is synthetic speech (OpenAI text-to-speech). No section is published as an agent drafted it: I review and revise every one, and the argument, the choice of examples and the final wording are mine.</p>
+<p>The AI systems used here are tools. They are not authors and are not listed as authors. I am responsible for every statement in the book, including its errors.</p>
+<p>I describe the process here because readers are entitled to know how a text was made.</p>
+<!-- GENERATED by tools/apply_course.py from courses/LLM/course.yml — do not edit. -->
+</section>
+<section id="how-to-cite-this-book" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="how-to-cite-this-book">How to cite this book</h2>
+<p>Cite the book, or the chapter you used. Please do not cite the videos: they point here.</p>
+<blockquote class="blockquote">
+<p>Seydi, V. (2026). <em>Large Language Models: How They Grew, One Problem at a Time</em> (draft). Bluevision AI. https://books.bluevision-ai.org/LLM/</p>
+</blockquote>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bibtex code-with-copy"><code class="sourceCode bibtex"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">@misc</span>{<span class="ot">seydi2026LLM</span>,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">author</span>    = {Seydi, Vahid},</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span>     = {Large Language Models: How They Grew, One Problem at a Time},</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">year</span>      = {2026},</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">note</span>      = {Draft},</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">publisher</span> = {Bluevision AI},</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">url</span>       = {https://books.bluevision-ai.org/LLM/}</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To cite one chapter:</p>
+<ul>
+<li>Seydi, V. (2026). <em>Large Language Models: How They Grew, One Problem at a Time</em> (draft), Chapter 1: Representing Language. Bluevision AI. https://books.bluevision-ai.org/LLM/</li>
+<li>Seydi, V. (2026). <em>Large Language Models: How They Grew, One Problem at a Time</em> (draft), Chapter 2: Sequences and Attention. Bluevision AI. https://books.bluevision-ai.org/LLM/</li>
+<li>Seydi, V. (2026). <em>Large Language Models: How They Grew, One Problem at a Time</em> (draft), Chapter 3: The Transformer and Its Descendants. Bluevision AI. https://books.bluevision-ai.org/LLM/</li>
+<li>Seydi, V. (2026). <em>Large Language Models: How They Grew, One Problem at a Time</em> (draft), Chapter 4: Scale. Bluevision AI. https://books.bluevision-ai.org/LLM/</li>
+<li>Seydi, V. (2026). <em>Large Language Models: How They Grew, One Problem at a Time</em> (draft), Chapter 5: Training, Alignment and Efficiency. Bluevision AI. https://books.bluevision-ai.org/LLM/</li>
+<li>Seydi, V. (2026). <em>Large Language Models: How They Grew, One Problem at a Time</em> (draft), Chapter 6: Using a Frozen Model. Bluevision AI. https://books.bluevision-ai.org/LLM/</li>
+<li>Seydi, V. (2026). <em>Large Language Models: How They Grew, One Problem at a Time</em> (draft), Chapter 7: Trust and Its Limits. Bluevision AI. https://books.bluevision-ai.org/LLM/</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/books\.bluevision-ai\.org\/LLM\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./ch01.html" class="pagination-link" aria-label="Representing Language">
+        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Representing Language</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bluevision-ai/books/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
