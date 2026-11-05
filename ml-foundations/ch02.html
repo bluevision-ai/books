@@ -247,6 +247,8 @@ window.Quarto = {
 <meta name="citation_reference" content="citation_title=A memoir on the theory of matrices;,citation_author=Arthur Cayley;,citation_publication_date=1858;,citation_cover_date=1858;,citation_year=1858;,citation_volume=148;,citation_journal_title=Philosophical Transactions of the Royal Society of London;">
 <meta name="citation_reference" content="citation_title=On the reciprocal of the general algebraic matrix;,citation_author=E. H. Moore;,citation_publication_date=1920;,citation_cover_date=1920;,citation_year=1920;,citation_volume=26;,citation_journal_title=Bulletin of the American Mathematical Society;">
 <meta name="citation_reference" content="citation_title=On the stability of inverse problems;,citation_author=A. N. Tikhonov;,citation_publication_date=1943;,citation_cover_date=1943;,citation_year=1943;,citation_issue=5;,citation_volume=39;,citation_journal_title=Doklady Akademii Nauk SSSR;">
+<meta name="citation_reference" content="citation_title=A technique for the numerical solution of certain integral equations of the first kind;,citation_author=David L. Phillips;,citation_publication_date=1962;,citation_cover_date=1962;,citation_year=1962;,citation_issue=1;,citation_doi=10.1145/321105.321114;,citation_volume=9;,citation_journal_title=Journal of the ACM;">
+<meta name="citation_reference" content="citation_title=How ordinary elimination became Gaussian elimination;,citation_author=Joseph F. Grcar;,citation_publication_date=2011;,citation_cover_date=2011;,citation_year=2011;,citation_issue=2;,citation_doi=10.1016/j.hm.2010.06.003;,citation_volume=38;,citation_journal_title=Historia Mathematica;">
 <meta name="citation_reference" content="citation_title=A generalized inverse for matrices;,citation_author=Roger Penrose;,citation_publication_date=1955;,citation_cover_date=1955;,citation_year=1955;,citation_issue=3;,citation_doi=10.1017/S0305004100030401;,citation_volume=51;,citation_journal_title=Proceedings of the Cambridge Philosophical Society;">
 <meta name="citation_reference" content="citation_title=Use of dummy variables in regression equations;,citation_author=Daniel B. Suits;,citation_publication_date=1957;,citation_cover_date=1957;,citation_year=1957;,citation_issue=280;,citation_volume=52;,citation_journal_title=Journal of the American Statistical Association;">
 <meta name="citation_reference" content="citation_title=Hedonic prices and implicit markets: Product differentiation in pure competition;,citation_author=Sherwin Rosen;,citation_publication_date=1974;,citation_cover_date=1974;,citation_year=1974;,citation_issue=1;,citation_volume=82;,citation_journal_title=Journal of Political Economy;">
@@ -261,6 +263,8 @@ window.Quarto = {
 <meta name="citation_reference" content="citation_title=Implied binomial trees;,citation_author=Mark Rubinstein;,citation_publication_date=1994;,citation_cover_date=1994;,citation_year=1994;,citation_issue=3;,citation_volume=49;,citation_journal_title=The Journal of Finance;">
 <meta name="citation_reference" content="citation_title=Robustness in the strategy of scientific model building;,citation_author=George E. P. Box;,citation_editor=Robert L. Launer;,citation_editor=Graham N. Wilkinson;,citation_publication_date=1979;,citation_cover_date=1979;,citation_year=1979;,citation_inbook_title=Robustness in statistics;">
 <meta name="citation_reference" content="citation_title=Pattern classification and scene analysis;,citation_author=Richard O. Duda;,citation_author=Peter E. Hart;,citation_publication_date=1973;,citation_cover_date=1973;,citation_year=1973;">
+<meta name="citation_reference" content="citation_title=Sur les problèmes aux dérivées partielles et leur signification physique;,citation_author=Jacques Hadamard;,citation_publication_date=1902;,citation_cover_date=1902;,citation_year=1902;,citation_volume=13;,citation_journal_title=Princeton University Bulletin;">
+<meta name="citation_reference" content="citation_title=Solution of incorrectly formulated problems and the regularization method;,citation_author=A. N. Tikhonov;,citation_publication_date=1963;,citation_cover_date=1963;,citation_year=1963;,citation_volume=4;,citation_journal_title=Soviet Mathematics Doklady;">
 </head>
 
 <body class="nav-sidebar floating quarto-light">
@@ -326,6 +330,7 @@ window.Quarto = {
    
   <ul class="collapse">
   <li><a href="#sec-s05" id="toc-sec-s05" class="nav-link active" data-scroll-target="#sec-s05"><span class="header-section-number">2.1</span> Simple Linear Regression</a></li>
+  <li><a href="#sec-s06" id="toc-sec-s06" class="nav-link" data-scroll-target="#sec-s06"><span class="header-section-number">2.2</span> Multiple Regression and the Geometry of Least Squares</a></li>
   </ul>
 </nav>
     </div>
@@ -773,6 +778,609 @@ Figure&nbsp;2.26: The residuals of the fitted line against overall quality, a co
 <li><p>Using <a href="#eq-gd-two" class="quarto-xref">Equation&nbsp;<span>2.14</span></a>, <a href="#eq-partials" class="quarto-xref">Equation&nbsp;<span>2.13</span></a> and <a href="#eq-sum-u" class="quarto-xref">Equation&nbsp;<span>2.6</span></a>, show that each step of gradient descent multiplies <span class="math inline">\(\hat{b} - \bar{y}\)</span> by <span class="math inline">\(1 - 2n\eta\)</span> and multiplies the distance of <span class="math inline">\(\hat{w}\)</span> from its best value by <span class="math inline">\(1 - 2S_{uu}\eta\)</span>. With the Ames values of exercise 4, find how many steps are needed from <span class="math inline">\(\hat{w} = 30\)</span> before <span class="math inline">\(\hat{w}\)</span> is within 0.05 of 125.10, and compare the answer with the sixty steps of <a href="#fig-walk" class="quarto-xref">Figure&nbsp;<span>2.16</span></a>. Then find the largest step size for which the walk does not move away from the bottom in either direction, and explain why it is smaller than the largest step size the cut along <span class="math inline">\(\hat{w}\)</span> alone would tolerate.</p></li>
 <li><p>Suppose living area is entered twice, as <span class="math inline">\(x\)</span> in square metres and as <span class="math inline">\(10.764\,x\)</span> in square feet, so that the hypothesis space is <span class="math inline">\(\hat{y} = \hat{b} + \hat{w}_1 x + \hat{w}_2 (10.764\,x)\)</span>. Show that every pair <span class="math inline">\((\hat{w}_1, \hat{w}_2)\)</span> with <span class="math inline">\(\hat{w}_1 + 10.764\,\hat{w}_2 = 1.251\)</span>, together with <span class="math inline">\(\hat{b} = 6.78\)</span>, gives the same RSS as <a href="#eq-ames-fit" class="quarto-xref">Equation&nbsp;<span>2.19</span></a>. Explain what this means for the equations obtained by setting all three partial derivatives to zero, and connect the answer to the right-hand panel of <a href="#fig-cf-vs-gd" class="quarto-xref">Figure&nbsp;<span>2.18</span></a>.</p></li>
 </ol>
+</section>
+</section>
+<section id="sec-s06" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="sec-s06"><span class="header-section-number">2.2</span> Multiple Regression and the Geometry of Least Squares</h2>
+<p><a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a> fitted a straight line through living area and stopped at a diagnosis. The line explains about half of the variation in price, <span class="math inline">\(R^2 = 0.518\)</span>, and its residuals are not noise. Plotted against the quality rating, a column the line never read, they climb: the line overprices the worst-built houses by about $62 thousand on average and underprices the best-built by about $166 thousand (<a href="#fig-residual-quality" class="quarto-xref">Figure&nbsp;<span>2.26</span></a>). Averaged by neighbourhood they sort just as clearly. Sales in Stone Brook sit well above the line, and sales in the area south and west of Iowa State University sit below it. <a href="#fig-residual-left" class="quarto-xref">Figure&nbsp;<span>2.27</span></a> shows both. By the lesson of Neptune in <a href="ch01.html#sec-s01" class="quarto-xref"><span>Section 1.1</span></a>, structure in the residual means that something is missing from the model, and here the missing things are named columns of the same file.</p>
+<div id="fig-residual-left" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-residual-left-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/residual_left/book/step2.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-residual-left-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.27: The residuals of the line of <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a>, plotted against two columns it never read. Left: against the quality rating, with the average at each level joined in red. The averages climb. Right: averaged within each of the 21 neighbourhoods with at least 30 sales and sorted, from South and West of Iowa State University, below the line, to Stone Brook, above it.
+</figcaption>
+</figure>
+</div>
+<p>Practice reached the same conclusion long before any course on machine learning. A county assessor must put a value on every property in the county at each revaluation, far too many to inspect one at a time, and the values come from models fitted to recorded sales on recorded columns, with regression among the standard tools. Economists price a house feature by feature, asking what a bedroom, a garage or a better neighbourhood adds to the price when everything else about the house is held fixed. Rosen gave the economic theory of such <em>hedonic</em> prices in the <em>Journal of Political Economy</em> in 1974 <span class="citation" data-cites="rosen1974">(<a href="#ref-rosen1974" role="doc-biblioref">Rosen 1974</a>)</span>, assuming that a good is valued as a bundle of characteristics, each with its own implicit price. The phrase <em>everything else held fixed</em> will turn out to be exactly what a weight means once a model has several inputs.</p>
+<p>The problem of this section is therefore to predict a price from every column that matters, at once. Adding columns to the line looks like a small step, and it breaks three things that <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a> relied on. The first is the notation. Written out term by term, a model with every recorded input of the Ames file, seventy-nine of them once the price and two identifiers are set aside, is a sum of eighty terms, and every statement about it would have to be made eighty times. The second is the solution. The closed form <a href="#eq-closed-centred" class="quarto-xref">Equation&nbsp;<span>2.17</span></a> has one slope and no room for a second. The third is uniqueness. <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a> showed that two inputs carrying the same information leave a whole line of equally good answers (<a href="#fig-cf-vs-gd" class="quarto-xref">Figure&nbsp;<span>2.18</span></a>), and the Ames file contains such a pair for real. The section takes the three in order. It builds the language of vectors and matrices from the house data, uses it to show that least squares is a projection, derives the normal equations from that picture and from calculus, and then deals with the columns that break the method.</p>
+<p>In the terms of <a href="ch01.html#def-three-choices" class="quarto-xref">Definition&nbsp;<span>1.16</span></a>, the slot that moves is the hypothesis space. It grows from lines to flat surfaces. The loss is the residual sum of squares of <a href="#def-rss" class="quarto-xref">Definition&nbsp;<span>2.3</span></a>, unchanged, and the optimiser gains an exact form for any number of inputs.</p>
+<section id="two-inputs-a-flat-surface" class="level3">
+<h3 class="anchored" data-anchor-id="two-inputs-a-flat-surface">Two inputs: a flat surface</h3>
+<p>With two inputs the model can still be drawn. Each sale is a point over its living area and its quality rating, at the height of its price, and the natural generalisation of a straight line is a flat surface through the cloud of points. The true model of <a href="#def-true-model" class="quarto-xref">Definition&nbsp;<span>2.2</span></a> extends in the obvious way.</p>
+<div id="def-multiple-regression" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.10 (Multiple regression)</strong></span> <strong>Multiple regression</strong> is predicting a number from several recorded inputs at once. Its true model, for <span class="math inline">\(p\)</span> inputs, asserts that <span id="eq-multi-true"><span class="math display">\[ y_i \;=\; b + w_1\,x_{i1} + w_2\,x_{i2} + \cdots + w_p\,x_{ip} + \varepsilon_i , \qquad i = 1, \ldots, n ,  \tag{2.22}\]</span></span> where <span class="math inline">\(x_{ij}\)</span> is input <span class="math inline">\(j\)</span> of sale <span class="math inline">\(i\)</span>, the intercept <span class="math inline">\(b\)</span> and the weights <span class="math inline">\(w_1, \ldots, w_p\)</span> are fixed numbers, the same for every sale, and the error term <span class="math inline">\(\varepsilon_i\)</span> is everything about sale <span class="math inline">\(i\)</span> that the model leaves out.</p>
+</div>
+<p>As in <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a>, the quantities of <a href="#eq-multi-true" class="quarto-xref">Equation&nbsp;<span>2.22</span></a> are the world’s and carry no hats. Note the change of notation from <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a>, where <span class="math inline">\(x_i\)</span> was the area of sale <span class="math inline">\(i\)</span>. With several inputs a sale needs two indices, and <span class="math inline">\(x_{ij}\)</span> is its input <span class="math inline">\(j\)</span>. Fitted by least squares to the 2,924 sales, with living area in square metres as input 1 and the quality rating as input 2, the model is</p>
+<p><span id="eq-fit1"><span class="math display">\[ \hat{y} \;=\; -113.1 \,+\, 0.676\,\text{area} \,+\, 32.8\,\text{quality} ,  \tag{2.23}\]</span></span></p>
+<p>with prices in thousands of dollars. We call this fit 1. It explains <span class="math inline">\(R^2 = 0.751\)</span> of the variation in price, against 0.518 for living area alone and 0.648 for quality alone. <a href="#fig-plane" class="quarto-xref">Figure&nbsp;<span>2.28</span></a> draws it among the sales.</p>
+<div id="fig-plane" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-plane-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/plane_fit_book/step1.svg" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plane-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.28: The sales as points over living area and quality, at the height of their price, and the fitted model of <a href="#eq-fit1" class="quarto-xref">Equation&nbsp;<span>2.23</span></a>, a flat surface through them. Sales above the surface are drawn darker.
+</figcaption>
+</figure>
+</div>
+<p>A flat surface is hard to read directly, so we cut it. Holding quality at a fixed level turns <a href="#eq-fit1" class="quarto-xref">Equation&nbsp;<span>2.23</span></a> into a straight line in area with slope 0.676, and changing the level moves that line up by 32.8 for each quality point without tilting it. The surface is therefore a family of parallel lines, one for each quality level, and <a href="#fig-partial" class="quarto-xref">Figure&nbsp;<span>2.29</span></a> draws them. Along the quality-6 line, a house 100 square metres larger is predicted to sell for $67.6 thousand more. The line of <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a>, fitted to area alone, is steeper than every one of them: alone, area’s weight was $1,251 per square metre, and with quality in the model it is $676.</p>
+<div id="fig-partial" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-partial-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/partial_effect/book/step4.svg" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-partial-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.29: Price against living area with the two-input fit of <a href="#eq-fit1" class="quarto-xref">Equation&nbsp;<span>2.23</span></a> drawn as one line per quality level, all parallel. The dashed line is the fit to area alone of <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a>, steeper than every one of them. Along the quality-6 line, 100 more square metres add $67.6k.
+</figcaption>
+</figure>
+</div>
+<p>The two numbers measure different things, and the difference is the meaning of a weight in a model with several inputs. A weight <span class="math inline">\(\hat{w}_j\)</span> is the change in the predicted price for one more unit of input <span class="math inline">\(j\)</span>, <em>with the other inputs held fixed</em>. Area’s weight fell because area and quality move together in Ames. Houses rated 4 average 107 square metres and houses rated 8 average 175. Fitted alone, the line in area crosses the quality lines of <a href="#fig-partial" class="quarto-xref">Figure&nbsp;<span>2.29</span></a>, from the lower ones on the left to the upper ones on the right. Its slope therefore carries two effects. One is that of more floor space, and the other is the jump to a higher quality line that larger houses tend to make. The decomposition is exact. If <span class="math inline">\(\hat{\delta}\)</span> is the slope of the least-squares line of quality on area, here 0.01754 quality points per square metre, then</p>
+<p><span id="eq-omitted"><span class="math display">\[ 1.251 \;=\; 0.6757 \;+\; 32.80 \times 0.01754 ,  \tag{2.24}\]</span></span></p>
+<p>the slope alone is the slope with quality held fixed plus quality’s weight times the rate at which quality rises with area (exercise 8 proves the identity). The weights are printed here to four figures so that the sum checks. The value of <span class="math inline">\(\hat{\delta}\)</span> is far below the 4 points per 68 square metres of the averages just quoted. Those averages read the relation the other way, area at a given quality, and for two columns that do not move in exact step the two slopes are not reciprocals of each other. A weight’s meaning therefore depends on which other columns are in the model, and adding a column changes the question each weight answers. It does not turn the weight into a causal effect: 0.676 describes how price varies with area among Ames houses of equal quality, and says nothing on its own about what an extension would do to one house.</p>
+<p>Least squares had several unknowns from the start. Legendre’s appendix of 1805 set out the method for a system of equations in several unknowns <span class="citation" data-cites="legendre1805">(<a href="#ref-legendre1805" role="doc-biblioref">Legendre 1805</a>)</span>, and Gauss in 1809 applied it to the elements of a planetary orbit <span class="citation" data-cites="gauss1809">(<a href="#ref-gauss1809" role="doc-biblioref">Gauss 1809</a>)</span>. What <a href="#eq-multi-true" class="quarto-xref">Equation&nbsp;<span>2.22</span></a> lacks is a way to write it once for any <span class="math inline">\(p\)</span>, and that is a matter of language.</p>
+</section>
+<section id="scalars-vectors-and-matrices" class="level3">
+<h3 class="anchored" data-anchor-id="scalars-vectors-and-matrices">Scalars, vectors and matrices</h3>
+<p>The language is linear algebra, and <a href="ch01.html#sec-s04" class="quarto-xref"><span>Section 1.4</span></a> named it among the foundations of machine learning for exactly this purpose: a model that takes several inputs at once. We build it from the house data, one object at a time. The running example is the house held back from every fit in <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a>: 133.8 square metres, quality 5, built in 1968, sold for $163.0 thousand.</p>
+<div id="def-scalar-vector" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.11 (Scalar and vector)</strong></span> A <strong>scalar</strong> is a single number. A <strong>vector</strong> is an ordered list of numbers, written as a column. The number of its entries is its <strong>dimension</strong>, and a vector of dimension <span class="math inline">\(k\)</span> has <strong>shape</strong> <span class="math inline">\(k \times 1\)</span>: <span class="math inline">\(k\)</span> rows and one column.</p>
+</div>
+<p>The living area of our house, 133.8 square metres, is a scalar, and so are its price and each weight of <a href="#eq-fit1" class="quarto-xref">Equation&nbsp;<span>2.23</span></a>. Multiplying a number by a scalar stretches it or shrinks it, which is where the name comes from. Scalars are set in plain italic: <span class="math inline">\(x\)</span>, <span class="math inline">\(w\)</span>, <span class="math inline">\(b\)</span>, <span class="math inline">\(n\)</span>, <span class="math inline">\(p\)</span>. The three recorded inputs of our house form a vector,</p>
+<p><span class="math display">\[ \mathbf{x} \;=\; \begin{bmatrix} 133.8 \\ 5 \\ 1968 \end{bmatrix} , \]</span></p>
+<p>set in bold, with entries <span class="math inline">\(x_1\)</span>, <span class="math inline">\(x_2\)</span>, <span class="math inline">\(x_3\)</span>, dimension 3 and shape <span class="math inline">\(3 \times 1\)</span>. The order carries meaning. Exchanging the first two entries describes a house of 5 square metres with a quality rating of 133.8, which is not our house and not a house at all. A vector of two entries can also be drawn, as a point of the plane or as an arrow from the origin to that point, and <a href="#fig-scalar-vector" class="quarto-xref">Figure&nbsp;<span>2.30</span></a> draws our house’s area and quality both ways. The arrow will matter.</p>
+<div id="fig-scalar-vector" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-scalar-vector-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/scalar_vector/book/step5.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scalar-vector-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.30: Left: three scalars from the house data, each one number with a unit, and multiplication by 2 stretching the area to 267.6. Right: our house as a vector <span class="math inline">\(\mathbf{x}\)</span>, a column of three entries with shape <span class="math inline">\(3 \times 1\)</span> and dimension 3. The same numbers in a different order, in pale red, describe a different house. Below, its first two entries drawn as a point and as an arrow from 0.
+</figcaption>
+</figure>
+</div>
+<p>Two operations on vectors are needed, and both work entry by entry. A vector is multiplied by a scalar by multiplying every entry, so <span class="math inline">\(2 \times (133.8, 5) = (267.6, 10)\)</span>, and the arrow keeps its direction and doubles its length. Two vectors of the same shape are added by adding their entries. Taking a second house of 156.9 square metres and quality 4, <span class="math inline">\((133.8, 5) + (156.9, 4) = (290.7, 9)\)</span>, and as arrows the second is placed with its tail at the tip of the first. Vectors of different shapes cannot be added, because no entry of one has a partner in the other.</p>
+<div id="def-linear-combination" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.12 (Linear combination)</strong></span> A <strong>linear combination</strong> of vectors <span class="math inline">\(\mathbf{v}_1, \ldots, \mathbf{v}_k\)</span> of the same shape is a sum <span class="math inline">\(c_1\mathbf{v}_1 + \cdots + c_k\mathbf{v}_k\)</span>, each vector multiplied by a scalar.</p>
+</div>
+<p>Half of our house plus half of the other is <span class="math inline">\(\tfrac12(133.8, 5) + \tfrac12(156.9, 4) = (145.4, 4.5)\)</span>, the house exactly midway between them. <a href="#fig-vector-ops" class="quarto-xref">Figure&nbsp;<span>2.31</span></a> draws the three operations.</p>
+<div id="fig-vector-ops" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-vector-ops-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/vector_ops_book/step1.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vector-ops-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.31: Scaling, adding and combining, entry by entry and as arrows in the plane of area and quality. Scale: <span class="math inline">\(2 \times (133.8, 5) = (267.6, 10)\)</span>, the same direction and twice the length. Add: <span class="math inline">\((133.8, 5) + (156.9, 4) = (290.7, 9)\)</span>, tip to tail. Combine: <span class="math inline">\(\tfrac12(133.8, 5) + \tfrac12(156.9, 4) = (145.4, 4.5)\)</span>.
+</figcaption>
+</figure>
+</div>
+<p>The weights of a fit are a vector too. Fit 1 has three numbers, and stacked they are <span class="math inline">\(\hat{\mathbf{w}} = (\hat{b}, \hat{w}_1, \hat{w}_2) = (-113.1, 0.676, 32.8)\)</span>, of shape <span class="math inline">\(3 \times 1\)</span>. Fit 1 reads only area and quality, so our house is described by two inputs. To give it the same shape as <span class="math inline">\(\hat{\mathbf{w}}\)</span> we put a 1 in front: <span class="math inline">\(\mathbf{x} = (1, 133.8, 5)\)</span>. The intercept multiplies no input and is added once to every prediction, so its input is always 1. From here on every house vector carries this leading 1 as entry 0, and the intercept is weight 0, <span class="math inline">\(\hat{w}_0 = \hat{b}\)</span>. Pairing the entries of the two vectors, multiplying each pair and adding gives the prediction:</p>
+<p><span class="math display">\[ 1 \times (-113.1) \;+\; 133.8 \times 0.676 \;+\; 5 \times 32.8 \;=\; -113.1 + 90.4 + 164.0 \;=\; 141.3 . \]</span></p>
+<div id="def-dot-product" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.13 (Dot product)</strong></span> The <strong>dot product</strong> of two vectors of the same shape is the sum of the products of their corresponding entries: <span id="eq-dot"><span class="math display">\[ \mathbf{x} \cdot \hat{\mathbf{w}} \;=\; \sum_{j=0}^{p} x_j\,\hat{w}_j .  \tag{2.25}\]</span></span> It takes two vectors and returns a scalar.</p>
+</div>
+<p>One prediction is a dot product, <span class="math inline">\(\hat{y} = \mathbf{x} \cdot \hat{\mathbf{w}}\)</span>, and <a href="#eq-dot" class="quarto-xref">Equation&nbsp;<span>2.25</span></a> holds whether <span class="math inline">\(p\)</span> is two or eighty. That is the first of the three difficulties settled: the model is written once, for any number of inputs. Our house is predicted at $141.3 thousand by fit 1. Adding year built as a third input and fitting again to all 2,924 sales gives four weights, <span class="math inline">\((-1{,}071.4,\ 0.724,\ 25.42,\ 0.5055)\)</span>, and with <span class="math inline">\(\mathbf{x} = (1, 133.8, 5, 1968)\)</span> the four products are <span class="math inline">\(-1{,}071.4\)</span>, <span class="math inline">\(96.9\)</span>, <span class="math inline">\(127.1\)</span> and <span class="math inline">\(994.8\)</span>, so the prediction is $147.4 thousand, $15.6 thousand below the sale price. The large negative intercept is the price the fit assigns to a house with every input zero: no floor area, quality 0, built in year zero. No such house exists, and an intercept is not to be read on its own when zero is not a real value of the inputs.</p>
+<div id="fig-dot" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/dot_product/book/step4.svg" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.32: Our house’s prediction as a dot product: pair the entries of <span class="math inline">\(\mathbf{x}\)</span> and <span class="math inline">\(\hat{\mathbf{w}}\)</span>, multiply, add, and two vectors of the same shape give one scalar, 141.3. Below: the dot product of <span class="math inline">\((3, 4)\)</span> and <span class="math inline">\((4, -3)\)</span> is <span class="math inline">\(12 - 12 = 0\)</span>, and the two arrows meet at a right angle.
+</figcaption>
+</figure>
+</div>
+<p>A compact notation for the dot product comes from turning a column on its side. The <strong>transpose</strong> of a column vector <span class="math inline">\(\mathbf{x}\)</span>, written <span class="math inline">\(\mathbf{x}^\top\)</span>, is the same entries laid out as a row, of shape <span class="math inline">\(1 \times 3\)</span> when <span class="math inline">\(\mathbf{x}\)</span> is <span class="math inline">\(3 \times 1\)</span>. A row times a column is computed by walking along the row and down the column together, multiplying and adding, which is the dot product:</p>
+<p><span id="eq-xtw"><span class="math display">\[ \hat{y} \;=\; \mathbf{x}^\top \hat{\mathbf{w}} .  \tag{2.26}\]</span></span></p>
+<p>Written with shapes, <span class="math inline">\((1 \times 3)(3 \times 1) \to 1 \times 1\)</span>. The inner numbers must match, since each entry of the row needs a partner in the column, and the outer numbers give the shape of the result. This <strong>shape rule</strong> checks every product in the rest of the section. <a href="#fig-transpose" class="quarto-xref">Figure&nbsp;<span>2.33</span></a> draws it on our house.</p>
+<div id="fig-transpose" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-transpose-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/transpose/book/step3.svg" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-transpose-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.33: The transpose: the column <span class="math inline">\(\mathbf{x}\)</span> (<span class="math inline">\(3 \times 1\)</span>) laid on its side is the row <span class="math inline">\(\mathbf{x}^\top\)</span> (<span class="math inline">\(1 \times 3\)</span>). A row times a column is a dot product, <span class="math inline">\(\mathbf{x}^\top\hat{\mathbf{w}} = 141.3\)</span>, of shape <span class="math inline">\(1 \times 1\)</span>. The inner numbers of the shapes must match, and the outer numbers are the shape of the result.
+</figcaption>
+</figure>
+</div>
+<p>A vector has a length, and in the plane Pythagoras gives it. The arrow to <span class="math inline">\((3, 4)\)</span> is the long side of a right triangle with sides 3 and 4, so its length is <span class="math inline">\(\sqrt{9 + 16} = 5\)</span>. With more entries the recipe is the same.</p>
+<div id="def-length" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.14 (Length)</strong></span> The <strong>length</strong> of a vector <span class="math inline">\(\mathbf{v}\)</span> with entries <span class="math inline">\(v_1, \ldots, v_k\)</span> is <span id="eq-length"><span class="math display">\[ \lVert \mathbf{v} \rVert \;=\; \sqrt{v_1^2 + \cdots + v_k^2} , \qquad\text{so that}\qquad \lVert \mathbf{v} \rVert^2 \;=\; \mathbf{v}^\top \mathbf{v} .  \tag{2.27}\]</span></span></p>
+</div>
+<p>For <span class="math inline">\((2, 3, 6)\)</span> the squares add to <span class="math inline">\(4 + 9 + 36 = 49\)</span>, and the length is 7. The middle of the recipe, squaring each entry and adding, is the vector dotted with itself, which is the second form of <a href="#eq-length" class="quarto-xref">Equation&nbsp;<span>2.27</span></a>. <a href="#fig-length" class="quarto-xref">Figure&nbsp;<span>2.34</span></a> draws both cases.</p>
+<div id="fig-length" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-length-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/vector_length/book/step3.svg" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-length-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.34: Length. In the plane, Pythagoras: <span class="math inline">\(\lVert(3, 4)\rVert = \sqrt{25} = 5\)</span>. With more entries, the same: <span class="math inline">\(\lVert(2, 3, 6)\rVert = \sqrt{49} = 7\)</span>. A vector dotted with itself is its squared length.
+</figcaption>
+</figure>
+</div>
+<p>Length explains why a zero dot product means a right angle, which <a href="#fig-dot" class="quarto-xref">Figure&nbsp;<span>2.32</span></a> showed for <span class="math inline">\((3, 4)\)</span> and <span class="math inline">\((4, -3)\)</span>. Expanding the squared length of a sum entry by entry,</p>
+<p><span id="eq-perp"><span class="math display">\[ \lVert \mathbf{u} + \mathbf{v} \rVert^2 \;=\; \sum_j (u_j + v_j)^2 \;=\; \lVert \mathbf{u} \rVert^2 + 2\,\mathbf{u}\cdot\mathbf{v} + \lVert \mathbf{v} \rVert^2 .  \tag{2.28}\]</span></span></p>
+<p>The arrows <span class="math inline">\(\mathbf{u}\)</span> and <span class="math inline">\(\mathbf{v}\)</span>, placed tip to tail, form a triangle whose third side is <span class="math inline">\(\mathbf{u} + \mathbf{v}\)</span>. Its sides obey Pythagoras exactly when the middle term vanishes, and by the converse of Pythagoras the triangle then has a right angle at the corner where <span class="math inline">\(\mathbf{u}\)</span> ends and <span class="math inline">\(\mathbf{v}\)</span> begins. The angle at that corner and the angle between the two arrows drawn from one point add to two right angles, so when one is a right angle so is the other. Two vectors whose dot product is zero are called <strong>perpendicular</strong>, or <strong>orthogonal</strong>, and the word applies in any number of dimensions, where it can no longer be checked by eye.</p>
+<p>So far there has been one house. Ames has 2,924, and to keep the arithmetic visible we take five, chosen by a rule rather than by how well they fit: among the normal sales of single-family houses in 2008, the sale at the middle of each fifth of living area. Their areas are 84.7, 109.2, 135.6, 156.8 and 200.8 square metres, their quality ratings 5, 6, 8, 6 and 7, and their prices 144.0, 146.0, 247.0, 200.0 and 230.5 thousand dollars. The table can be read two ways (<a href="#fig-two-readings" class="quarto-xref">Figure&nbsp;<span>2.35</span></a>). Read across a row, it gives one house: house 2’s inputs, <span class="math inline">\((109.2, 6)\)</span>, are a vector of dimension <span class="math inline">\(p = 2\)</span>, one entry per input, and <span class="math inline">\(p + 1\)</span> entries with its leading 1. Read down a column, it gives one input over every house: the area column is a vector of dimension <span class="math inline">\(n = 5\)</span>, the number of houses. (The figure says “length” for the number of entries, which this book calls the dimension. Length in the sense of <a href="#def-length" class="quarto-xref">Definition&nbsp;<span>2.14</span></a> is a different thing.) The prices read down form the vector <span class="math inline">\(\mathbf{y}\)</span>, also of dimension <span class="math inline">\(n\)</span>. The letters are fixed from here on for the rest of the book: <span class="math inline">\(n\)</span> counts observations and <span class="math inline">\(p\)</span> counts inputs.</p>
+<div id="fig-two-readings" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-two-readings-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/table_two_readings_book/step1.svg" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-two-readings-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.35: Five sales and two ways to read them. Across: one house, here house 2, whose inputs <span class="math inline">\((109.2, 6)\)</span> are a vector of dimension <span class="math inline">\(p = 2\)</span>. Down: one input over every house, a vector of dimension <span class="math inline">\(n = 5\)</span>. The prices read down are the vector <span class="math inline">\(\mathbf{y}\)</span>.
+</figcaption>
+</figure>
+</div>
+<div id="def-matrix" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.15 (Matrix)</strong></span> A <strong>matrix</strong> is a rectangle of numbers, set as a bold capital. A matrix with <span class="math inline">\(r\)</span> rows and <span class="math inline">\(k\)</span> columns has shape <span class="math inline">\(r \times k\)</span>, and its entry in row <span class="math inline">\(i\)</span> and column <span class="math inline">\(j\)</span> is written with the row first. The <strong>design matrix</strong> <span class="math inline">\(\mathbf{X}\)</span> of a regression has one row per observation and one column per input, preceded by a column of ones, so that its shape is <span class="math inline">\(n \times (p + 1)\)</span> and its entry <span class="math inline">\(x_{ij}\)</span> is input <span class="math inline">\(j\)</span> of observation <span class="math inline">\(i\)</span>, with <span class="math inline">\(x_{i0} = 1\)</span>. Its transpose <span class="math inline">\(\mathbf{X}^\top\)</span> has the rows of <span class="math inline">\(\mathbf{X}\)</span> as its columns, and shape <span class="math inline">\((p + 1) \times n\)</span>.</p>
+</div>
+<p>For the five houses, <span class="math inline">\(\mathbf{X}\)</span> is <span class="math inline">\(5 \times 3\)</span>, and <span class="math inline">\(x_{21} = 109.2\)</span> is house 2’s input 1, its area. Columns are counted from zero, so the ones column is column 0. For all of Ames the same two inputs give a matrix of shape <span class="math inline">\(2{,}924 \times 3\)</span>. Row <span class="math inline">\(i\)</span> of <span class="math inline">\(\mathbf{X}\)</span>, stood upright, is the vector <span class="math inline">\(\mathbf{x}_i\)</span> of house <span class="math inline">\(i\)</span> with its leading 1. Read down, the same matrix is three columns side by side, and we write <span class="math inline">\(\mathbf{c}_j\)</span> for column <span class="math inline">\(j\)</span>: here <span class="math inline">\(\mathbf{c}_0 = \mathbf{1}\)</span>, the column of ones, <span class="math inline">\(\mathbf{c}_1\)</span> the areas and <span class="math inline">\(\mathbf{c}_2\)</span> the quality ratings. <a href="#fig-design-matrix" class="quarto-xref">Figure&nbsp;<span>2.36</span></a> shows both readings.</p>
+<div id="fig-design-matrix" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-design-matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/design_matrix/book/step5.svg" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-design-matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.36: The design matrix of the five sales: the column of ones, then area and quality. Its shape is <span class="math inline">\(n \times (p + 1) = 5 \times 3\)</span>. One entry, row then column: <span class="math inline">\(x_{21} = 109.2\)</span>, house 2’s area. Read down, it is three columns side by side. For all of Ames it is <span class="math inline">\(2{,}924 \times 3\)</span>.
+</figcaption>
+</figure>
+</div>
+<p>Every prediction can now be computed at once. Dotting each row of <span class="math inline">\(\mathbf{X}\)</span> with <span class="math inline">\(\hat{\mathbf{w}}\)</span> gives one prediction per house, and the <span class="math inline">\(n\)</span> predictions stacked form a vector. This is the product of a matrix and a vector:</p>
+<p><span id="eq-matvec"><span class="math display">\[ \hat{\mathbf{y}} \;=\; \mathbf{X}\hat{\mathbf{w}}, \qquad \hat{y}_i \;=\; \mathbf{x}_i^\top \hat{\mathbf{w}} \;=\; \sum_{j=0}^{p} x_{ij}\,\hat{w}_j ,  \tag{2.29}\]</span></span></p>
+<p>with shapes <span class="math inline">\((n \times (p+1))((p+1) \times 1) \to n \times 1\)</span>. For house 1, <span class="math inline">\(1 \times (-113.1) + 84.7 \times 0.676 + 5 \times 32.8 = 108.2\)</span>, and the five predictions under fit 1 are 108.2, 157.5, 241.0, 189.7 and 252.2 (<a href="#fig-matvec" class="quarto-xref">Figure&nbsp;<span>2.37</span></a>). The shape rule catches a mistake before any arithmetic: with a weight vector of shape <span class="math inline">\(2 \times 1\)</span> the product would be <span class="math inline">\((5 \times 3)(2 \times 1)\)</span>, the inner numbers differ, and the product does not exist.</p>
+<div id="fig-matvec" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-matvec-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/matvec/book/step4.svg" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-matvec-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.37: Every prediction at once: five rows of <span class="math inline">\(\mathbf{X}\)</span>, each dotted with <span class="math inline">\(\hat{\mathbf{w}}\)</span>, give the five predictions <span class="math inline">\(\hat{\mathbf{y}}\)</span>. The shapes are <span class="math inline">\((5 \times 3)(3 \times 1) \to 5 \times 1\)</span>. A weight vector of shape <span class="math inline">\(2 \times 1\)</span> would not fit, and that product does not exist.
+</figcaption>
+</figure>
+</div>
+<p>The same sum can be taken in the other order. Collecting the terms of <a href="#eq-matvec" class="quarto-xref">Equation&nbsp;<span>2.29</span></a> by <span class="math inline">\(j\)</span> instead of by <span class="math inline">\(i\)</span>,</p>
+<p><span id="eq-matvec-columns"><span class="math display">\[ \mathbf{X}\hat{\mathbf{w}} \;=\; \hat{w}_0\,\mathbf{c}_0 + \hat{w}_1\,\mathbf{c}_1 + \cdots + \hat{w}_p\,\mathbf{c}_p ,  \tag{2.30}\]</span></span></p>
+<p>since entry <span class="math inline">\(i\)</span> of the right-hand side is <span class="math inline">\(\sum_j \hat{w}_j\,x_{ij}\)</span>, which is <span class="math inline">\(\hat{y}_i\)</span>. For fit 1 this reads <span class="math inline">\(-113.1 \times \mathbf{1} + 0.676 \times (\text{area column}) + 32.8 \times (\text{quality column})\)</span>, and on house 1 it gives <span class="math inline">\(-113.1 + 57.3 + 164.0 = 108.2\)</span>, the number the row gave. <a href="#eq-matvec-columns" class="quarto-xref">Equation&nbsp;<span>2.30</span></a> is a linear combination in the sense of <a href="#def-linear-combination" class="quarto-xref">Definition&nbsp;<span>2.12</span></a>, with the weights as its scalars. Another choice of weights, say <span class="math inline">\((0, 1, 10)\)</span>, is another combination, and gives another set of five predictions: 134.7, 169.2, 215.6, 216.8 and 270.8. The conclusion is the most important step on the way to the geometry. Every prediction the model can make, for any choice of weights, is a linear combination of the columns of <span class="math inline">\(\mathbf{X}\)</span>, and nothing else is available to it.</p>
+<div id="fig-matvec-columns" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-matvec-columns-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/matvec_columns/book/step4.svg" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-matvec-columns-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.38: The same product read by columns: <span class="math inline">\(\mathbf{X}\hat{\mathbf{w}}\)</span> is a linear combination of the ones, area and quality columns, with the weights as scalars. On house 1, <span class="math inline">\(-113.1 + 57.3 + 164.0 = 108.2\)</span>, the same as row 1 of <span class="math inline">\(\mathbf{X}\)</span> dotted with <span class="math inline">\(\hat{\mathbf{w}}\)</span>. Another choice of weights, <span class="math inline">\((0, 1, 10)\)</span>, gives another combination.
+</figcaption>
+</figure>
+</div>
+<p>The residuals follow in the same way. <a href="ch01.html#def-residual" class="quarto-xref">Definition&nbsp;<span>1.3</span></a> wrote the residual of observation <span class="math inline">\(i\)</span> as <span class="math inline">\(r_i\)</span>, and from here on we write it <span class="math inline">\(e_i\)</span>. Collected into a vector, the residuals become the <strong>residual vector</strong>,</p>
+<p><span id="eq-miss"><span class="math display">\[ \mathbf{e} \;=\; \mathbf{y} - \mathbf{X}\hat{\mathbf{w}} ,  \tag{2.31}\]</span></span></p>
+<p>of shape <span class="math inline">\(n \times 1\)</span>, with entries <span class="math inline">\(e_i = y_i - \hat{y}_i\)</span>. For the five houses under fit 1 the printed entries are <span class="math inline">\(+35.8\)</span>, <span class="math inline">\(-11.5\)</span>, <span class="math inline">\(+6.0\)</span>, <span class="math inline">\(+10.3\)</span> and <span class="math inline">\(-21.7\)</span>. The residual sum of squares of <a href="#def-rss" class="quarto-xref">Definition&nbsp;<span>2.3</span></a> is the sum of their squares, and by <a href="#eq-length" class="quarto-xref">Equation&nbsp;<span>2.27</span></a> that is the squared length of <span class="math inline">\(\mathbf{e}\)</span>:</p>
+<p><span id="eq-rss-length"><span class="math display">\[ \mathrm{RSS}(\hat{\mathbf{w}}) \;=\; \sum_{i=1}^{n} e_i^2 \;=\; \lVert \mathbf{y} - \mathbf{X}\hat{\mathbf{w}} \rVert^2 \;=\; (\mathbf{y} - \mathbf{X}\hat{\mathbf{w}})^\top(\mathbf{y} - \mathbf{X}\hat{\mathbf{w}}) .  \tag{2.32}\]</span></span></p>
+<p>The squares of the five printed residuals add to 2,026.9, in units of thousands of dollars squared. Computed from the fit’s unrounded weights, rather than from the three-figure weights printed here, the RSS of these five houses is 2,031.8. The score that <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a> minimised, written for any number of inputs, is one squared length, and least squares means making the residual vector as short as possible.</p>
+<div id="fig-miss" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-miss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/miss_vector/book/step4.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-miss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.39: Every residual at once: the sale prices <span class="math inline">\(\mathbf{y}\)</span>, the predictions <span class="math inline">\(\hat{\mathbf{y}}\)</span>, the residual vector <span class="math inline">\(\mathbf{e} = \mathbf{y} - \hat{\mathbf{y}}\)</span> of shape <span class="math inline">\(5 \times 1\)</span>, and its squares, which add to 2,026.9. The same sum is <span class="math inline">\(\mathbf{e}^\top\mathbf{e} = \lVert\mathbf{e}\rVert^2\)</span>.
+</figcaption>
+</figure>
+</div>
+<p>Every piece of <a href="#eq-multi-true" class="quarto-xref">Equation&nbsp;<span>2.22</span></a> now has a single symbol, and the model takes one line. The true model and its estimate are</p>
+<p><span id="eq-model-vector"><span class="math display">\[ \mathbf{y} \;=\; \mathbf{X}\mathbf{w} + \boldsymbol{\varepsilon}, \qquad\qquad \hat{\mathbf{y}} \;=\; \mathbf{X}\hat{\mathbf{w}} ,  \tag{2.33}\]</span></span></p>
+<p>for one input or for eighty. <a href="#tbl-notation" class="quarto-xref">Table&nbsp;<span>2.1</span></a> fixes the notation for the rest of the book. Italic lower case is a scalar, bold lower case a vector, bold capital a matrix, and a hat marks an estimate. Vectors are columns unless transposed.</p>
+<div id="tbl-notation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-notation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2.1: The notation of this book from this section on.
+</figcaption>
+<div aria-describedby="tbl-notation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Kind</th>
+<th style="text-align: left;">Shape</th>
+<th style="text-align: left;">What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(n\)</span></td>
+<td style="text-align: left;">scalar</td>
+<td style="text-align: left;">one number</td>
+<td style="text-align: left;">the number of observations (2,924 sales in Ames)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(p\)</span></td>
+<td style="text-align: left;">scalar</td>
+<td style="text-align: left;">one number</td>
+<td style="text-align: left;">the number of inputs</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x_{ij}\)</span></td>
+<td style="text-align: left;">scalar</td>
+<td style="text-align: left;">one number</td>
+<td style="text-align: left;">input <span class="math inline">\(j\)</span> of observation <span class="math inline">\(i\)</span>, with <span class="math inline">\(x_{i0} = 1\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\mathbf{x}_i\)</span></td>
+<td style="text-align: left;">vector</td>
+<td style="text-align: left;"><span class="math inline">\((p + 1) \times 1\)</span></td>
+<td style="text-align: left;">observation <span class="math inline">\(i\)</span>’s inputs, with its leading 1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\mathbf{y}\)</span></td>
+<td style="text-align: left;">vector</td>
+<td style="text-align: left;"><span class="math inline">\(n \times 1\)</span></td>
+<td style="text-align: left;">every recorded answer, here every price</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\mathbf{w}\)</span>, <span class="math inline">\(\hat{\mathbf{w}}\)</span></td>
+<td style="text-align: left;">vector</td>
+<td style="text-align: left;"><span class="math inline">\((p + 1) \times 1\)</span></td>
+<td style="text-align: left;">the true weights, never known, and their estimate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\boldsymbol{\varepsilon}\)</span></td>
+<td style="text-align: left;">vector</td>
+<td style="text-align: left;"><span class="math inline">\(n \times 1\)</span></td>
+<td style="text-align: left;">everything the true model leaves out, never known</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\hat{\mathbf{y}}\)</span>, <span class="math inline">\(\mathbf{e}\)</span></td>
+<td style="text-align: left;">vector</td>
+<td style="text-align: left;"><span class="math inline">\(n \times 1\)</span></td>
+<td style="text-align: left;">every prediction, and every residual <span class="math inline">\(\mathbf{y} - \hat{\mathbf{y}}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\mathbf{X}\)</span></td>
+<td style="text-align: left;">matrix</td>
+<td style="text-align: left;"><span class="math inline">\(n \times (p + 1)\)</span></td>
+<td style="text-align: left;">every input of every observation, a column of ones first</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="least-squares-as-a-projection" class="level3">
+<h3 class="anchored" data-anchor-id="least-squares-as-a-projection">Least squares as a projection</h3>
+<p>The language computes every prediction for any weights. The question left is which weights give the best predictions, and reading the table down turns that question into a picture.</p>
+<p>To draw it we keep three of the five houses, the first, third and fifth, and two columns, the ones and living area, with area in hundreds of square metres and prices in hundreds of thousands of dollars. The three houses are renumbered 1 to 3, so that house 2 of this picture is house 3 of <a href="#fig-two-readings" class="quarto-xref">Figure&nbsp;<span>2.35</span></a>. The familiar picture plots each house as a point, area against price, and fits a line through the three points. The second picture makes each house an <em>axis</em>. With three houses the space has three axes, and three numbers, one per house, are one point of it, or one arrow from the origin. Each column of <span class="math inline">\(\mathbf{X}\)</span> then becomes one arrow: the ones column is the arrow to <span class="math inline">\((1, 1, 1)\)</span>, the area column the arrow to <span class="math inline">\((0.847, 1.356, 2.008)\)</span>. The prices are the arrow <span class="math inline">\(\mathbf{y} = (1.44, 2.47, 2.305)\)</span>. A house that was a point in the first picture is, in the second, one coordinate of every arrow (<a href="#fig-two-spaces" class="quarto-xref">Figure&nbsp;<span>2.40</span></a>). With <span class="math inline">\(n\)</span> houses the same construction gives a space of <span class="math inline">\(n\)</span> dimensions, which cannot be drawn and does not need to be, since every statement below is made with dot products and lengths, and they work in any number of dimensions.</p>
+<div id="fig-two-spaces" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-two-spaces-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/two_spaces/step4.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-two-spaces-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.40: Two pictures of the same three houses. Left, read across: each house a point, area against price, with a line through them. Right, read down: each house an axis, so each column of <span class="math inline">\(\mathbf{X}\)</span> is one arrow and the prices are one arrow <span class="math inline">\(\mathbf{y}\)</span>. House 2, in red, is a point on the left and the second entry of every arrow on the right.
+</figcaption>
+</figure>
+</div>
+<p>By <a href="#eq-matvec-columns" class="quarto-xref">Equation&nbsp;<span>2.30</span></a>, every prediction <span class="math inline">\(\mathbf{X}\hat{\mathbf{w}}\)</span> is a combination of the column arrows. In the house space, the combinations of two arrows fill a flat surface through the origin, and every prediction the model can make lies on it.</p>
+<div id="def-span" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.16 (Span)</strong></span> The <strong>span</strong> of a set of vectors is the set of all their linear combinations. The span of the columns of <span class="math inline">\(\mathbf{X}\)</span> is the set of every prediction <span class="math inline">\(\mathbf{X}\hat{\mathbf{w}}\)</span> the model can make.</p>
+</div>
+<p>The prices <span class="math inline">\(\mathbf{y}\)</span> lie off the surface (<a href="#fig-span" class="quarto-xref">Figure&nbsp;<span>2.41</span></a>), and that is a fact about the data, not a defect of the drawing: <span class="math inline">\(\mathbf{y}\)</span> would lie on it only if some line passed exactly through all three houses of <a href="#fig-two-spaces" class="quarto-xref">Figure&nbsp;<span>2.40</span></a>, and none does. This surface is not the surface of <a href="#fig-plane" class="quarto-xref">Figure&nbsp;<span>2.28</span></a>. There each axis was an input and each point a house. Here each axis is a house, and each point is a whole vector of predictions.</p>
+<div id="fig-span" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-span-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/span_book/step1.svg" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-span-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.41: The house space for three houses. Every combination of the ones column and the area column lies on one flat surface, their span. The prices <span class="math inline">\(\mathbf{y}\)</span> lie off it.
+</figcaption>
+</figure>
+</div>
+<p>Least squares now has a geometric statement. Each candidate <span class="math inline">\(\hat{\mathbf{w}}\)</span> is a point <span class="math inline">\(\mathbf{X}\hat{\mathbf{w}}\)</span> of the span, and by <a href="#eq-rss-length" class="quarto-xref">Equation&nbsp;<span>2.32</span></a> its distance from <span class="math inline">\(\mathbf{y}\)</span> is <span class="math inline">\(\lVert \mathbf{y} - \mathbf{X}\hat{\mathbf{w}} \rVert = \sqrt{\mathrm{RSS}}\)</span>. Minimising the RSS is finding the point of the span closest to <span class="math inline">\(\mathbf{y}\)</span>. <a href="#fig-projection" class="quarto-xref">Figure&nbsp;<span>2.42</span></a> marks two candidates. The weights <span class="math inline">\((-0.96, 1.34)\)</span> give predictions at distance 2.13 from <span class="math inline">\(\mathbf{y}\)</span>, and the weights <span class="math inline">\((1.85, 0)\)</span>, a flat $185 thousand for every house whatever its area, give predictions at distance 0.87. The closest point of all lies straight below <span class="math inline">\(\mathbf{y}\)</span>, at distance 0.530. These distances are computed, not measured from the page: a perspective drawing of three dimensions shortens some lengths more than others, and in the figure the longer of the two dashed lines looks the shorter. It is the shadow that <span class="math inline">\(\mathbf{y}\)</span> would cast on the surface with the light directly overhead, and at the shadow the residual vector stands at a right angle to the surface. The picture claims that this right angle is what makes the shadow closest, and the claim can be proved.</p>
+<div id="fig-projection" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-projection-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/projection/book/step4.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-projection-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.42: Least squares as a projection. Two candidate predictions on the span, at distances 2.13 and 0.87 from <span class="math inline">\(\mathbf{y}\)</span>, computed in the text. The perspective foreshortens the lines, so their lengths on the page do not compare. The closest point, <span class="math inline">\(\hat{\mathbf{y}} = \mathbf{X}\hat{\mathbf{w}}\)</span>, at distance 0.530, lies straight below <span class="math inline">\(\mathbf{y}\)</span>, and the residual <span class="math inline">\(\mathbf{e} = \mathbf{y} - \mathbf{X}\hat{\mathbf{w}}\)</span> stands at a right angle to the surface. Heights above the surface are drawn twice as tall, so that the right angle can be seen.
+</figcaption>
+</figure>
+</div>
+<p>Suppose <span class="math inline">\(\hat{\mathbf{w}}\)</span> is a candidate whose residual <span class="math inline">\(\mathbf{e} = \mathbf{y} - \mathbf{X}\hat{\mathbf{w}}\)</span> is orthogonal to every column, <span class="math inline">\(\mathbf{c}_j \cdot \mathbf{e} = 0\)</span> for <span class="math inline">\(j = 0, \ldots, p\)</span>. Take any other candidate <span class="math inline">\(\hat{\mathbf{w}}'\)</span> and write <span class="math inline">\(\mathbf{d} = \hat{\mathbf{w}} - \hat{\mathbf{w}}'\)</span>. Its residual is</p>
+<p><span class="math display">\[ \mathbf{y} - \mathbf{X}\hat{\mathbf{w}}' \;=\; \mathbf{e} + \mathbf{X}\mathbf{d} . \]</span></p>
+<p>By <a href="#eq-matvec-columns" class="quarto-xref">Equation&nbsp;<span>2.30</span></a>, <span class="math inline">\(\mathbf{X}\mathbf{d} = \sum_j d_j\,\mathbf{c}_j\)</span>, so its dot product with <span class="math inline">\(\mathbf{e}\)</span> is <span class="math inline">\(\sum_j d_j\,(\mathbf{c}_j \cdot \mathbf{e}) = 0\)</span>. The two pieces are orthogonal, and <a href="#eq-perp" class="quarto-xref">Equation&nbsp;<span>2.28</span></a> gives</p>
+<p><span id="eq-pythagoras"><span class="math display">\[ \lVert \mathbf{y} - \mathbf{X}\hat{\mathbf{w}}' \rVert^2 \;=\; \lVert \mathbf{e} \rVert^2 + \lVert \mathbf{X}\mathbf{d} \rVert^2 \;\geq\; \lVert \mathbf{e} \rVert^2 .  \tag{2.34}\]</span></span></p>
+<p>No candidate has a smaller RSS than <span class="math inline">\(\hat{\mathbf{w}}\)</span>, and a candidate with the same RSS has <span class="math inline">\(\mathbf{X}\mathbf{d} = \mathbf{0}\)</span> and therefore the same predictions. The argument shows that a candidate with an orthogonal residual is the best. That such a candidate always exists, for any <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{y}\)</span>, is a standard result of linear algebra, which this book uses without proof. The prediction <span class="math inline">\(\mathbf{X}\hat{\mathbf{w}}\)</span> is the <strong>orthogonal projection</strong> of <span class="math inline">\(\mathbf{y}\)</span> onto the span of the columns: the point of the span whose difference from <span class="math inline">\(\mathbf{y}\)</span> is orthogonal to the span. This is the second promise printed under linear algebra in <a href="ch01.html#sec-s04" class="quarto-xref"><span>Section 1.4</span></a>: least squares is a projection.</p>
+<p>The condition is a set of equations, one per column. The dot products <span class="math inline">\(\mathbf{c}_j \cdot \mathbf{e}\)</span>, stacked, are the entries of <span class="math inline">\(\mathbf{X}^\top\mathbf{e}\)</span>, since the rows of <span class="math inline">\(\mathbf{X}^\top\)</span> are the columns of <span class="math inline">\(\mathbf{X}\)</span>:</p>
+<p><span id="eq-orthogonal"><span class="math display">\[ \mathbf{X}^\top(\mathbf{y} - \mathbf{X}\hat{\mathbf{w}}) \;=\; \mathbf{0} ,  \tag{2.35}\]</span></span></p>
+<p>with shapes <span class="math inline">\(((p+1) \times n)(n \times 1) \to (p+1) \times 1\)</span>: one equation per column. To write it without the bracket we need the product of two matrices.</p>
+<div id="def-matrix-product" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.17 (Matrix product)</strong></span> The <strong>product</strong> <span class="math inline">\(\mathbf{A}\mathbf{B}\)</span> of an <span class="math inline">\(r \times k\)</span> matrix <span class="math inline">\(\mathbf{A}\)</span> and a <span class="math inline">\(k \times m\)</span> matrix <span class="math inline">\(\mathbf{B}\)</span> is the <span class="math inline">\(r \times m\)</span> matrix whose entry in row <span class="math inline">\(i\)</span> and column <span class="math inline">\(j\)</span> is row <span class="math inline">\(i\)</span> of <span class="math inline">\(\mathbf{A}\)</span> dotted with column <span class="math inline">\(j\)</span> of <span class="math inline">\(\mathbf{B}\)</span>. By the shape rule, the product exists only when the inner numbers agree: <span class="math inline">\((r \times k)(k \times m) \to r \times m\)</span>.</p>
+</div>
+<p>The matrix-vector product of <a href="#eq-matvec" class="quarto-xref">Equation&nbsp;<span>2.29</span></a> is the case <span class="math inline">\(m = 1\)</span>. Order matters: <span class="math inline">\(\mathbf{A}\mathbf{B}\)</span> can exist when <span class="math inline">\(\mathbf{B}\mathbf{A}\)</span> does not, and even when both exist they generally differ. Matrix products distribute over sums as products of numbers do, <span class="math inline">\(\mathbf{A}(\mathbf{u} - \mathbf{v}) = \mathbf{A}\mathbf{u} - \mathbf{A}\mathbf{v}\)</span>, and multiplying out <a href="#eq-orthogonal" class="quarto-xref">Equation&nbsp;<span>2.35</span></a> gives the central equations of the section.</p>
+<div id="def-normal-equations" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.18 (Normal equations)</strong></span> The <strong>normal equations</strong> of least squares are <span id="eq-normal-equations"><span class="math display">\[ \mathbf{X}^\top\mathbf{X}\,\hat{\mathbf{w}} \;=\; \mathbf{X}^\top\mathbf{y} .  \tag{2.36}\]</span></span> They state that the residual is orthogonal to every column of <span class="math inline">\(\mathbf{X}\)</span>.</p>
+</div>
+<p>The name is apt, since <em>normal</em> is the geometer’s word for perpendicular. The matrix <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span> has shape <span class="math inline">\((p + 1) \times (p + 1)\)</span>, and its entry in row <span class="math inline">\(j\)</span> and column <span class="math inline">\(k\)</span> is <span class="math inline">\(\mathbf{c}_j \cdot \mathbf{c}_k\)</span>, one column dotted with another. Entry <span class="math inline">\(j\)</span> of <span class="math inline">\(\mathbf{X}^\top\mathbf{y}\)</span> is <span class="math inline">\(\mathbf{c}_j \cdot \mathbf{y}\)</span>. <a href="#eq-normal-equations" class="quarto-xref">Equation&nbsp;<span>2.36</span></a> is the second difficulty settled: one formula for any number of inputs. <a href="#fig-normal-eq" class="quarto-xref">Figure&nbsp;<span>2.43</span></a> marks the two right angles in the house space.</p>
+<div id="fig-normal-eq" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-normal-eq-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/normal_eq_book/step1.svg" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-normal-eq-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.43: The residual <span class="math inline">\(\mathbf{e}\)</span> at a right angle to the ones column and to the area column, so that both dot products are zero. Stacked, <span class="math inline">\(\mathbf{X}^\top\mathbf{e} = \mathbf{0}\)</span>.
+</figcaption>
+</figure>
+</div>
+<p>For the three houses of the picture the projection can be checked directly. The normal equations give <span class="math inline">\(\hat{\mathbf{w}} = (1.090, 0.699)\)</span>, the prediction <span class="math inline">\(\hat{\mathbf{y}} = (1.682, 2.038, 2.494)\)</span> and the residual <span class="math inline">\(\mathbf{e} = (-0.242, 0.432, -0.189)\)</span>. Its dot product with the ones column is <span class="math inline">\(-0.242 + 0.432 - 0.189 = 0.001\)</span>, and with the area column <span class="math inline">\(0.847 \times (-0.242) + 1.356 \times 0.432 + 2.008 \times (-0.189) = 0.001\)</span>, both zero to the rounding of the printed digits, and its length is 0.530. The candidate <span class="math inline">\(\hat{\mathbf{w}}' = (0.248, 1.299)\)</span> has a residual whose dot product with the ones column is zero and with the area column is <span class="math inline">\(-0.41\)</span>. It fails one of the equations, and by <a href="#eq-pythagoras" class="quarto-xref">Equation&nbsp;<span>2.34</span></a> it is further from <span class="math inline">\(\mathbf{y}\)</span>: its distance is 0.724. A candidate is the least-squares answer only if every dot product is zero.</p>
+<p>For the five houses with both inputs, <a href="#fig-normal-numbers" class="quarto-xref">Figure&nbsp;<span>2.44</span></a> computes every entry. The top-left entry of <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span> is the ones column dotted with itself, <span class="math inline">\(1 + 1 + 1 + 1 + 1 = 5 = n\)</span>. The entries beside it are the sums of the areas, 687.1, and of the quality ratings, 32. The bottom-right entry is the sum of the squared ratings, <span class="math inline">\(25 + 36 + 64 + 36 + 49 = 210\)</span>. Written out, <a href="#eq-normal-equations" class="quarto-xref">Equation&nbsp;<span>2.36</span></a> is three equations in three unknowns,</p>
+<p><span id="eq-normal-five"><span class="math display">\[
+\begin{aligned}
+5\,\hat{b} \;+\; 687.1\,\hat{w}_1 \;+\; 32\,\hat{w}_2 &amp;\;=\; 967.5, \\
+687.1\,\hat{b} \;+\; 102{,}393.0\,\hat{w}_1 \;+\; 4{,}509.9\,\hat{w}_2 &amp;\;=\; 139{,}277.6, \\
+32\,\hat{b} \;+\; 4{,}509.9\,\hat{w}_1 \;+\; 210\,\hat{w}_2 &amp;\;=\; 6{,}385.5,
+\end{aligned}
+\tag{2.37}\]</span></span></p>
+<p>of the kind solved at school by elimination, and their solution is <span class="math inline">\(\hat{\mathbf{w}} = (-44.3, 0.386, 28.9)\)</span>. The same equations built from all 2,924 sales give fit 1, <span class="math inline">\((-113.1, 0.676, 32.8)\)</span>. Five houses give a rough estimate, and the full data give the fit. On the five houses alone, the five-house solution scores an RSS of 953.7 against fit 1’s 2,031.8, as it must, since it is the best for those five and for no others.</p>
+<div id="fig-normal-numbers" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-normal-numbers-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/normal_numbers/book/step4.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-normal-numbers-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.44: The normal equations for the five sales. <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span> is <span class="math inline">\(3 \times 3\)</span> and <span class="math inline">\(\mathbf{X}^\top\mathbf{y}\)</span> is <span class="math inline">\(3 \times 1\)</span>. The top-left entry is the ones column dotted with itself, <span class="math inline">\(5 = n\)</span>. Three equations in three unknowns, solved: <span class="math inline">\((-44.3, 0.386, 28.9)\)</span> from five houses, <span class="math inline">\((-113.1, 0.676, 32.8)\)</span> from all 2,924.
+</figcaption>
+</figure>
+</div>
+<p>Legendre had already reduced least squares to such linear equations and left them to the ordinary methods of solution <span class="citation" data-cites="legendre1805">(<a href="#ref-legendre1805" role="doc-biblioref">Legendre 1805</a>)</span>. Gauss solved them by elimination <span class="citation" data-cites="gauss1809">(<a href="#ref-gauss1809" role="doc-biblioref">Gauss 1809</a>)</span> and set out a systematic scheme for it in a memoir of 1810 on the orbit of the asteroid Pallas <span class="citation" data-cites="grcar2011">(<a href="#ref-grcar2011" role="doc-biblioref">Grcar 2011</a>)</span>. To write their solution in one line, as <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a> wrote the slope, two more objects are needed.</p>
+<div id="def-identity-inverse" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.19 (Identity and inverse)</strong></span> The <strong>identity matrix</strong> <span class="math inline">\(\mathbf{I}\)</span> is the square matrix with ones on its diagonal and zeros elsewhere. It changes nothing: <span class="math inline">\(\mathbf{I}\mathbf{v} = \mathbf{v}\)</span> for every vector of matching shape. The <strong>inverse</strong> of a square matrix <span class="math inline">\(\mathbf{A}\)</span>, when it exists, is the matrix <span class="math inline">\(\mathbf{A}^{-1}\)</span> with <span class="math inline">\(\mathbf{A}^{-1}\mathbf{A} = \mathbf{A}\mathbf{A}^{-1} = \mathbf{I}\)</span>.</p>
+</div>
+<p>For <span class="math inline">\(\mathbf{A} = \begin{bmatrix} 2 &amp; 1 \\ 1 &amp; 1 \end{bmatrix}\)</span> the inverse is <span class="math inline">\(\mathbf{A}^{-1} = \begin{bmatrix} 1 &amp; -1 \\ -1 &amp; 2 \end{bmatrix}\)</span>. By <a href="#def-matrix-product" class="quarto-xref">Definition&nbsp;<span>2.17</span></a> the top-left entry of <span class="math inline">\(\mathbf{A}^{-1}\mathbf{A}\)</span> is <span class="math inline">\(1 \times 2 + (-1) \times 1 = 1\)</span>, and the other three entries come out as the identity requires. With a single number the inverse is division: <span class="math inline">\(\tfrac14 \times 4 = 1\)</span>. Read this way, <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span> is a matrix that takes <span class="math inline">\(\hat{\mathbf{w}}\)</span> to <span class="math inline">\(\mathbf{X}^\top\mathbf{y}\)</span>, as multiplying by 4 takes a quarter to one, and its inverse undoes it. Multiplying both sides of <a href="#eq-normal-equations" class="quarto-xref">Equation&nbsp;<span>2.36</span></a> by <span class="math inline">\((\mathbf{X}^\top\mathbf{X})^{-1}\)</span> gives the least-squares solution,</p>
+<p><span id="eq-ls-solution"><span class="math display">\[ \hat{\mathbf{w}} \;=\; (\mathbf{X}^\top\mathbf{X})^{-1}\,\mathbf{X}^\top\mathbf{y} ,  \tag{2.38}\]</span></span></p>
+<p>for any number of inputs, whenever the inverse exists. When it does not is the subject of the last part of this section. In practice the system <a href="#eq-normal-equations" class="quarto-xref">Equation&nbsp;<span>2.36</span></a> is solved by elimination without forming the inverse, which is faster and more accurate, and the cost and accuracy of that work are taken up in Section 2.4.</p>
+<div id="fig-inverse" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-inverse-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/inverse/book/step4.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-inverse-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.45: Left: the identity <span class="math inline">\(\mathbf{I}\)</span>, ones on the diagonal, changes nothing: <span class="math inline">\(\mathbf{I}\mathbf{v} = \mathbf{v}\)</span>. Right: the inverse undoes, <span class="math inline">\(\mathbf{A}^{-1}\mathbf{A} = \mathbf{I}\)</span>, worked on a <span class="math inline">\(2 \times 2\)</span> case. With one number the inverse is division. <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span> takes <span class="math inline">\(\hat{\mathbf{w}}\)</span> to <span class="math inline">\(\mathbf{X}^\top\mathbf{y}\)</span>, and <span class="math inline">\((\mathbf{X}^\top\mathbf{X})^{-1}\)</span> undoes it.
+</figcaption>
+</figure>
+</div>
+<p>Matrices arose as shorthand for such systems. Cayley set out their algebra, including the product and the inverse, in <em>A Memoir on the Theory of Matrices</em>, published in the <em>Philosophical Transactions of the Royal Society</em> in 1858 <span class="citation" data-cites="cayley1858">(<a href="#ref-cayley1858" role="doc-biblioref">Cayley 1858</a>)</span>. He described a matrix as a convenient notation for a set of linear equations.</p>
+<p>The normal equations also follow from calculus, by the route of <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a>, and the two routes must agree. Moving weight <span class="math inline">\(\hat{w}_j\)</span> by <span class="math inline">\(h\)</span> changes each residual <span class="math inline">\(e_i\)</span> to <span class="math inline">\(e_i - h\,x_{ij}\)</span>, so its square changes by <span class="math inline">\(-2h\,x_{ij}\,e_i + h^2 x_{ij}^2\)</span>. Dividing by <span class="math inline">\(h\)</span> and letting <span class="math inline">\(h\)</span> go to zero leaves <span class="math inline">\(-2\,x_{ij}\,e_i\)</span>, and adding over the observations gives</p>
+<p><span id="eq-gradient-matrix"><span class="math display">\[ \frac{\partial\,\mathrm{RSS}}{\partial \hat{w}_j} \;=\; -2 \sum_{i=1}^{n} x_{ij}\,e_i \;=\; -2\,\mathbf{c}_j \cdot \mathbf{e}, \qquad\text{so}\qquad \nabla \mathrm{RSS} \;=\; -2\,\mathbf{X}^\top\mathbf{e} .  \tag{2.39}\]</span></span></p>
+<p>This is <a href="#eq-partials" class="quarto-xref">Equation&nbsp;<span>2.13</span></a> for any number of inputs. The gradient is zero exactly when <span class="math inline">\(\mathbf{X}^\top\mathbf{e} = \mathbf{0}\)</span>, which is <a href="#eq-orthogonal" class="quarto-xref">Equation&nbsp;<span>2.35</span></a>. The calculus route says that every minimiser satisfies the normal equations, and the geometric route says that every solution of them is a minimiser, so the two together identify the least-squares answers with the solutions of <a href="#eq-normal-equations" class="quarto-xref">Equation&nbsp;<span>2.36</span></a>.</p>
+<p>With one input the general result becomes the formula of <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a>. Measure area from the average house and in hundreds of square metres, as in <a href="#eq-centred" class="quarto-xref">Equation&nbsp;<span>2.5</span></a>, so that <span class="math inline">\(\mathbf{X}\)</span> has two columns, the ones and <span class="math inline">\(\mathbf{u}\)</span>. Then</p>
+<p><span id="eq-one-input"><span class="math display">\[ \mathbf{X}^\top\mathbf{X} \;=\; \begin{bmatrix} n &amp; \sum_i u_i \\ \sum_i u_i &amp; \sum_i u_i^2 \end{bmatrix} \;=\; \begin{bmatrix} n &amp; 0 \\ 0 &amp; S_{uu} \end{bmatrix}, \qquad \mathbf{X}^\top\mathbf{y} \;=\; \begin{bmatrix} \sum_i y_i \\ S_{uy} \end{bmatrix} ,  \tag{2.40}\]</span></span></p>
+<p>where the zeros are <a href="#eq-sum-u" class="quarto-xref">Equation&nbsp;<span>2.6</span></a>. The two normal equations are <span class="math inline">\(n\hat{b} = \sum_i y_i\)</span> and <span class="math inline">\(S_{uu}\,\hat{w} = S_{uy}\)</span>, which are <a href="#eq-normal" class="quarto-xref">Equation&nbsp;<span>2.16</span></a> and give <a href="#eq-closed-centred" class="quarto-xref">Equation&nbsp;<span>2.17</span></a>: <span class="math inline">\(\hat{b} = \bar{y}\)</span> and <span class="math inline">\(\hat{w} = 125.1\)</span> thousand dollars per extra hundred square metres, the line of <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a>. The slope formula now reads differently. Its numerator <span class="math inline">\(\sum_i u_i y_i\)</span> is the dot product <span class="math inline">\(\mathbf{u}^\top\mathbf{y}\)</span>, its denominator <span class="math inline">\(\sum_i u_i^2\)</span> is <span class="math inline">\(\mathbf{u}^\top\mathbf{u}\)</span>, and dividing is multiplying by the inverse of a <span class="math inline">\(1 \times 1\)</span> matrix:</p>
+<p><span class="math display">\[ \hat{w} \;=\; \frac{\sum_i u_i\,y_i}{\sum_i u_i^2} \;=\; (\mathbf{u}^\top\mathbf{u})^{-1}\,\mathbf{u}^\top\mathbf{y} , \]</span></p>
+<p>which is <a href="#eq-ls-solution" class="quarto-xref">Equation&nbsp;<span>2.38</span></a> with one column. The formula of <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a> was the normal equations from the start (<a href="#fig-one-input" class="quarto-xref">Figure&nbsp;<span>2.46</span></a>).</p>
+<div id="fig-one-input" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-one-input-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/one_input_case/book/step4.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-one-input-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.46: With one input, <span class="math inline">\(\mathbf{X}\)</span> has two columns, the ones and the centred area <span class="math inline">\(\mathbf{u}\)</span>, and the normal equations are two equations in two unknowns. The right angle and the slopes set to zero give the same two equations. Solved: <span class="math inline">\(\hat{w} = 125.1\)</span> thousand dollars per extra 100 m², the line of <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a>, and its formula is <span class="math inline">\((\mathbf{u}^\top\mathbf{u})^{-1}\mathbf{u}^\top\mathbf{y}\)</span>.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="columns-that-need-work" class="level3">
+<h3 class="anchored" data-anchor-id="columns-that-need-work">Columns that need work</h3>
+<p><a href="#eq-ls-solution" class="quarto-xref">Equation&nbsp;<span>2.38</span></a> accepts any columns of numbers, and not every column arrives as one. The neighbourhood of a sale is a name, such as North Ames, Stone Brook or Briardale, and a name cannot be multiplied by a weight.</p>
+<div id="def-indicator" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.20 (Indicator column)</strong></span> An <strong>indicator column</strong> for a category is a column that holds 1 for every observation in that category and 0 for every other.</p>
+</div>
+<p>Ames has 28 neighbourhoods, and one indicator per name gives 28 columns. The weight on an indicator is added to the prediction only for sales in that neighbourhood, so each name moves the whole surface up or down without changing its slopes (<a href="#fig-indicators" class="quarto-xref">Figure&nbsp;<span>2.47</span></a>). Turning a name into numbers is not yet machine learning. It is the preparation of data, which <a href="ch01.html#sec-s03" class="quarto-xref"><span>Section 1.3</span></a> placed among the stages of data science.</p>
+<div id="fig-indicators" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-indicators-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/category_columns/book/step4.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-indicators-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.47: Neighbourhood, a name, turned into one indicator column per name, holding 1 where the sale is in that neighbourhood and 0 elsewhere: 28 names, 28 columns. Right: each name shifts the fitted surface up or down without changing its slope, shown for Stone Brook, North Ames and Briardale.
+</figcaption>
+</figure>
+</div>
+<p>Placed beside the ones column, the indicators contain a trap. Every sale is in exactly one neighbourhood, so in every row the 28 indicators add to 1, and the sum of the indicator columns is the ones column. One column is a combination of the others. Suppose a weight vector gives some set of predictions. Raising the intercept by 50 and lowering every neighbourhood’s weight by 50 changes no prediction, since every row gains 50 from the intercept and loses 50 from its one indicator, and the RSS is unchanged. Least squares then has no unique answer. With area, quality, year built and all 28 indicators, <span class="math inline">\(\mathbf{X}\)</span> has 32 columns, but as the next part makes precise, only 31 of them are genuinely different.</p>
+<p>The remedy is to drop one indicator. Its category becomes the <strong>reference</strong>, and the weight of every other category measures its shift from the reference. Here the reference is North Ames, the commonest neighbourhood with 443 sales. With area, quality and year built held fixed, a house in Briardale is predicted at $42.7 thousand less than a comparable house in North Ames, and a house in Stone Brook at $56.3 thousand more (<a href="#fig-dummy-trap" class="quarto-xref">Figure&nbsp;<span>2.48</span></a>). The alternative remedy keeps every indicator and drops the ones column, so that each name carries its own level. Suits set out the difficulty and both remedies in <em>Use of Dummy Variables in Regression Equations</em>, published in the <em>Journal of the American Statistical Association</em> in 1957 <span class="citation" data-cites="suits1957">(<a href="#ref-suits1957" role="doc-biblioref">Suits 1957</a>)</span>. The problem is known as the <strong>dummy-variable trap</strong>, <em>dummy variable</em> being the econometric name for an indicator column.</p>
+<div id="fig-dummy-trap" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dummy-trap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/dummy_trap/book/step4.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dummy-trap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.48: The design matrix with the ones column and three of the indicators. North Ames, the commonest name, is dropped and becomes the reference, against which every other name is read. Each name’s shift against the reference: Briardale <span class="math inline">\(-42.7\)</span>k, Stone Brook <span class="math inline">\(+56.3\)</span>k.
+</figcaption>
+</figure>
+</div>
+<p>A second difficulty concerns units. With year built added, the fitted weights are 0.724 thousand dollars per square metre, 25.4 per quality point and 0.506 per year. Their sizes cannot be compared, since each carries the unit of its own column, and nothing follows from quality’s weight being thirty-five times area’s.</p>
+<div id="def-standardise" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.21 (Standardising)</strong></span> To <strong>standardise</strong> a column is to subtract its mean and divide by its standard deviation, so that entry <span class="math inline">\(i\)</span> of input <span class="math inline">\(j\)</span> becomes <span id="eq-standardise"><span class="math display">\[ z_{ij} \;=\; \frac{x_{ij} - m_j}{s_j} ,  \tag{2.41}\]</span></span> where <span class="math inline">\(m_j\)</span> and <span class="math inline">\(s_j\)</span> are the mean and standard deviation of column <span class="math inline">\(j\)</span> over the <span class="math inline">\(n\)</span> observations, the standard deviation dividing by <span class="math inline">\(n\)</span>. One unit of a standardised column is one standard deviation of the original.</p>
+</div>
+<p>The standard deviations here are 45.18 square metres of living area, 1.403 quality points and 30.24 years. Refitted on standardised columns, the weights are 32.7, 35.7 and 15.3 thousand dollars per standard deviation. Measured per typical difference between houses, and with the other columns held fixed, area and quality move the price about equally and year built about half as much. The raw weights are recovered by dividing each by its column’s standard deviation: <span class="math inline">\(32.7 / 45.18 = 0.724\)</span>, <span class="math inline">\(35.7 / 1.403 = 25.4\)</span> and <span class="math inline">\(15.3 / 30.24 = 0.506\)</span>.</p>
+<div id="fig-standardise" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-standardise-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/scale_columns_book/step1.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-standardise-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.49: Left: the three fitted weights, each in its own column’s unit, and the same weights after standardising, in thousands of dollars per standard deviation of each column. Right: the predictions of the two fits for a sample of sales. Every point lies on the diagonal, so every prediction is unchanged.
+</figcaption>
+</figure>
+</div>
+<p>Every prediction is unchanged by standardising (<a href="#fig-standardise" class="quarto-xref">Figure&nbsp;<span>2.49</span></a>), and the projection explains why. By <a href="#eq-standardise" class="quarto-xref">Equation&nbsp;<span>2.41</span></a> each raw column is <span class="math inline">\(\mathbf{c}_j = m_j\,\mathbf{1} + s_j\,\mathbf{z}_j\)</span>, a combination of the ones column and the standardised column, and each standardised column is in turn a combination of the ones column and the raw one. Every combination of one set is a combination of the other, so the two sets of columns have the same span. The projection of <span class="math inline">\(\mathbf{y}\)</span> onto that span is the same point, and the predictions are the same numbers. Only the weights that reach the point change. Standardising matters again when the weights are found step by step rather than by solving, which is part of Section 2.4.</p>
+</section>
+<section id="when-the-answer-is-not-unique" class="level3">
+<h3 class="anchored" data-anchor-id="when-the-answer-is-not-unique">When the answer is not unique</h3>
+<p>The third difficulty is the one <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a> met with area entered twice. Ames contains a repetition that nobody had to create. The file records first-floor area, second-floor area and low-quality finished area, and living area is exactly their sum in every one of the 2,924 sales (<a href="#fig-repeat" class="quarto-xref">Figure&nbsp;<span>2.50</span></a>). A model given the ones column and all four area columns has five columns, of which only four are genuinely different, since the fifth is built from three of the others.</p>
+<div id="def-rank" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.22 (Rank)</strong></span> The <strong>rank</strong> of a matrix is the largest number of its columns that can be chosen so that none is a linear combination of the others. Going through the columns in order and keeping each one that is not a combination of those already kept, the number kept is the rank. A matrix has <strong>full column rank</strong> when its rank equals its number of columns.</p>
+</div>
+<p>The repeated-area matrix has rank 4 of 5, and the neighbourhood matrix with all 28 indicators rank 31 of 32. A column that repeats the others means some combination of the columns with weights not all zero is the zero vector, <span class="math inline">\(\mathbf{X}\mathbf{v} = \mathbf{0}\)</span> with <span class="math inline">\(\mathbf{v} \neq \mathbf{0}\)</span>. The two statements say the same thing. If one column is a combination of the others, moving it to the other side of the equation gives such a <span class="math inline">\(\mathbf{v}\)</span>. If such a <span class="math inline">\(\mathbf{v}\)</span> exists, any column whose entry of <span class="math inline">\(\mathbf{v}\)</span> is not zero can be solved for in terms of the rest. For the area identity, <span class="math inline">\(\mathbf{v}\)</span> takes <span class="math inline">\(+1\)</span> on each floor column and <span class="math inline">\(-1\)</span> on living area. Then <span class="math inline">\(\hat{\mathbf{w}}\)</span> and <span class="math inline">\(\hat{\mathbf{w}} + t\,\mathbf{v}\)</span> give the same predictions for every <span class="math inline">\(t\)</span>, and the RSS has a line of equally good bottoms, the trough of <a href="#fig-cf-vs-gd" class="quarto-xref">Figure&nbsp;<span>2.18</span></a> found in real data.</p>
+<p>The formula fails with it. If <span class="math inline">\(\mathbf{X}\mathbf{v} = \mathbf{0}\)</span> then <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\mathbf{v} = \mathbf{0}\)</span>, so <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span> sends a nonzero vector to zero. No matrix can undo that, since an inverse would have to send <span class="math inline">\(\mathbf{0}\)</span> back to <span class="math inline">\(\mathbf{v}\)</span>, and <span class="math inline">\((\mathbf{X}^\top\mathbf{X})^{-1}\)</span> does not exist. It is the matrix form of dividing by zero. The converse holds too. If <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\mathbf{v} = \mathbf{0}\)</span> for some <span class="math inline">\(\mathbf{v}\)</span>, then, writing the dot product of <span class="math inline">\(\mathbf{v}\)</span> with it column by column,</p>
+<p><span id="eq-xtx-zero"><span class="math display">\[ 0 \;=\; \mathbf{v} \cdot (\mathbf{X}^\top\mathbf{X}\mathbf{v}) \;=\; \sum_j v_j\,(\mathbf{c}_j \cdot \mathbf{X}\mathbf{v}) \;=\; (\mathbf{X}\mathbf{v}) \cdot (\mathbf{X}\mathbf{v}) \;=\; \lVert \mathbf{X}\mathbf{v} \rVert^2 ,  \tag{2.42}\]</span></span></p>
+<p>so <span class="math inline">\(\mathbf{X}\mathbf{v} = \mathbf{0}\)</span>. A standard result of linear algebra, which this book uses without proof, says that a square matrix has an inverse exactly when the only vector it sends to zero is the zero vector. Together these give the condition for <a href="#eq-ls-solution" class="quarto-xref">Equation&nbsp;<span>2.38</span></a>: <span class="math inline">\((\mathbf{X}^\top\mathbf{X})^{-1}\)</span> exists exactly when <span class="math inline">\(\mathbf{X}\)</span> has full column rank. The projection <span class="math inline">\(\hat{\mathbf{y}}\)</span> exists and is unique either way, since <a href="#eq-pythagoras" class="quarto-xref">Equation&nbsp;<span>2.34</span></a> makes the closest point unique. What fails is only the uniqueness of the weights that reach it.</p>
+<div id="fig-repeat" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-repeat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/repeat_columns/book/step4.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-repeat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.50: Ames records living area as the sum of the first floor, the second floor and the low-quality finished area, in every sale, shown for four of them. Five columns (the ones and these four), but only four different ones: the rank is 4 of 5. Right: a slice of the weights in which the three floor columns share one weight, so that two axes remain, that shared weight and living area’s. Because the floors add up to living area, the score depends only on the total of the two, and it has a line of bottoms, every point of the red line fitting equally well, and <span class="math inline">\((\mathbf{X}^\top\mathbf{X})^{-1}\)</span> does not exist.
+</figcaption>
+</figure>
+</div>
+<p>Exact repetition is easy to detect, because the rank says so. Near repetition is harder and in practice more common. The number of cars a garage holds and its floor area move together closely, with a correlation of 0.89 in Ames, where the correlation coefficient equals 1 when two columns rise in perfect step along a line. The matrix with both columns has full rank, and the weights exist and are unique, but they are not reliable. To see this, we drew 200 random samples of 60 different sales each and fitted the price on the two garage columns, standardised, with prices and columns centred so that the intercept drops out. <a href="#fig-swing" class="quarto-xref">Figure&nbsp;<span>2.51</span></a> plots each sample’s pair of weights. The weights scatter along a line, about <span class="math inline">\(27.6 \pm 21.3\)</span> for garage cars and <span class="math inline">\(26.4 \pm 23.9\)</span> for garage area, where <span class="math inline">\(\pm\)</span> is the standard deviation across the samples. In 39 of the 200 samples one of the two weights is negative, so that, with the other garage column held fixed, a bigger garage lowers the predicted price. That is not a fact about houses. The data cannot separate two columns that say almost the same thing, so the weights trade off along the trough while the predictions barely move.</p>
+<div id="fig-swing" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-swing-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/weight_swing_book/step1.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-swing-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.51: Two hundred samples of 60 sales, each fitted on garage cars and garage area. Left: least squares, <span class="math inline">\(\lambda = 0\)</span>. The pairs of weights scatter along a line, and in the red samples one weight is negative. Right: Tikhonov’s fix with <span class="math inline">\(\lambda = 100\)</span>, on the same scale, where the pairs gather in a small cluster.
+</figcaption>
+</figure>
+</div>
+<p>Both failures have a name.</p>
+<div id="def-well-posed" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.23 (Well-posed problem)</strong></span> A problem is <strong>well-posed</strong> when its answer exists, is unique, and depends continuously on the data, so that a small change in the data produces only a small change in the answer. A problem that fails any of the three conditions is <strong>ill-posed</strong>.</p>
+</div>
+<p>Hadamard, in the <em>Princeton University Bulletin</em> in 1902, argued that a problem of mathematical physics should have a solution and only one, and that problems without this property do not correspond to physical situations <span class="citation" data-cites="hadamard1902">(<a href="#ref-hadamard1902" role="doc-biblioref">Hadamard 1902</a>)</span>. The third condition, stability, is part of the standard statement of his definition today. Least squares with exactly repeated columns fails uniqueness, and with nearly repeated columns it fails stability.</p>
+<p>The repair adds a cost for large weights. Instead of the RSS alone, minimise</p>
+<p><span id="eq-tikhonov-score"><span class="math display">\[ \mathrm{RSS}(\hat{\mathbf{w}}) + \lambda\,\lVert \hat{\mathbf{w}} \rVert^2 , \qquad \lambda &gt; 0 .  \tag{2.43}\]</span></span></p>
+<p>The partial derivative of the penalty along <span class="math inline">\(\hat{w}_j\)</span> is <span class="math inline">\(2\lambda\hat{w}_j\)</span>, so by <a href="#eq-gradient-matrix" class="quarto-xref">Equation&nbsp;<span>2.39</span></a> the gradient is <span class="math inline">\(-2\,\mathbf{X}^\top\mathbf{e} + 2\lambda\hat{\mathbf{w}}\)</span>. Setting it to zero and using <span class="math inline">\(\hat{\mathbf{w}} = \mathbf{I}\hat{\mathbf{w}}\)</span> gives <span class="math inline">\((\mathbf{X}^\top\mathbf{X} + \lambda\mathbf{I})\,\hat{\mathbf{w}} = \mathbf{X}^\top\mathbf{y}\)</span>. That this point is the minimiser, and not only a point where every slope is zero, follows as <a href="#eq-pythagoras" class="quarto-xref">Equation&nbsp;<span>2.34</span></a> did. Expanding the score at another candidate <span class="math inline">\(\hat{\mathbf{w}} + \mathbf{d}\)</span>, the terms of first degree in <span class="math inline">\(\mathbf{d}\)</span> come to <span class="math inline">\(-2\,\mathbf{d} \cdot (\mathbf{X}^\top\mathbf{e} - \lambda\hat{\mathbf{w}})\)</span>, which is zero at this point, and what remains adds <span class="math inline">\(\lVert \mathbf{X}\mathbf{d} \rVert^2 + \lambda\,\lVert \mathbf{d} \rVert^2\)</span> to the score, a positive amount whenever <span class="math inline">\(\mathbf{d} \neq \mathbf{0}\)</span>.</p>
+<div id="def-tikhonov" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.24 (Tikhonov’s fix)</strong></span> <strong>Tikhonov’s fix</strong> replaces the least-squares solution by <span id="eq-tikhonov"><span class="math display">\[ \hat{\mathbf{w}}_\lambda \;=\; (\mathbf{X}^\top\mathbf{X} + \lambda\,\mathbf{I})^{-1}\,\mathbf{X}^\top\mathbf{y} , \qquad \lambda &gt; 0 ,  \tag{2.44}\]</span></span> the minimiser of <a href="#eq-tikhonov-score" class="quarto-xref">Equation&nbsp;<span>2.43</span></a>. The number <span class="math inline">\(\lambda\)</span> sets the price of a large weight.</p>
+</div>
+<p>The inverse in <a href="#eq-tikhonov" class="quarto-xref">Equation&nbsp;<span>2.44</span></a> always exists. Repeating the steps of <a href="#eq-xtx-zero" class="quarto-xref">Equation&nbsp;<span>2.42</span></a> for any vector <span class="math inline">\(\mathbf{v}\)</span>,</p>
+<p><span class="math display">\[ \mathbf{v} \cdot \bigl( (\mathbf{X}^\top\mathbf{X} + \lambda\mathbf{I})\,\mathbf{v} \bigr) \;=\; \lVert \mathbf{X}\mathbf{v} \rVert^2 + \lambda\,\lVert \mathbf{v} \rVert^2 , \]</span></p>
+<p>which is positive whenever <span class="math inline">\(\mathbf{v} \neq \mathbf{0}\)</span>, so the matrix sends no nonzero vector to zero. However the columns repeat, there is exactly one answer. <a href="#fig-tikhonov" class="quarto-xref">Figure&nbsp;<span>2.52</span></a> shows what the penalty does to the score of one sample of 60. Least squares alone gives a long trough whose bottom sits at <span class="math inline">\((25.5, 36.0)\)</span>, wherever this particular sample happens to put it. With <span class="math inline">\(\lambda = 100\)</span> the trough is lifted into a bowl with one clear bottom, at <span class="math inline">\((17.4, 17.6)\)</span>. Over all 200 samples (<a href="#fig-swing" class="quarto-xref">Figure&nbsp;<span>2.51</span></a>), the spread of each weight falls from about 21 to 24 to about 3, and no weight changes sign. The price is visible too: the weights shrink, on average from about 27 to about 14. A steadier answer is bought by pulling the weights towards zero and away from what the data alone say. In this experiment the intercept was removed by centring and so was not penalised, which is the usual practice. How to choose <span class="math inline">\(\lambda\)</span> is a question about data the fit has not seen, and Section 2.7 takes it up.</p>
+<div id="fig-tikhonov" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tikhonov-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/tikhonov_lift_book/step1.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tikhonov-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.52: The score for one sample of 60 sales as contours over the two garage weights. Left: least squares alone, a long trough with its bottom in red. Right: with the penalty at <span class="math inline">\(\lambda = 100\)</span>, the trough is lifted into a bowl with one bottom, in teal, nearer zero. The old bottom is shown faintly.
+</figcaption>
+</figure>
+</div>
+<p>Tikhonov showed in 1943, in <em>On the Stability of Inverse Problems</em> in the <em>Doklady</em> of the Academy of Sciences of the Soviet Union, that an unstable inverse problem becomes stable when its answer is restricted to a suitably bounded set <span class="citation" data-cites="tikhonov1943">(<a href="#ref-tikhonov1943" role="doc-biblioref">Tikhonov 1943</a>)</span>. In 1963 he gave the regularisation method, which adds a penalty on the size of the answer, in the <em>Soviet Mathematics Doklady</em> <span class="citation" data-cites="tikhonov1963">(<a href="#ref-tikhonov1963" role="doc-biblioref">Tikhonov 1963</a>)</span>. Phillips had published the same idea independently a year earlier, for integral equations, in the <em>Journal of the ACM</em> <span class="citation" data-cites="phillips1962">(<a href="#ref-phillips1962" role="doc-biblioref">Phillips 1962</a>)</span>, and the method is also called Tikhonov-Phillips regularisation. Its assumption is that, when the data cannot decide between answers, a smaller answer is preferable. The method is standard wherever a quantity is reconstructed from indirect and noisy measurements, as in image reconstruction, and it returns in Section 2.7 under the name statisticians gave it.</p>
+<p>When the repetition is exact, a second way of choosing one answer exists. Enter living area twice, centred and in hundreds of square metres as in <a href="#eq-centred" class="quarto-xref">Equation&nbsp;<span>2.5</span></a>. The intercept separates as in <a href="#eq-one-input" class="quarto-xref">Equation&nbsp;<span>2.40</span></a>. The score depends on the two area weights only through their sum, so every pair with <span class="math inline">\(\hat{w}_a + \hat{w}_b = 125.1\)</span> is a bottom: the red line of <a href="#fig-pinv" class="quarto-xref">Figure&nbsp;<span>2.53</span></a>. Among them, the shortest in the sense of <a href="#def-length" class="quarto-xref">Definition&nbsp;<span>2.14</span></a> is the point nearest the origin, where a line from the origin meets the line of bottoms at a right angle. By symmetry it splits the slope evenly, <span class="math inline">\((62.6, 62.6)\)</span>.</p>
+<div id="def-pseudo-inverse" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.25 (Pseudo-inverse)</strong></span> Among all the minimisers of the RSS, the one of smallest length, which is always unique (a standard result, stated here without proof), is written <span class="math inline">\(\mathbf{X}^{+}\mathbf{y}\)</span>, and <span class="math inline">\(\mathbf{X}^{+}\)</span> is the <strong>pseudo-inverse</strong> of <span class="math inline">\(\mathbf{X}\)</span>. When <span class="math inline">\(\mathbf{X}\)</span> has full column rank there is only one minimiser, and <span class="math inline">\(\mathbf{X}^{+}\mathbf{y}\)</span> is <a href="#eq-ls-solution" class="quarto-xref">Equation&nbsp;<span>2.38</span></a>.</p>
+</div>
+<p>Tikhonov’s answers lead to the same point. In the doubled-area case <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span> has all four entries equal to <span class="math inline">\(S_{uu}\)</span>, both entries of <span class="math inline">\(\mathbf{X}^\top\mathbf{y}\)</span> equal <span class="math inline">\(S_{uy}\)</span>, and by symmetry <a href="#eq-tikhonov" class="quarto-xref">Equation&nbsp;<span>2.44</span></a> gives equal weights <span class="math inline">\((t, t)\)</span> with <span class="math inline">\(2S_{uu}t + \lambda t = S_{uy}\)</span>, so that</p>
+<p><span id="eq-twin-path"><span class="math display">\[ t \;=\; \frac{S_{uy}}{2S_{uu} + \lambda} .  \tag{2.45}\]</span></span></p>
+<p>With <span class="math inline">\(S_{uu} = 596.76\)</span> and <span class="math inline">\(S_{uy} = 74{,}655.9\)</span>, the values <span class="math inline">\(\lambda = 3{,}000\)</span>, <span class="math inline">\(1{,}000\)</span>, <span class="math inline">\(300\)</span>, <span class="math inline">\(100\)</span> and <span class="math inline">\(10\)</span> give <span class="math inline">\(t = 17.8\)</span>, <span class="math inline">\(34.0\)</span>, <span class="math inline">\(50.0\)</span>, <span class="math inline">\(57.7\)</span> and <span class="math inline">\(62.0\)</span>. As <span class="math inline">\(\lambda\)</span> shrinks to zero, <span class="math inline">\(t\)</span> approaches <span class="math inline">\(S_{uy}/(2S_{uu}) = 62.6\)</span>, the shortest bottom. The same limit holds for any <span class="math inline">\(\mathbf{X}\)</span>, a result this book states without proof, and Tikhonov’s answer for a vanishing <span class="math inline">\(\lambda\)</span> is the pseudo-inverse answer. Moore described a general reciprocal of any matrix in 1920, in the <em>Bulletin of the American Mathematical Society</em> <span class="citation" data-cites="moore1920">(<a href="#ref-moore1920" role="doc-biblioref">Moore 1920</a>)</span>, and Penrose, unaware of Moore’s work, defined the same object by four algebraic conditions in the <em>Proceedings of the Cambridge Philosophical Society</em> in 1955 <span class="citation" data-cites="penrose1955">(<a href="#ref-penrose1955" role="doc-biblioref">Penrose 1955</a>)</span>. It is what NumPy’s least-squares routine, built on the LAPACK library, returns when the columns repeat. Other software drops one of the repeated columns instead, as R’s linear-model function does. Its assumption is that, among answers the data cannot tell apart, the shortest is the one to report.</p>
+<div id="fig-pinv" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pinv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/pinv_line/book/step3.svg" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pinv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.53: Living area entered twice, in the centred units of <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a>. Every point of the red line fits equally well. The shortest is the point nearest zero, at a right angle to the line, <span class="math inline">\((62.6, 62.6)\)</span>: the pseudo-inverse answer. Tikhonov’s answers, in teal, from <span class="math inline">\(\lambda = 3{,}000\)</span> downwards, move along the blue path onto it.
+</figcaption>
+</figure>
+</div>
+<p>The third difficulty is now settled in both its forms. Exact repetition is a failure of rank and leaves the weights undetermined. Near repetition leaves them determined but unstable. Tikhonov’s fix repairs both at the price of a pull towards zero, and the pseudo-inverse chooses among exact ties. Why near repetition also makes the computation itself inaccurate, and why it slows a descent along the trough, is the subject of Section 2.4, and the spread of a weight across samples receives its name and its formula in Section 2.6.</p>
+</section>
+<section id="judging-the-fit" class="level3">
+<h3 class="anchored" data-anchor-id="judging-the-fit">Judging the fit</h3>
+<p><a href="#def-r-squared" class="quarto-xref">Definition&nbsp;<span>2.8</span></a> carries over unchanged to any number of inputs, provided <span class="math inline">\(\mathbf{X}\)</span> contains the ones column. <a href="#fig-r2-ladder" class="quarto-xref">Figure&nbsp;<span>2.54</span></a> adds the columns one group at a time. Living area alone gives <span class="math inline">\(R^2 = 0.518\)</span>. Adding quality gives 0.751, the largest single step. Adding year built gives 0.775, and adding the neighbourhood, as 27 indicators against North Ames, gives 0.823, about four-fifths of the variation in price.</p>
+<div id="fig-r2-ladder" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-r2-ladder-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/r2_ladder/step4.svg" class="img-fluid figure-img" style="width:88.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-r2-ladder-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.54: The coefficient of determination as columns are added: 0.518 for living area alone, then 0.751 with quality, 0.775 with year built and 0.823 with neighbourhood. The bars only grow.
+</figcaption>
+</figure>
+</div>
+<p>The bars only grow, and the projection shows that they must. Adding a column enlarges the span, and the old span lies inside the new one. The closest point of the larger set can be no further from <span class="math inline">\(\mathbf{y}\)</span> than the closest point of the smaller, so the RSS cannot rise and <span class="math inline">\(R^2\)</span> cannot fall, whatever the column holds, including a column of random numbers. <span class="math inline">\(R^2\)</span> on the data used for fitting therefore cannot say when to stop adding columns. Choosing columns properly requires data the fit has not seen, which is the subject of Section 2.7.</p>
+<p>The house held back from every fit gives a single-house view of the same ladder (<a href="#fig-repriced" class="quarto-xref">Figure&nbsp;<span>2.55</span></a>). It sold for $163.0 thousand. The line of <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a> predicted $174.1 thousand. Fit 1 predicts $141.3 thousand, further off and on the other side, and the fit with year built and neighbourhood predicts $154.0 thousand. One house can move either way as columns are added, and a fit is judged over all the sales, which is what <span class="math inline">\(R^2\)</span> measures. Over all the sales the change is plain. The residuals of <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a> climbed steeply against quality. With quality, year built and neighbourhood in the model, the averages at the middle levels of quality lie close to zero, and the tilt is gone.</p>
+<div id="fig-repriced" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-repriced-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/house_repriced/book/step3.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-repriced-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.55: Left: the held-back house, sold for $163.0k, priced by the line of <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a> at $174.1k, by area and quality at $141.3k, and with year built and neighbourhood added at $154.0k. One house can go either way. Right: residuals against quality, the dashed line joining the averages of the line of <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a> and the red line those of the many-input fit. The tilt is gone, and a bend is left.
+</figcaption>
+</figure>
+</div>
+<p>The three choices of <a href="ch01.html#def-three-choices" class="quarto-xref">Definition&nbsp;<span>1.16</span></a> have each moved or stayed (<a href="#fig-recipe-moved" class="quarto-xref">Figure&nbsp;<span>2.56</span></a>). The hypothesis space is every flat surface over the inputs, one weight per input. The loss is the residual sum of squares, unchanged. The optimiser is the normal equations, solved once. On the modelling axis of <a href="#fig-spectrum-line" class="quarto-xref">Figure&nbsp;<span>2.7</span></a> the method sits where the line did: two things are our assumptions, the flat form and the choice of columns, and every weight comes from the data.</p>
+<div id="fig-recipe-moved" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-recipe-moved-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/three_choices_mf06/step2.svg" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-recipe-moved-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.56: The supervised learner of <a href="#fig-recipe" class="quarto-xref">Figure&nbsp;<span>2.20</span></a> with its first slot moved. Hypothesis space: every flat surface over the inputs, one weight per input. Loss: the residual sum of squares. Optimiser: the normal equations, solved once. The labels above the cards are the two tasks of <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a>: task one chooses the form of the model, task two finds its best weights. The question beneath is still open.
+</figcaption>
+</figure>
+</div>
+<p>The residuals of the many-input fit have not finished speaking. Averaged at each level of quality (<a href="#fig-residual-bend" class="quarto-xref">Figure&nbsp;<span>2.57</span></a>), they lie within about $12 thousand of zero from level 4 to level 8, and they rise at both ends. The four houses rated 1 and the thirteen rated 2 sit about $28 thousand and $34 thousand above the surface, and the 26 best-built houses about $88 thousand above it. A flat surface cannot bend. A column holding the square of the quality rating would raise <span class="math inline">\(R^2\)</span> from 0.823 to 0.847, and adding such a column keeps the model linear in its weights, so that everything in this section still applies. Section 2.3 takes up that move.</p>
+<div id="fig-residual-bend" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-residual-bend-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/components/assets/tikz/residual_curve/book/step2.svg" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-residual-bend-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.57: The residuals of the fit with area, quality, year built and neighbourhood, against quality. Their average at each level bends: the middle levels lie near zero, and the best-built houses sell for about $88k more than the flat surface says.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="what-the-method-assumes-and-where-it-fails" class="level3">
+<h3 class="anchored" data-anchor-id="what-the-method-assumes-and-where-it-fails">What the method assumes, and where it fails</h3>
+<p>The assumptions of <a href="#sec-s05" class="quarto-xref"><span>Section 2.1</span></a> remain: only the price is in error, misses are judged by their squares, and the sales stand for the houses to be priced. Several inputs add assumptions of their own.</p>
+<ul>
+<li>The effects add. Each weight is the same at every level of the other inputs, so the effect of area is the same for a house of quality 4 as for one of quality 9. The parallel lines of <a href="#fig-partial" class="quarto-xref">Figure&nbsp;<span>2.29</span></a> are this assumption drawn.</li>
+<li>A rating entered as one number assumes equal steps. Entering quality as a single column says that the step from 4 to 5 is worth the same as the step from 9 to 10. The bend of <a href="#fig-residual-bend" class="quarto-xref">Figure&nbsp;<span>2.57</span></a> is where this assumption fails.</li>
+<li>A weight is conditional on the other columns. It describes how the price varies with one input among houses equal in the others that are in the model. Adding or removing a column changes it, as <a href="#eq-omitted" class="quarto-xref">Equation&nbsp;<span>2.24</span></a> shows, and no weight is by itself a causal effect.</li>
+<li>The columns must be genuinely different. With exact repetition the weights are not determined, and with near repetition they are determined but unstable from sample to sample, although the predictions may change little.</li>
+<li>A good fit on the recorded sales is not a good choice of columns. <span class="math inline">\(R^2\)</span> never falls as columns are added, so it cannot decide which to keep.</li>
+</ul>
+<p>Every result of the section rests on the model being linear in its weights, and nothing in it requires the columns to be the recorded inputs themselves. That is the opening for Section 2.3.</p>
+</section>
+<section id="exercises-1" class="level3">
+<h3 class="anchored" data-anchor-id="exercises-1">Exercises</h3>
+<ol type="1">
+<li><p>The fit of <a href="#fig-r2-ladder" class="quarto-xref">Figure&nbsp;<span>2.54</span></a> with neighbourhood uses the ones column, area, quality, year built and 27 indicators, for the 2,924 sales. Give the shapes of <span class="math inline">\(\mathbf{X}\)</span>, <span class="math inline">\(\hat{\mathbf{w}}\)</span>, <span class="math inline">\(\mathbf{X}\hat{\mathbf{w}}\)</span>, <span class="math inline">\(\mathbf{e}\)</span>, <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span>, <span class="math inline">\(\mathbf{X}^\top\mathbf{y}\)</span> and <span class="math inline">\(\mathbf{e}^\top\mathbf{e}\)</span>. Say which of <span class="math inline">\(\hat{\mathbf{w}}\mathbf{X}\)</span>, <span class="math inline">\(\mathbf{X}\mathbf{X}^\top\)</span> and <span class="math inline">\(\mathbf{y}^\top\mathbf{X}\)</span> exist, with their shapes. Then say what number each of these entries of <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span> counts: the top-left entry, the entry in the row of the ones column and the column of the Briardale indicator, the diagonal entry of the Briardale indicator, and the entry for the Briardale and Stone Brook indicators.</p></li>
+<li><p>For the three houses of <a href="#fig-two-spaces" class="quarto-xref">Figure&nbsp;<span>2.40</span></a>, <span class="math inline">\(\mathbf{c}_1 = (0.847, 1.356, 2.008)\)</span> and <span class="math inline">\(\mathbf{y} = (1.44, 2.47, 2.305)\)</span>. Form <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{X}^\top\mathbf{y}\)</span>, solve <a href="#eq-normal-equations" class="quarto-xref">Equation&nbsp;<span>2.36</span></a> by elimination, and check that <span class="math inline">\(\hat{\mathbf{w}} = (1.090, 0.699)\)</span>. Compute <span class="math inline">\(\mathbf{e}\)</span> and its dot products with both columns. Then, for the candidate <span class="math inline">\(\hat{\mathbf{w}}' = (0.248, 1.299)\)</span>, compute its residual, its two dot products and its length, and verify <a href="#eq-pythagoras" class="quarto-xref">Equation&nbsp;<span>2.34</span></a> numerically.</p></li>
+<li><p>With one input left uncentred, <span class="math inline">\(\mathbf{X}\)</span> has columns <span class="math inline">\(\mathbf{1}\)</span> and <span class="math inline">\(\mathbf{x}\)</span>. Write <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{X}^\top\mathbf{y}\)</span> in terms of <span class="math inline">\(n\)</span>, <span class="math inline">\(\sum x_i\)</span>, <span class="math inline">\(\sum x_i^2\)</span>, <span class="math inline">\(\sum y_i\)</span> and <span class="math inline">\(\sum x_i y_i\)</span>, solve the two normal equations, and show that the solution is <a href="#eq-closed-form" class="quarto-xref">Equation&nbsp;<span>2.18</span></a>. Apply the result to three sales of 100, 140 and 180 square metres sold for 150, 190 and 200 thousand dollars.</p></li>
+<li><p>Five sales lie in three neighbourhoods A, A, B, C, B. Write the design matrix with the ones column and all three indicators, and find a nonzero <span class="math inline">\(\mathbf{v}\)</span> with <span class="math inline">\(\mathbf{X}\mathbf{v} = \mathbf{0}\)</span>. Compute <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span> and show directly that one of its rows is a combination of the others. Give two different weight vectors with identical predictions. Then drop the indicator of A and state what each remaining weight means, and do the same when instead the ones column is dropped.</p></li>
+<li><p>The standardised weights of the fit with year built are 32.72, 35.65 and 15.29 thousand dollars per standard deviation, the standard deviations are 45.18 square metres, 1.403 points and 30.24 years, and the column means are 138.80 square metres, 6.089 points and 1971.30 years. The mean price is 180.42 thousand dollars. Explain why the intercept of the standardised fit equals the mean price. Recover the raw weights and the raw intercept, and compare them with the fit quoted in the section, <span class="math inline">\((-1{,}071.4,\ 0.724,\ 25.42,\ 0.5055)\)</span>.</p></li>
+<li><ol type="a">
+<li>Prove that adding a column to <span class="math inline">\(\mathbf{X}\)</span> cannot lower <span class="math inline">\(R^2\)</span>, using <a href="#eq-pythagoras" class="quarto-xref">Equation&nbsp;<span>2.34</span></a> or the definition of the projection as the closest point. (b) Prove that <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span> has an inverse exactly when <span class="math inline">\(\mathbf{X}\)</span> has full column rank, citing the standard result on square matrices used in the section. (c) Apply (b) to three matrices. The first has the ones, area in square metres and area in square feet. The second has the ones and all three indicators of a three-name category. The third has the ones, area and quality.</li>
+</ol></li>
+<li><p>Derive <a href="#eq-tikhonov" class="quarto-xref">Equation&nbsp;<span>2.44</span></a> from <a href="#eq-tikhonov-score" class="quarto-xref">Equation&nbsp;<span>2.43</span></a> using partial derivatives, as <a href="#eq-gradient-matrix" class="quarto-xref">Equation&nbsp;<span>2.39</span></a> was derived. Then, for living area entered twice in centred units, derive <a href="#eq-twin-path" class="quarto-xref">Equation&nbsp;<span>2.45</span></a>, compute <span class="math inline">\(t\)</span> at <span class="math inline">\(\lambda = 100\)</span>, and show that the length of <span class="math inline">\((t, t)\)</span> increases as <span class="math inline">\(\lambda\)</span> decreases and approaches the length of the pseudo-inverse answer.</p></li>
+<li><p>For two inputs with an intercept, let <span class="math inline">\(\hat{\delta}\)</span> be the slope of the least-squares line of input 2 on input 1. Using the normal equations with every column centred, prove that the slope of the least-squares line of <span class="math inline">\(y\)</span> on input 1 alone equals <span class="math inline">\(\hat{w}_1 + \hat{w}_2\,\hat{\delta}\)</span>, where <span class="math inline">\(\hat{w}_1\)</span> and <span class="math inline">\(\hat{w}_2\)</span> are the weights of the two-input fit. Check <a href="#eq-omitted" class="quarto-xref">Equation&nbsp;<span>2.24</span></a>, and describe a pair of inputs for which the weight of input 1 would rise rather than fall when input 2 is added.</p></li>
+</ol>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
@@ -785,6 +1393,9 @@ Box, George E. P. 1976. <span>“Science and Statistics.”</span> <em>Journal o
 <div id="ref-cauchy1847" class="csl-entry" role="listitem">
 Cauchy, Augustin-Louis. 1847. <span>“M<span>é</span>thode g<span>é</span>n<span>é</span>rale Pour La r<span>é</span>solution Des Syst<span>è</span>mes d’<span>é</span>quations Simultan<span>é</span>es.”</span> <em>Comptes Rendus de l’Acad<span>é</span>mie Des Sciences</em> 25: 536–38.
 </div>
+<div id="ref-cayley1858" class="csl-entry" role="listitem">
+Cayley, Arthur. 1858. <span>“A Memoir on the Theory of Matrices.”</span> <em>Philosophical Transactions of the Royal Society of London</em> 148: 17–37.
+</div>
 <div id="ref-decock2011" class="csl-entry" role="listitem">
 De Cock, Dean. 2011. <span>“Ames, Iowa: Alternative to the Boston Housing Data as an End of Semester Regression Project.”</span> <em>Journal of Statistics Education</em> 19 (3).
 </div>
@@ -794,14 +1405,38 @@ Galton, Francis. 1886. <span>“Regression Towards Mediocrity in Hereditary Stat
 <div id="ref-gauss1809" class="csl-entry" role="listitem">
 Gauss, Carl Friedrich. 1809. <em>Theoria Motus Corporum Coelestium in Sectionibus Conicis Solem Ambientium</em>. Perthes; Besser.
 </div>
+<div id="ref-grcar2011" class="csl-entry" role="listitem">
+Grcar, Joseph F. 2011. <span>“How Ordinary Elimination Became <span>G</span>aussian Elimination.”</span> <em>Historia Mathematica</em> 38 (2): 163–218. <a href="https://doi.org/10.1016/j.hm.2010.06.003">https://doi.org/10.1016/j.hm.2010.06.003</a>.
+</div>
+<div id="ref-hadamard1902" class="csl-entry" role="listitem">
+Hadamard, Jacques. 1902. <span>“Sur Les Problèmes Aux Dérivées Partielles Et Leur Signification Physique.”</span> <em>Princeton University Bulletin</em> 13: 49–52.
+</div>
 <div id="ref-legendre1805" class="csl-entry" role="listitem">
 Legendre, Adrien-Marie. 1805. <em>Nouvelles Méthodes Pour La Détermination Des Orbites Des Comètes</em>. Firmin Didot.
+</div>
+<div id="ref-moore1920" class="csl-entry" role="listitem">
+Moore, E. H. 1920. <span>“On the Reciprocal of the General Algebraic Matrix.”</span> <em>Bulletin of the American Mathematical Society</em> 26: 394–95.
 </div>
 <div id="ref-pearson1896" class="csl-entry" role="listitem">
 Pearson, Karl. 1896. <span>“Mathematical Contributions to the Theory of Evolution. <span>III</span>. Regression, Heredity, and Panmixia.”</span> <em>Philosophical Transactions of the Royal Society of London, Series A</em> 187: 253–318. <a href="https://doi.org/10.1098/rsta.1896.0007">https://doi.org/10.1098/rsta.1896.0007</a>.
 </div>
 <div id="ref-penrose1955" class="csl-entry" role="listitem">
 Penrose, Roger. 1955. <span>“A Generalized Inverse for Matrices.”</span> <em>Proceedings of the Cambridge Philosophical Society</em> 51 (3): 406–13. <a href="https://doi.org/10.1017/S0305004100030401">https://doi.org/10.1017/S0305004100030401</a>.
+</div>
+<div id="ref-phillips1962" class="csl-entry" role="listitem">
+Phillips, David L. 1962. <span>“A Technique for the Numerical Solution of Certain Integral Equations of the First Kind.”</span> <em>Journal of the ACM</em> 9 (1): 84–97. <a href="https://doi.org/10.1145/321105.321114">https://doi.org/10.1145/321105.321114</a>.
+</div>
+<div id="ref-rosen1974" class="csl-entry" role="listitem">
+Rosen, Sherwin. 1974. <span>“Hedonic Prices and Implicit Markets: Product Differentiation in Pure Competition.”</span> <em>Journal of Political Economy</em> 82 (1): 34–55.
+</div>
+<div id="ref-suits1957" class="csl-entry" role="listitem">
+Suits, Daniel B. 1957. <span>“Use of Dummy Variables in Regression Equations.”</span> <em>Journal of the American Statistical Association</em> 52 (280): 548–51.
+</div>
+<div id="ref-tikhonov1943" class="csl-entry" role="listitem">
+Tikhonov, A. N. 1943. <span>“On the Stability of Inverse Problems.”</span> <em>Doklady Akademii Nauk SSSR</em> 39 (5): 195–98.
+</div>
+<div id="ref-tikhonov1963" class="csl-entry" role="listitem">
+Tikhonov, A. N. 1963. <span>“Solution of Incorrectly Formulated Problems and the Regularization Method.”</span> <em>Soviet Mathematics Doklady</em> 4: 1035–38.
 </div>
 <div id="ref-tukey1977" class="csl-entry" role="listitem">
 Tukey, John W. 1977. <em>Exploratory Data Analysis</em>. Addison-Wesley.
