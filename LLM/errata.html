@@ -519,7 +519,17 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="session-03-sequences-and-memory-2.1" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="session-03-sequences-and-memory-2.1">Session 03: Sequences and Memory (§2.1)</h2>
+<p>The second edition of this lecture (21 November 2026, <a href="https://youtu.be/J0tOx4aunRE">watch it</a>) fixes every error listed below for the first edition.</p>
+<p>No corrections to the second edition.</p>
+<section id="first-edition-retired-2" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="first-edition-retired-2">First edition (retired)</h3>
 <table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Time</th>
@@ -530,49 +540,49 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td><a href="https://youtu.be/lUu9Vgom4yo?t=219">3:39</a></td>
+<td>3:39</td>
 <td>every language model before 2017 was recurrent</td>
 <td>n-gram models and Bengio et al.’s neural LM were not</td>
 <td>Bengio et al., JMLR 2003</td>
 </tr>
 <tr class="even">
-<td><a href="https://youtu.be/lUu9Vgom4yo?t=589">9:49</a></td>
+<td>9:49</td>
 <td>the condition is |W_h| &lt; 1</td>
 <td>it is on the largest singular value of W_h</td>
 <td>Pascanu et al.&nbsp;2013</td>
 </tr>
 <tr class="odd">
-<td><a href="https://youtu.be/lUu9Vgom4yo?t=625">10:25</a></td>
+<td>10:25</td>
 <td>Bengio 1994 proved the RNN fundamentally broken for long sequences</td>
 <td>they showed a trade-off between stable memory and gradient learning</td>
 <td>Bengio, Simard &amp; Frasconi 1994</td>
 </tr>
 <tr class="even">
-<td><a href="https://youtu.be/lUu9Vgom4yo?t=766">12:46</a></td>
+<td>12:46</td>
 <td>bidirectional LSTMs, 2015</td>
 <td>bidirectional RNNs date from 1997</td>
 <td>Schuster &amp; Paliwal 1997</td>
 </tr>
 <tr class="odd">
-<td><a href="https://youtu.be/lUu9Vgom4yo?t=843">14:03</a></td>
+<td>14:03</td>
 <td>the gradient of the addition is just 1, so the cell carries information unchanged</td>
 <td>with a forget gate it is f_t, so memory decays as the product of the f_t; the forget gate is Gers et al.&nbsp;2000, not the 1997 LSTM</td>
 <td>Gers et al.&nbsp;2000</td>
 </tr>
 <tr class="even">
-<td><a href="https://youtu.be/lUu9Vgom4yo?t=919">15:19</a></td>
+<td>15:19</td>
 <td>the LSTM diagram puts the output gate on the cell-state line</td>
 <td>C_t passes on untouched and h_t = o_t x tanh(C_t), as the formula on screen says</td>
 <td>Hochreiter &amp; Schmidhuber 1997</td>
 </tr>
 <tr class="odd">
-<td><a href="https://youtu.be/lUu9Vgom4yo?t=1215">20:15</a></td>
+<td>20:15</td>
 <td>LSTMs and GRUs were both defaults from 1997 to 2017</td>
 <td>the GRU dates from 2014 and LSTMs became the NLP default around 2013-14</td>
 <td>Cho et al.&nbsp;2014</td>
 </tr>
 <tr class="even">
-<td><a href="https://youtu.be/lUu9Vgom4yo?t=1389">23:09</a></td>
+<td>23:09</td>
 <td>LSTMs did not benefit from larger models or more data</td>
 <td>no source supports this; treat it as opinion</td>
 <td>none found</td>
@@ -580,12 +590,13 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </section>
+</section>
 <section id="session-04-the-attention-breakthrough-2.2" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="session-04-the-attention-breakthrough-2.2">Session 04: The Attention Breakthrough (§2.2)</h2>
 <p>The second edition of this lecture (14 November 2026, <a href="https://youtu.be/EsVmIvvJgVg">watch it</a>) fixes every error listed below for the first edition.</p>
 <p>No corrections to the second edition.</p>
-<section id="first-edition-retired-2" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="first-edition-retired-2">First edition (retired)</h3>
+<section id="first-edition-retired-3" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="first-edition-retired-3">First edition (retired)</h3>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
